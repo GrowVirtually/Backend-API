@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/ashanaka/Backend-API#readme",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-session": "^1.17.2",
     "mongoose": "^5.12.13"
