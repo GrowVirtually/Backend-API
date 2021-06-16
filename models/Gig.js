@@ -4,21 +4,49 @@ const { Schema } = mongoose;
 
 // Create Schema
 const GigSchema = new Schema({
+  type: {
+    type: String,
+    required: true,
+  },
   title: {
     type: String,
     required: true,
   },
-  details: {
+  description: {
     type: String,
     required: true,
   },
-  user: {
+  minOrderAmount: {
+    type: mongoose.Schema.Types.Double,
+    required: true,
+  },
+  unit: {
     type: String,
     required: true,
   },
-  date: {
+  unitPrice: {
+    type: mongoose.Schema.Types.Double,
+    required: true,
+  },
+  stock: {
+    type: mongoose.Schema.Types.Double,
+    required: true,
+  },
+  sold: {
+    type: mongoose.Schema.Types.Double,
+    required: true,
+  },
+  img: {
+    type: String,
+    required: true,
+  },
+  timeStamp: {
     type: Date,
     default: Date.now,
+  },
+  duration: {
+    type: Date,
+    required: true,
   },
 });
 
