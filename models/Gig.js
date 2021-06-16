@@ -48,6 +48,19 @@ const GigSchema = new Schema({
     type: Date,
     required: true,
   },
+  location: {
+    latitude: {
+      type: String,
+    },
+    longitude: {
+      type: String,
+    },
+    required: true,
+  },
+  growerId: {
+    type: mongoose.Schema.objectId,
+    required: true,
+  },
 });
 
 mongoose.model('gigs', GigSchema);
