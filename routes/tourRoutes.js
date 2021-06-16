@@ -6,6 +6,7 @@ const {
   checkID,
   checkBody,
 } = require('../route_handlers/tourHandler');
+
 const router = express.Router();
 
 // deprecated -> use alternative

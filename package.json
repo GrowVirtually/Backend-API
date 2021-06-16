@@ -4,7 +4,7 @@
   "description": "Backend API for GroVi mobile and web applications.",
   "main": "app.js",
   "scripts": {
-    "start:dev": "nodemon server.js",
+    "start": "nodemon server.js",
     "start:prod": "NODE_ENV=production nodemon server.js"
   },
   "repository": {
@@ -22,7 +22,7 @@
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "express-session": "^1.17.2",
-    "mongoose": "^5.12.13",
+    "mongoose": "^5.12.14",
     "morgan": "^1.10.0"
   },
   "devDependencies": {
