@@ -10,7 +10,7 @@ const app = require('./app');
 connect('mongodb://localhost/grovi', {
   useMongoClient: true,
 })
-  .then(() => console.log('MongoDB Connected(grovi)...'))
+  .then(() => console.log('MongoDB Connected (grovi)...'))
   .catch((err) => console.log(err));
 
 const port = process.env.PORT || 3000;
