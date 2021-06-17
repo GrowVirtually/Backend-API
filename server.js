@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-unused-vars
-const { connect } = require('mongoose');
+const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 
 dotenv.config({ path: './config.env' });
@@ -7,11 +6,17 @@ dotenv.config({ path: './config.env' });
 const app = require('./app');
 
 // Connect to mongoose
-connect('mongodb://localhost/grovi', {
-  useMongoClient: true,
-})
-  .then(() => console.log('MongoDB Connected(grovi)...'))
-  .catch((err) => console.log(err));
+const DB = process.env.DATABASE_LOCAL;
+
+mongoose
+  .connect(DB, {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useFindAndModify: false,
+  })
+  .then(() => {
+    console.log('DB connection successful!');
+  });
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {

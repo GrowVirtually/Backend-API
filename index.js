@@ -1,6 +1,0 @@
-
-
-//Middewares
-
-
-// Index Route
