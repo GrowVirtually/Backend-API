@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
+const bcrypt = require('bcryptjs');
 
 const { Schema } = mongoose;
 
@@ -49,10 +50,9 @@ const UserSchema = new Schema({
       required: [true, 'Please provide your city'],
     },
     postalCode: {
-      type: String,
+      type: Number,
       required: [true, 'Please provide your postal code'],
     },
-    required: [true, 'Please provide your address'],
   },
   location: {
     latitude: String,
@@ -74,17 +74,43 @@ const UserSchema = new Schema({
     type: Boolean,
     default: false,
   },
-  myGigs: [{ gigId: mongoose.Schema.objectId }],
+  myGigs: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: 'Gig',
+    },
+  ],
   pwd: {
     type: String,
     minlength: 8,
     required: [true, 'Please provide a password'],
+    select: false,
   },
   pwdConfirm: {
     type: String,
     required: [true, 'Please confirm your password'],
+    validate: {
+      // this only works on CREATE and SAVE!!
+      validator: function (el) {
+        return el === this.pwd;
+      },
+      message: 'Passwords are not the same',
+    },
   },
 });
+
+UserSchema.pre('save', async function (next) {
+  if (!this.isModified('pwd')) return next();
+
+  // hash the password before saving to the db
+  this.pwd = await bcrypt.hash(this.pwd, 12);
+  this.pwdConfirm = undefined;
+  next();
+});
+
+UserSchema.methods.correctPwd = async function (candidatePwd, userPwd) {
+  return await bcrypt.compare(candidatePwd, userPwd);
+};
 
 const User = mongoose.model('User', UserSchema);
 
