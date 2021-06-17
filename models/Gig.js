@@ -49,12 +49,8 @@ const GigSchema = new Schema({
     required: true,
   },
   location: {
-    latitude: {
-      type: String,
-    },
-    longitude: {
-      type: String,
-    },
+    latitude: String,
+    longitude: String,
     required: true,
   },
   growerId: {
