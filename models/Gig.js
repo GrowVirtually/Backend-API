@@ -17,7 +17,7 @@ const GigSchema = new Schema({
     required: true,
   },
   minOrderAmount: {
-    type: mongoose.Schema.Types.Double,
+    type: Number,
     required: true,
   },
   unit: {
@@ -25,15 +25,15 @@ const GigSchema = new Schema({
     required: true,
   },
   unitPrice: {
-    type: mongoose.Schema.Types.Double,
+    type: Number,
     required: true,
   },
   stock: {
-    type: mongoose.Schema.Types.Double,
+    type: Number,
     required: true,
   },
   sold: {
-    type: mongoose.Schema.Types.Double,
+    type: Number,
     required: true,
   },
   img: {
@@ -49,12 +49,14 @@ const GigSchema = new Schema({
     required: true,
   },
   location: {
-    latitude: String,
-    longitude: String,
+    type: {
+      latitude: String,
+      longitude: String,
+    },
     required: true,
   },
   growerId: {
-    type: mongoose.Schema.objectId,
+    type: String,
     required: true,
   },
 });

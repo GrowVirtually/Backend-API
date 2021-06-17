@@ -2,6 +2,7 @@ const express = require('express');
 const morgan = require('morgan');
 
 const tourRouter = require('./routes/tourRoutes');
+const gig = require('./routes/gigRoutes');
 
 const app = express();
 
@@ -26,5 +27,6 @@ app.use((req, res, next) => {
 // ROUTES
 // route mounting
 app.use('/api/v1/tours', tourRouter);
+app.use('/gigs', gig);
 
 module.exports = app;
