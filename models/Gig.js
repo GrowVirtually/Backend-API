@@ -58,7 +58,7 @@ const GigSchema = new Schema({
     required: true,
   },
   growerId: {
-    type: mongoose.Schema.objectId,
+    type: mongoose.Schema.ObjectId,
     required: true,
   },
 });
