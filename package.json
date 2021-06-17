@@ -25,7 +25,8 @@
     "express-session": "^1.17.2",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.12.14",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "validator": "^13.6.0"
   },
   "devDependencies": {
     "eslint": "^7.28.0",
