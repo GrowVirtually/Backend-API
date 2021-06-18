@@ -1,6 +1,9 @@
 # Grovi
 ## _A place where growers and consumers meet_
 
+![CodeSize](https://img.shields.io/github/languages/code-size/GrowVirtually/Backend-API?style=flat-square)
+![LastCommit](https://img.shields.io/github/last-commit/GrowVirtually/Backend-API?style=flat-square)
+
 'Grovi' is a place for growers who's willing to take an extra income for their extra harvesting from home gardening or cultivations. The main product for 'Grovi' is a mobile application powered by React-native. This is the backend for that mobile application and the administrator web application which is done using React.
 
 ## Features
