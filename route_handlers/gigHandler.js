@@ -12,8 +12,8 @@ exports.createGig = (req, res) => {
   };
 
   new Gig(newGig).save().then((gig) => {
-    console.log('Gig created!');
-    res.status(201).send(gig);
+    console.log(gig);
+    res.send(gig);
   });
   // res.send('done');
 };
