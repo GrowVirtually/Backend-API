@@ -6,11 +6,11 @@ dotenv.config({ path: './config.env' });
 const app = require('./app');
 
 const pool = new Pool({
-  user: 'postgres',
-  host: 'localhost',
-  database: 'grovi',
-  password: 'admin',
-  port: 5432,
+  user: process.env.USER,
+  host: process.env.HOST,
+  database: process.env.PG_DATABASE,
+  password: process.env.PWD,
+  port: process.env.PG_PORT,
 });
 
 const port = process.env.SERVER_PORT || 3000;
