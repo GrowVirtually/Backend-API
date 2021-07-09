@@ -62,3 +62,16 @@
 // });
 //
 // mongoose.model('gigs', GigSchema);
+
+const pool = require('./db');
+
+const test = (request, response) => {
+  pool.query('SELECT NOW()', (error, results) => {
+    if (error) {
+      throw error;
+    }
+    response.status(200).json(results.rows);
+  });
+};
+
+module.exports = { test };

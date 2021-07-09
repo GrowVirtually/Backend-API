@@ -1,5 +1,5 @@
 // Load Idea Model
-require('../models/Gig');
+const gigs = require('../models/Gig');
 // const mongoose = require('mongoose');
 
 // const Gig = mongoose.model('gigs');
@@ -21,4 +21,11 @@ exports.createGig = (req, res) => {
 exports.viewGigs = (req, res) => {
   console.log('These are gigs');
   res.status(201).send('these are gigs');
+};
+
+exports.test = (req, res) => {
+  // console.log('this is', gigs.test(req, res));
+  // gigs.test;
+  const rslt = gigs.test(req, res);
+  console.log(rslt);
 };
