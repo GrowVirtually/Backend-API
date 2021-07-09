@@ -1,20 +1,20 @@
 // Load Idea Model
 require('../models/Gig');
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
 
-const Gig = mongoose.model('gigs');
+// const Gig = mongoose.model('gigs');
 
 exports.createGig = (req, res) => {
   console.log(req.body);
 
-  const newGig = {
-    type: req.body.type,
-  };
+  // const newGig = {
+  //   type: req.body.type,
+  // };
 
-  new Gig(newGig).save().then((gig) => {
-    console.log(gig);
-    res.send(gig);
-  });
+  // new Gig(newGig).save().then((gig) => {
+  //   console.log(gig);
+  //   res.send(gig);
+  // });
   // res.send('done');
 };
 

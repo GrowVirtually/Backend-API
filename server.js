@@ -1,26 +1,27 @@
-const mongoose = require('mongoose');
+const { Pool } = require('pg');
 const dotenv = require('dotenv');
 
 dotenv.config({ path: './config.env' });
 
 const app = require('./app');
 
-// Connect to mongoose
-const DB = process.env.DATABASE_LOCAL;
+const pool = new Pool({
+  user: 'postgres',
+  host: 'localhost',
+  database: 'grovi',
+  password: 'admin',
+  port: 5432,
+});
 
-mongoose
-  .connect(DB, {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useFindAndModify: false,
-  })
-  .then(() => {
-    console.log('DB connection successful!');
-  });
-
-const port = process.env.PORT || 3000;
+const port = process.env.SERVER_PORT || 3000;
 app.listen(port, () => {
   console.log(`Server started on port ${port}`);
+});
+
+// checking postgreSQL connection
+pool.query('SELECT NOW()', (err, res) => {
+  console.log(err, res);
+  pool.end();
 });
 
 /*
