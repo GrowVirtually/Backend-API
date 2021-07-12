@@ -19,26 +19,26 @@ exports.test = async (req, res) => {
   });
 };
 
-exports.allUsers = catchAsync(async (req, res, next) => {
-  // check if the user exists and pwd is correct
-  const users = await pool.query(
-    'SELECT * FROM systemuser',
-    (error, results) => {
-      if (error) {
-        throw error;
-      }
-      res.status(200).json(results.rows);
-      // console.log(results);
-      // return results.rows;
-    }
-  );
+// exports.allUsers = catchAsync(async (req, res, next) => {
+//   // check if the user exists and pwd is correct
+//   const users = await pool.query(
+//     'SELECT * FROM systemuser',
+//     (error, results) => {
+//       if (error) {
+//         throw error;
+//       }
+//       res.status(200).json(results.rows);
+//       // console.log(results);
+//       // return results.rows;
+//     }
+//   );
 
-  // if (!user || !(await user.correctPwd(pwd, user.pwd))) {
-  //   return next(new AppError('Incorrect telephone or password', 401));
-  // }
+// if (!user || !(await user.correctPwd(pwd, user.pwd))) {
+//   return next(new AppError('Incorrect telephone or password', 401));
+// }
 
-  // res.status(200).json({
-  //   status: 'success',
-  //   users,
-  // });
-});
+// res.status(200).json({
+//   status: 'success',
+//   users,
+// });
+// });

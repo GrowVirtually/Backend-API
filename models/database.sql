@@ -1,4 +1,4 @@
-CREAT DATABASE grovi;
+CREATE DATABASE grovi;
 
 \c grovi
 
