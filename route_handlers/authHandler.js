@@ -51,6 +51,83 @@ exports.sendOTP = catchAsync(async (req, res, next) => {
     .catch((err) => next(new AppError(err.message, err.status)));
 });
 
+exports.verifyOTP = catchAsync(async (req, res, next) => {
+  const { phone, hash, otp } = req.body;
+  const [hashValue, expires] = hash.split('.');
+
+  if (!phone) {
+    return next(new AppError('Please provide phone number', 400));
+  }
+
+  const now = Date.now();
+  if (now > parseInt(expires, 10)) {
+    return next(new AppError('Timeout', 504));
+  }
+
+  const data = `${phone}.${otp}.${expires}`;
+  const newCalculatedHash = crypto
+    .createHmac('sha256', smsKey)
+    .update(data)
+    .digest('hex');
+
+  if (newCalculatedHash !== hashValue) {
+    return next(new AppError('Incorrect OTP', 400));
+  }
+
+  // if validation is done, search for user in the database
+  const userFound = false; // db call
+  if (userFound) {
+    // if user found immediately authenticate him
+    const token = signToken(phone);
+    return res.status(200).json({
+      status: 'success',
+      userFound: true,
+      token,
+    });
+  }
+
+  // user not found, switched to signup process, requesting signup details
+  return res.status(200).json({
+    status: 'success',
+    userFound: false,
+  });
+
+  // const accessToken = jwt.sign({ data: phone }, process.env.JWT_SECRET, {
+  //   expiresIn: '30s',
+  // });
+  //
+  // const refreshToken = jwt.sign(
+  //   { data: phone },
+  //   process.env.JWT_REFRESH_SECET,
+  //   {
+  //     expiresIn: '30s',
+  //   }
+  // );
+  // refreshTokens.push(refreshToken);
+  //
+  // res
+  //   .status(202)
+  //   .cookie('accessToken', accessToken, {
+  //     expires: new Date(new Date().getTime() + 30 * 1000),
+  //     sameSite: 'strict',
+  //     httpOnly: true,
+  //   })
+  //   .cookie('authSession', true, {
+  //     expires: new Date(new Date().getTime() + 30 * 1000),
+  //   })
+  //   .cookie('refreshToken', refreshToken, {
+  //     expires: new Date(new Date().getTime() + 3557600000),
+  //     sameSite: 'strict',
+  //     httpOnly: true,
+  //   })
+  //   .cookie('refreshTokenId', true, {
+  //     expires: new Date(new Date().getTime() + 3557600000),
+  //   })
+  //   .json({
+  //     status: 'success',
+  //   });
+});
+
 exports.signup = catchAsync(async (req, res, next) => {
   const newUser = await User.create({
     fName: req.body.fName,
@@ -80,80 +157,21 @@ exports.signup = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.verifyOTP = catchAsync(async (req, res, next) => {
-  const { phone, hash, otp } = req.body;
-  const [hashValue, expires] = hash.split('.');
-
-  if (!phone) {
-    return next(new AppError('Please provide phone number', 400));
-  }
-
-  const now = Date.now();
-  if (now > parseInt(expires, 10)) {
-    return next(new AppError('Timeout', 504));
-  }
-
-  const data = `${phone}.${otp}.${expires}`;
-  const newCalculatedHash = crypto
-    .createHmac('sha256', smsKey)
-    .update(data)
-    .digest('hex');
-
-  if (newCalculatedHash !== hashValue) {
-    return next(new AppError('Incorrect OTP', 400));
-  }
-
-  const accessToken = jwt.sign({ data: phone }, process.env.JWT_SECRET, {
-    expiresIn: '30s',
-  });
-
-  const refreshToken = jwt.sign(
-    { data: phone },
-    process.env.JWT_REFRESH_SECET,
-    {
-      expiresIn: '30s',
-    }
-  );
-  refreshTokens.push(refreshToken);
-
-  res
-    .status(202)
-    .cookie('accessToken', accessToken, {
-      expires: new Date(new Date().getTime() + 30 * 1000),
-      sameSite: 'strict',
-      httpOnly: true,
-    })
-    .cookie('authSession', true, {
-      expires: new Date(new Date().getTime() + 30 * 1000),
-    })
-    .cookie('refreshToken', refreshToken, {
-      expires: new Date(new Date().getTime() + 3557600000),
-      sameSite: 'strict',
-      httpOnly: true,
-    })
-    .cookie('refreshTokenId', true, {
-      expires: new Date(new Date().getTime() + 3557600000),
-    })
-    .json({
-      status: 'success',
-    });
-});
-
-const authenticateUser = async (req, res, next) => {
-  const { accessToken } = req.cookies;
-
-  jwt.verify(accessToken, process.env.JWT_SECRET, async (err, phone) => {
-    if (phone) {
-      req.phone = phone;
-      next();
-    } else if (err.message === 'TokenExpiredError') {
-      return new AppError('Access token expired', 403);
-    } else {
-      console.error(err);
-      return new AppError('User not authenticated', 403);
-    }
-  });
-};
+// const authenticateUser = async (req, res, next) => {
+//   const { accessToken } = req.cookies;
+//
+//   jwt.verify(accessToken, process.env.JWT_SECRET, async (err, phone) => {
+//     if (phone) {
+//       req.phone = phone;
+//       next();
+//     } else if (err.message === 'TokenExpiredError') {
+//       return new AppError('Access token expired', 403);
+//     } else {
+//       console.error(err);
+//       return new AppError('User not authenticated', 403);
+//     }
+//   });
+// };
 
 exports.refresh = catchAsync(async (req, res, next) => {
   const { refreshToken } = req.cookies;
