@@ -14,31 +14,32 @@ exports.test = async (req, res) => {
       throw error;
     }
     res.status(200).json(results.rows);
-    // console.log(results);
-    // return results.rows;
   });
 };
 
-// exports.allUsers = catchAsync(async (req, res, next) => {
-//   // check if the user exists and pwd is correct
-//   const users = await pool.query(
-//     'SELECT * FROM systemuser',
-//     (error, results) => {
-//       if (error) {
-//         throw error;
-//       }
-//       res.status(200).json(results.rows);
-//       // console.log(results);
-//       // return results.rows;
-//     }
-//   );
+exports.allUsers = catchAsync(async (req, res, next) => {
+  const users = await pool.query(
+    'SELECT * FROM systemuser',
+    (error, results) => {
+      if (error) {
+        return next(new AppError('Error retrieving users', 400));
+      }
+      res.status(200).json(results.rows);
+    }
+  );
+});
 
-// if (!user || !(await user.correctPwd(pwd, user.pwd))) {
-//   return next(new AppError('Incorrect telephone or password', 401));
-// }
+exports.oneUser = catchAsync(async (req, res, next) => {
+  const { id } = req.params;
 
-// res.status(200).json({
-//   status: 'success',
-//   users,
-// });
-// });
+  const users = await pool.query(
+    'SELECT * FROM systemuser WHERE userid = $1',
+    [id],
+    (error, results) => {
+      if (error) {
+        return next(new AppError('Error retrieving user', 400));
+      }
+      res.status(200).json(results.rows);
+    }
+  );
+});
