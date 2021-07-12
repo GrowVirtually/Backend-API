@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+// const { Pool } = require('pg');
 const dotenv = require('dotenv');
 
 process.on('uncaughtException', (err) => {
@@ -11,20 +11,15 @@ dotenv.config({ path: './config.env' });
 
 const app = require('./app');
 
-// Connect to mongoose
-const DB = process.env.DATABASE_LOCAL;
+// const pool = new Pool({
+//   user: process.env.USER,
+//   host: process.env.HOST,
+//   database: process.env.PG_DATABASE,
+//   password: process.env.PWD,
+//   port: process.env.PG_PORT,
+// });
 
-mongoose
-  .connect(DB, {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useFindAndModify: false,
-  })
-  .then(() => {
-    console.log('DB connection successful!');
-  });
-
-const port = process.env.PORT || 3000;
+const port = process.env.SERVER_PORT || 3000;
 const server = app.listen(port, () => {
   console.log(`Server started on port ${port}`);
 });
@@ -38,7 +33,13 @@ process.on('unhandledRejection', (err) => {
   });
 });
 
+// const pool = require('./models/db');
 
+// checking postgreSQL connection
+// pool.query('SELECT NOW()', (err, res) => {
+//   console.log(err, res);
+//   pool.end();
+// });
 
 /*
   why this file
