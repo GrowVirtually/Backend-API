@@ -4,7 +4,7 @@ const {
   viewGigs,
   test,
   allUsers,
-  oneUser
+  oneUser,
 } = require('../route_handlers/gigHandler');
 
 const router = express.Router();
