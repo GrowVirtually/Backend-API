@@ -1,6 +1,12 @@
 // const { Pool } = require('pg');
 const dotenv = require('dotenv');
 
+process.on('uncaughtException', (err) => {
+  console.log('UNCAUGHT REJECTION! 😔😔 Shutting down..');
+  console.log(err.name, err.message);
+  process.exit(1);
+});
+
 dotenv.config({ path: './config.env' });
 
 const app = require('./app');
@@ -14,11 +20,20 @@ const app = require('./app');
 // });
 
 const port = process.env.SERVER_PORT || 3000;
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`Server started on port ${port}`);
 });
 
-const pool = require('./models/db');
+// for unhandled promise exceptions
+process.on('unhandledRejection', (err) => {
+  console.log('UNHANDLED REJECTION! 😔😔 Shutting down..');
+  console.log(err);
+  server.close(() => {
+    process.exit(1);
+  });
+});
+
+// const pool = require('./models/db');
 
 // checking postgreSQL connection
 // pool.query('SELECT NOW()', (err, res) => {
