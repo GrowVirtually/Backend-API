@@ -1,38 +1,46 @@
-const pool = require('../models/db');
-const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcrypt');
-const catchAsync = require('../utils/catchAsync');
+const pool = require('./db');
 const AppError = require('../utils/appError');
 
-// create new systemuser
-exports.createUser = async (req, res, next) => {
-  const { tel, email, fName, lName, pwd } = req.body;
-
-  const hashedPwd = await hashPassword(pwd);
-  console.log(hashedPwd);
-
-  try {
-    const rslt = await pool.query(
-      'INSERT INTO systemuser (fname, lname, tel, email, password) VALUES ($1, $2, $3, $4, $5) RETURNING fname, userid',
-      [fName, lName, tel, email, hashedPwd]
-    );
-    return rslt.rows[0];
-  } catch (err) {
-    console.log(err);
-    return next(new AppError('Error inserting user', 400));
-  }
-};
-
-const hashPassword = async (pwd) => {
-  const password = pwd;
+const hashPassword = async (password) => {
   const saltRounds = 10;
 
   const hashedPassword = await new Promise((resolve, reject) => {
-    bcrypt.hash(password, saltRounds, function (err, hash) {
+    bcrypt.hash(password, saltRounds, (err, hash) => {
       if (err) reject(err);
       resolve(hash);
     });
   });
-
   return hashedPassword;
+};
+
+exports.oneUser = async (req) => {
+  try {
+    const { phone } = req.body;
+    const result = await pool.query('SELECT * FROM systemuser WHERE tel = $1', [
+      phone,
+    ]);
+    return result.rows[0];
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+// create new systemuser
+exports.createUser = async (req, res, next) => {
+  const { tel, email, fname, lname, password } = req.body;
+
+  const hashedPwd = await hashPassword(password);
+
+  try {
+    const result = await pool.query(
+      'INSERT INTO systemuser (fname, lname, tel, email, password) VALUES ($1, $2, $3, $4, $5) RETURNING fname, userid, tel',
+      [fname, lname, tel, email, hashedPwd]
+    );
+    return result.rows[0];
+  } catch (err) {
+    console.log(err);
+    // catch these errors properly [TODO]
+    // return next(new AppError('Error inserting user', 400));
+  }
 };
