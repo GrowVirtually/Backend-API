@@ -47,7 +47,9 @@ exports.oneUser = catchAsync(async (req, res, next) => {
   );
 });
 
-exports.createUser = async (req, res) => {
-  const value = await createUser(req);
+exports.createUser = async (req, res, next) => {
+  const value = await createUser(req, res, next);
+
+  if (value === 'error') return next(new AppError('Error inserting user', 400)); // TODO -  handle error
   res.status(200).json(value);
 };

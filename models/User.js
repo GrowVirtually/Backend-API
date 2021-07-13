@@ -18,7 +18,9 @@ exports.createUser = async (req, res, next) => {
     return rslt.rows[0];
   } catch (err) {
     console.log(err);
-    return next(new AppError('Error inserting user', 400));
+    // throw new Error('Insert fail');
+    // return next(new AppError('Error inserting user', 400));
+    return 'error';
   }
 };
 
