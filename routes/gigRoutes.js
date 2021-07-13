@@ -1,19 +1,19 @@
 const express = require('express');
 const {
-  createGig,
-  viewGigs,
   test,
   allUsers,
   oneUser,
   createUser,
 } = require('../route_handlers/gigHandler');
 
+const { signUpValidate, errorHandle } = require('../utils/validations');
+
 const router = express.Router();
 
-// router.route('/add').post(createGig).get(viewGigs);
+// routes
 router.route('/test').get(test);
 router.route('/allUsers').get(allUsers);
 router.route('/oneUser/:id').get(oneUser);
-router.route('/createUser').post(createUser);
+router.route('/createUser').post(signUpValidate, errorHandle, createUser);
 
 module.exports = router;
