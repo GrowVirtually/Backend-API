@@ -9,6 +9,7 @@ const client = require('twilio')(accountSid, authToken);
 const User = require('../models/User');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
+const pool = require('../models/db');
 
 const refreshTokens = [];
 
@@ -16,6 +17,21 @@ const signToken = (id) =>
   jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,
   });
+
+// DB CALLS //
+const oneUser = async (req) => {
+  try {
+    const { phone } = req.body;
+    const result = await pool.query('SELECT * FROM systemuser WHERE tel = $1', [
+      phone,
+    ]);
+    return result.rows[0];
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+// DB CALLS //
 
 // mobile authentication
 exports.sendOTP = catchAsync(async (req, res, next) => {
@@ -75,14 +91,18 @@ exports.verifyOTP = catchAsync(async (req, res, next) => {
   }
 
   // if validation is done, search for user in the database
-  const userFound = false; // db call
-  if (userFound) {
+  const user = await oneUser(req); // db call
+
+  console.log(!!user);
+
+  if (user) {
     // if user found immediately authenticate him
     const token = signToken(phone);
     return res.status(200).json({
       status: 'success',
       userFound: true,
       token,
+      ...user,
     });
   }
 
@@ -91,41 +111,6 @@ exports.verifyOTP = catchAsync(async (req, res, next) => {
     status: 'success',
     userFound: false,
   });
-
-  // const accessToken = jwt.sign({ data: phone }, process.env.JWT_SECRET, {
-  //   expiresIn: '30s',
-  // });
-  //
-  // const refreshToken = jwt.sign(
-  //   { data: phone },
-  //   process.env.JWT_REFRESH_SECET,
-  //   {
-  //     expiresIn: '30s',
-  //   }
-  // );
-  // refreshTokens.push(refreshToken);
-  //
-  // res
-  //   .status(202)
-  //   .cookie('accessToken', accessToken, {
-  //     expires: new Date(new Date().getTime() + 30 * 1000),
-  //     sameSite: 'strict',
-  //     httpOnly: true,
-  //   })
-  //   .cookie('authSession', true, {
-  //     expires: new Date(new Date().getTime() + 30 * 1000),
-  //   })
-  //   .cookie('refreshToken', refreshToken, {
-  //     expires: new Date(new Date().getTime() + 3557600000),
-  //     sameSite: 'strict',
-  //     httpOnly: true,
-  //   })
-  //   .cookie('refreshTokenId', true, {
-  //     expires: new Date(new Date().getTime() + 3557600000),
-  //   })
-  //   .json({
-  //     status: 'success',
-  //   });
 });
 
 exports.signup = catchAsync(async (req, res, next) => {

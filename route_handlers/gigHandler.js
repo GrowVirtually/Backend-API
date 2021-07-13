@@ -28,18 +28,3 @@ exports.allUsers = catchAsync(async (req, res, next) => {
     }
   );
 });
-
-exports.oneUser = catchAsync(async (req, res, next) => {
-  const { id } = req.params;
-
-  const users = await pool.query(
-    'SELECT * FROM systemuser WHERE userid = $1',
-    [id],
-    (error, results) => {
-      if (error) {
-        return next(new AppError('Error retrieving user', 400));
-      }
-      res.status(200).json(results.rows);
-    }
-  );
-});
