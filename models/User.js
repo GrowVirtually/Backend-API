@@ -1,20 +1,19 @@
 const pool = require('../models/db');
-const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcrypt');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 
 // create new systemuser
 exports.createUser = async (req, res, next) => {
-  const { tel, email, fName, lName, pwd } = req.body;
+  const { tel, email, fname, lname, password } = req.body;
 
-  const hashedPwd = await hashPassword(pwd);
+  const hashedPwd = await hashPassword(password);
   console.log(hashedPwd);
 
   try {
     const rslt = await pool.query(
       'INSERT INTO systemuser (fname, lname, tel, email, password) VALUES ($1, $2, $3, $4, $5) RETURNING fname, userid',
-      [fName, lName, tel, email, hashedPwd]
+      [fname, lname, tel, email, hashedPwd]
     );
     return rslt.rows[0];
   } catch (err) {

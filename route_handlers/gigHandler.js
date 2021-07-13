@@ -3,6 +3,8 @@ const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const pool = require('../models/db');
 const { createUser } = require('../models/User');
+var validator = require('validator');
+const { check, validationResult } = require('express-validator');
 
 exports.viewGigs = (req, res) => {
   console.log('These are gigs');
