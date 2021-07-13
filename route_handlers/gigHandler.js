@@ -47,11 +47,6 @@ exports.oneUser = catchAsync(async (req, res, next) => {
   );
 });
 
-// exports.createUser = catchAsync(async (req, res, next) => {
-//   console.log('body data', req.body);
-//   res.send(req.body);
-// });
-
 // create new systemuser
 exports.createUser = catchAsync(async (req, res, next) => {
   const { tel, email, fName, lName, pwd } = req.body;
@@ -73,43 +68,6 @@ exports.createUser = catchAsync(async (req, res, next) => {
           });
         }
       );
-      // newUser
-      //   .save()
-      //   .then((user) => {
-      //     req.flash('success_msg', 'You are now registered and can log in');
-      //     res.redirect('/users/login');
-      //   })
-      //   .catch((err) => {
-      //     console.log(err);
-      //     return;
-      //   });
     });
   });
-
-  // const users = await pool.query(
-  //   'SELECT * FROM systemuser WHERE userid = $1',
-  //   [id],
-  //   (error, results) => {
-  //     if (error) {
-  //       return next(new AppError('Error retrieving user', 400));
-  //     }
-  //     res.status(200).json(results.rows);
-  //   }
-  // );
-  // const errors = validationResult(req);
-
-  // console.log('body data', req.body.email);
-
-  // if (!errors.isEmpty()) {
-  //   return res.status(400).json({
-  //     success: false,
-  //     errors: errors.array(),
-  //   });
-  // }
-
-  // res.status(200).json({
-  //   success: true,
-  //   message: 'Login successful',
-  //   rslts: req.body,
-  // });
 });
