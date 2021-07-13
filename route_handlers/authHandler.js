@@ -6,10 +6,9 @@ const smsKey = process.env.SMS_SECRET_KEY;
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require('twilio')(accountSid, authToken);
-const User = require('../models/User');
+const { oneUser } = require('../models/User');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
-const pool = require('../models/db');
 
 const refreshTokens = [];
 
@@ -17,21 +16,6 @@ const signToken = (id) =>
   jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,
   });
-
-// DB CALLS //
-const oneUser = async (req) => {
-  try {
-    const { phone } = req.body;
-    const result = await pool.query('SELECT * FROM systemuser WHERE tel = $1', [
-      phone,
-    ]);
-    return result.rows[0];
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-// DB CALLS //
 
 // mobile authentication
 exports.sendOTP = catchAsync(async (req, res, next) => {
@@ -77,7 +61,7 @@ exports.verifyOTP = catchAsync(async (req, res, next) => {
 
   const now = Date.now();
   if (now > parseInt(expires, 10)) {
-    return next(new AppError('Timeout', 504));
+    return next(new AppError('OTP expired', 504));
   }
 
   const data = `${phone}.${otp}.${expires}`;
