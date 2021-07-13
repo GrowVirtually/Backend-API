@@ -6,7 +6,7 @@ const smsKey = process.env.SMS_SECRET_KEY;
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require('twilio')(accountSid, authToken);
-const { oneUser } = require('../models/User');
+const { oneUser, createUser } = require('../models/User');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 
@@ -98,24 +98,9 @@ exports.verifyOTP = catchAsync(async (req, res, next) => {
 });
 
 exports.signup = catchAsync(async (req, res, next) => {
-  const newUser = await User.create({
-    fName: req.body.fName,
-    lName: req.body.lName,
-    tel: req.body.tel,
-    dob: req.body.dob,
-    nic: req.body.nic,
-    email: req.body.email,
-    gender: req.body.gender,
-    address: {
-      street: req.body.address.street,
-      city: req.body.address.city,
-      postalCode: req.body.address.postalCode,
-    },
-    pwd: req.body.pwd,
-    pwdConfirm: req.body.pwdConfirm,
-  });
+  const newUser = await createUser(req, res, next);
 
-  const token = signToken(newUser._id);
+  const token = signToken(newUser.tel);
 
   res.status(201).json({
     status: 'success',
