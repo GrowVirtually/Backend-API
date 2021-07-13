@@ -4,6 +4,8 @@ const AppError = require('../utils/appError');
 const pool = require('../models/db');
 const { body, validationResult } = require('express-validator');
 
+const bcrypt = require('bcrypt');
+
 exports.viewGigs = (req, res) => {
   console.log('These are gigs');
   res.status(201).send('these are gigs');
@@ -51,42 +53,63 @@ exports.oneUser = catchAsync(async (req, res, next) => {
 // });
 
 // create new systemuser
-// exports.createUser = catchAsync(
-//   body('email').isEmail().normalizeEmail(),
-//   // body('password').isLength({
-//   //   min: 6,
-//   // }),
-//   // body('fName').isAlpha(),
-//   // body('lName').isAlpha(),
-//   async (req, res, next) => {
-//     // const { tel, email, fName, lName, pwd } = req.body;
+exports.createUser = catchAsync(async (req, res, next) => {
+  const { tel, email, fName, lName, pwd } = req.body;
 
-//     // const users = await pool.query(
-//     //   'SELECT * FROM systemuser WHERE userid = $1',
-//     //   [id],
-//     //   (error, results) => {
-//     //     if (error) {
-//     //       return next(new AppError('Error retrieving user', 400));
-//     //     }
-//     //     res.status(200).json(results.rows);
-//     //   }
-//     // );
-//     const errors = validationResult(req);
+  bcrypt.genSalt(10, (err, salt) => {
+    bcrypt.hash(pwd, salt, async (err, hash) => {
+      if (err) throw err;
+      const newPwd = hash;
+      await pool.query(
+        'INSERT INTO systemuser (fname, lname, tel, email, password) VALUES ($1, $2, $3, $4, $5)',
+        [fName, lName, tel, email, newPwd],
+        (error, results) => {
+          if (error) {
+            return next(new AppError('Error inserting user', 400));
+          }
+          res.status(200).json({
+            success: true,
+            message: 'Insert successful',
+          });
+        }
+      );
+      // newUser
+      //   .save()
+      //   .then((user) => {
+      //     req.flash('success_msg', 'You are now registered and can log in');
+      //     res.redirect('/users/login');
+      //   })
+      //   .catch((err) => {
+      //     console.log(err);
+      //     return;
+      //   });
+    });
+  });
 
-//     // console.log('body data', req.body.email);
+  // const users = await pool.query(
+  //   'SELECT * FROM systemuser WHERE userid = $1',
+  //   [id],
+  //   (error, results) => {
+  //     if (error) {
+  //       return next(new AppError('Error retrieving user', 400));
+  //     }
+  //     res.status(200).json(results.rows);
+  //   }
+  // );
+  // const errors = validationResult(req);
 
-//     if (!errors.isEmpty()) {
-//       return res.status(400).json({
-//         success: false,
-//         errors: errors.array(),
-//       });
-//     }
+  // console.log('body data', req.body.email);
 
-//     res.status(200).json({
-//       success: true,
-//       message: 'Login successful',
-//       rslts: req.body,
-//     });
-//   }
-// );
+  // if (!errors.isEmpty()) {
+  //   return res.status(400).json({
+  //     success: false,
+  //     errors: errors.array(),
+  //   });
+  // }
 
+  // res.status(200).json({
+  //   success: true,
+  //   message: 'Login successful',
+  //   rslts: req.body,
+  // });
+});
