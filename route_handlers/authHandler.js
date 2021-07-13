@@ -45,7 +45,6 @@ exports.sendOTP = catchAsync(async (req, res, next) => {
         status: 'success',
         phone,
         hash: fullHash,
-        otp,
       });
     })
     .catch((err) => next(new AppError(err.message, err.status)));
