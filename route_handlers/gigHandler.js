@@ -2,9 +2,7 @@
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const pool = require('../models/db');
-const { body, validationResult } = require('express-validator');
-
-const bcrypt = require('bcrypt');
+const { createUser } = require('../models/User');
 
 exports.viewGigs = (req, res) => {
   console.log('These are gigs');
@@ -47,27 +45,7 @@ exports.oneUser = catchAsync(async (req, res, next) => {
   );
 });
 
-// create new systemuser
-exports.createUser = catchAsync(async (req, res, next) => {
-  const { tel, email, fName, lName, pwd } = req.body;
-
-  bcrypt.genSalt(10, (err, salt) => {
-    bcrypt.hash(pwd, salt, async (err, hash) => {
-      if (err) throw err;
-      const newPwd = hash;
-      await pool.query(
-        'INSERT INTO systemuser (fname, lname, tel, email, password) VALUES ($1, $2, $3, $4, $5)',
-        [fName, lName, tel, email, newPwd],
-        (error, results) => {
-          if (error) {
-            return next(new AppError('Error inserting user', 400));
-          }
-          res.status(200).json({
-            success: true,
-            message: 'Insert successful',
-          });
-        }
-      );
-    });
-  });
-});
+exports.createUser = async (req, res) => {
+  const value = await createUser(req);
+  res.status(200).json(value);
+};
