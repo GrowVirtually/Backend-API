@@ -3,6 +3,20 @@ const bcrypt = require('bcrypt');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 
+const hashPassword = async (pwd) => {
+  const password = pwd;
+  const saltRounds = 10;
+
+  const hashedPassword = await new Promise((resolve, reject) => {
+    bcrypt.hash(password, saltRounds, (err, hash) => {
+      if (err) reject(err);
+      resolve(hash);
+    });
+  });
+
+  return hashedPassword;
+};
+
 // create new systemuser
 exports.createUser = async (req, res, next) => {
   const { tel, email, fname, lname, password } = req.body;
@@ -24,16 +38,14 @@ exports.createUser = async (req, res, next) => {
   }
 };
 
-const hashPassword = async (pwd) => {
-  const password = pwd;
-  const saltRounds = 10;
-
-  const hashedPassword = await new Promise((resolve, reject) => {
-    bcrypt.hash(password, saltRounds, function (err, hash) {
-      if (err) reject(err);
-      resolve(hash);
-    });
-  });
-
-  return hashedPassword;
+exports.oneUser = async (req) => {
+  try {
+    const { phone } = req.body;
+    const result = await pool.query('SELECT * FROM systemuser WHERE tel = $1', [
+      phone,
+    ]);
+    return result.rows[0];
+  } catch (err) {
+    console.log(err);
+  }
 };
