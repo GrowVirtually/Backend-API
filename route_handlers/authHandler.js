@@ -98,6 +98,42 @@ exports.verifyOTP = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.login = catchAsync(async (req, res, next) => {
+  const { email, password } = req.body;
+
+  // check email and password exits
+  if (!email || !password) {
+    return next(new AppError('Please provide email and password', 400));
+  }
+
+  // check if the user exists
+  const user = await oneUser({ email });
+
+  // check pwd is correct
+  let passwordCorrect;
+  if (user) {
+    passwordCorrect = await bcrypt.compare(password, user.password);
+  }
+
+  if (!user || !passwordCorrect) {
+    return next(new AppError('Incorrect email or password', 401));
+  }
+
+  // if everything ok, send the token to client
+  const token = signToken(user.tel);
+
+  res.status(200).json({
+    status: 'success',
+    token,
+    user: {
+      userid: user.userid,
+      fname: user.fname,
+      lname: user.lname,
+      email: user.email,
+    },
+  });
+});
+
 exports.signup = catchAsync(async (req, res, next) => {
   const newUser = await createUser(req, res, next);
 
@@ -157,48 +193,6 @@ exports.refresh = catchAsync(async (req, res, next) => {
         status: 'success',
         previousSessionExpiry: true,
       });
-  });
-});
-
-exports.login = catchAsync(async (req, res, next) => {
-  const { email, password } = req.body;
-
-  // check email and password exits
-  if (!email || !password) {
-    return next(new AppError('Please provide email and password', 400));
-  }
-
-  // check if the user exists
-  const user = await oneUser({ email });
-
-  // check pwd is correct
-  let passwordCorrect;
-  if (user) {
-    passwordCorrect = await bcrypt.compare(password, user.password);
-  }
-
-  if (!user || !passwordCorrect) {
-    return next(new AppError('Incorrect email or password', 401));
-  }
-
-  // const user = await User.findOne({ tel }).select('+pwd');
-  // console.log(user); // does it need all the details?
-
-  // if (!user || !(await user.correctPwd(pwd, user.pwd))) {
-  //   return next(new AppError('Incorrect telephone or password', 401));
-  // }
-
-  // if everything ok, send the token to client
-  // const token = signToken(user._id);
-
-  res.status(200).json({
-    status: 'success',
-    user: {
-      userid: user.userid,
-      fname: user.fname,
-      lname: user.lname,
-      email: user.email,
-    },
   });
 });
 

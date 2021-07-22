@@ -60,5 +60,3 @@ exports.oneUser = async (columns) => {
     console.log(err);
   }
 };
-
-// $2b$10$eWminlBztH5Kg0HUpDjtTehHfku6eJvEpSFLHMcR7SFziHBQPviKa
