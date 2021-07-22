@@ -1,5 +1,5 @@
-const pool = require('../models/db');
 const bcrypt = require('bcrypt');
+const pool = require('./db');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 
@@ -25,11 +25,11 @@ exports.createUser = async (req, res, next) => {
   console.log(hashedPwd);
 
   try {
-    const rslt = await pool.query(
+    const result = await pool.query(
       'INSERT INTO systemuser (fname, lname, tel, email, password) VALUES ($1, $2, $3, $4, $5) RETURNING fname, userid',
       [fname, lname, tel, email, hashedPwd]
     );
-    return rslt.rows[0];
+    return result.rows[0];
   } catch (err) {
     console.log(err);
     // throw new Error('Insert fail');
@@ -38,13 +38,24 @@ exports.createUser = async (req, res, next) => {
   }
 };
 
-exports.oneUser = async (req) => {
+exports.oneUser = async (columns) => {
   try {
-    const { phone } = req.body;
-    const result = await pool.query('SELECT * FROM systemuser WHERE tel = $1', [
-      phone,
-    ]);
-    return result.rows[0];
+    const { phone, email } = columns;
+    if (phone) {
+      const result = await pool.query(
+        'SELECT * FROM systemuser WHERE tel = $1',
+        [phone]
+      );
+      return result.rows[0];
+    }
+
+    if (email) {
+      const result = await pool.query(
+        'SELECT * FROM systemuser WHERE email = $1',
+        [email]
+      );
+      return result.rows[0];
+    }
   } catch (err) {
     console.log(err);
   }
