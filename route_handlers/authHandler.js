@@ -1,4 +1,5 @@
 const crypto = require('crypto');
+const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const smsKey = process.env.SMS_SECRET_KEY;
@@ -74,7 +75,7 @@ exports.verifyOTP = catchAsync(async (req, res, next) => {
   }
 
   // if validation is done, search for user in the database
-  const user = await oneUser(req); // db call
+  const user = await oneUser({ phone }); // db call
 
   console.log(!!user);
 
@@ -160,27 +161,44 @@ exports.refresh = catchAsync(async (req, res, next) => {
 });
 
 exports.login = catchAsync(async (req, res, next) => {
-  const { tel, pwd } = req.body;
+  const { email, password } = req.body;
 
-  // check telephone and pwd exits
-  if (!tel || !pwd) {
-    return next(new AppError('Please provide telephone and password', 400));
+  // check email and password exits
+  if (!email || !password) {
+    return next(new AppError('Please provide email and password', 400));
   }
 
-  // check if the user exists and pwd is correct
-  const user = await User.findOne({ tel }).select('+pwd');
-  console.log(user); // does it need all the details?
+  // check if the user exists
+  const user = await oneUser({ email });
 
-  if (!user || !(await user.correctPwd(pwd, user.pwd))) {
-    return next(new AppError('Incorrect telephone or password', 401));
+  // check pwd is correct
+  let passwordCorrect;
+  if (user) {
+    passwordCorrect = await bcrypt.compare(password, user.password);
   }
+
+  if (!user || !passwordCorrect) {
+    return next(new AppError('Incorrect email or password', 401));
+  }
+
+  // const user = await User.findOne({ tel }).select('+pwd');
+  // console.log(user); // does it need all the details?
+
+  // if (!user || !(await user.correctPwd(pwd, user.pwd))) {
+  //   return next(new AppError('Incorrect telephone or password', 401));
+  // }
 
   // if everything ok, send the token to client
-  const token = signToken(user._id);
+  // const token = signToken(user._id);
 
   res.status(200).json({
     status: 'success',
-    token,
+    user: {
+      userid: user.userid,
+      fname: user.fname,
+      lname: user.lname,
+      email: user.email,
+    },
   });
 });
 
