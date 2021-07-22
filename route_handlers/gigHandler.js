@@ -3,6 +3,7 @@ const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const pool = require('../models/db');
 const { createUser } = require('../models/User');
+const { getOne } = require('../models/Gig');
 var validator = require('validator');
 const { check, validationResult } = require('express-validator');
 
@@ -47,8 +48,10 @@ exports.oneUser = catchAsync(async (req, res, next) => {
   );
 });
 
-exports.createUser = async (req, res, next) => {
-  const value = await createUser(req, res, next);
+exports.getOne = async (req, res, next) => {
+  req.body.table = 'systemuser';
+  req.body.tableId = '2';
+  const value = await getOne(req, res, next);
 
   if (value === 'error') return next(new AppError('Error inserting user', 400)); // TODO -  handle error
   res.status(200).json(value);

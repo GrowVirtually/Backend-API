@@ -3,7 +3,7 @@ const {
   test,
   allUsers,
   oneUser,
-  createUser,
+  getOne,
 } = require('../route_handlers/gigHandler');
 
 const { signUpValidate, errorHandle } = require('../utils/validations');
@@ -14,6 +14,7 @@ const router = express.Router();
 router.route('/test').get(test);
 router.route('/allUsers').get(allUsers);
 router.route('/oneUser/:id').get(oneUser);
-router.route('/createUser').post(signUpValidate, errorHandle, createUser);
+// router.route('/createUser').post(signUpValidate, errorHandle, createUser);
+router.route('/getOne').get(getOne);
 
 module.exports = router;
