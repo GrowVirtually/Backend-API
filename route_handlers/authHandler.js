@@ -1,3 +1,4 @@
+const { promisify } = require('util');
 const crypto = require('crypto');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -13,8 +14,8 @@ const AppError = require('../utils/appError');
 
 const refreshTokens = [];
 
-const signToken = (id) =>
-  jwt.sign({ id }, process.env.JWT_SECRET, {
+const signToken = (phone) =>
+  jwt.sign({ phone }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,
   });
 
@@ -209,12 +210,35 @@ exports.logout = catchAsync(async (req, res, next) => {
 
 exports.protect = catchAsync(async (req, res, next) => {
   // 1) Getting token and check if it's there
+  let token;
+
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith('Bearer')
+  ) {
+    token = req.headers.authorization.split(' ')[1];
+  }
+
+  if (!token) {
+    return next(
+      new AppError('You are not logged in! Please log in to get access', 401)
+    );
+  }
 
   // 2) Verification token
+  const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
 
   // 3) Check if user if exists
+  const { phone } = decoded;
+  const freshUser = await oneUser({ phone });
+  if (!freshUser) {
+    return next(
+      new AppError('The user belongs to this token does no longer exists', 401)
+    );
+  }
 
   // 4) Check user changes password after token was issued
+  // TODO: do this using schemas
 
   next();
 });
