@@ -1,5 +1,5 @@
 const express = require('express');
-const { protect } = require('../route_handlers/authHandler');
+const { protect, restrictTo } = require('../route_handlers/authHandler');
 
 const {
   test,
@@ -15,7 +15,10 @@ const router = express.Router();
 // routes
 router.route('/test').get(test);
 router.route('/allUsers').get(allUsers);
-router.route('/oneUser/:id').get(protect, oneUser);
+router
+  .route('/oneUser/:id')
+  .get(protect, restrictTo('user', 'admin'), oneUser)
+  .delete(protect, restrictTo('admin'));
 router.route('/createUser').post(signUpValidate, errorHandle, createUser);
 
 module.exports = router;

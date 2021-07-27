@@ -239,6 +239,20 @@ exports.protect = catchAsync(async (req, res, next) => {
 
   // 4) Check user changes password after token was issued
   // TODO: do this using schemas
+  req.user = freshUser;
 
   next();
 });
+
+exports.restrictTo =
+  (...roles) =>
+  (req, res, next) => {
+    // roles ['admin', 'user']
+    if (!roles.includes(req.user.role)) {
+      return next(
+        new AppError('You do not have permission to perform this action', 403)
+      );
+    }
+
+    next();
+  };
