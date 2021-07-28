@@ -56,3 +56,10 @@ exports.getOne = async (req, res, next) => {
   if (value === 'error') return next(new AppError('Error inserting user', 400)); // TODO -  handle error
   res.status(200).json(value);
 };
+
+exports.createUser = async (req, res, next) => {
+  const value = await createUser(req, res, next);
+
+  if (value === 'error') return next(new AppError('Error inserting user', 400)); // TODO -  handle error
+  res.status(200).json(value);
+};
