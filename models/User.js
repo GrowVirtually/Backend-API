@@ -1,3 +1,4 @@
+const crypto = require('crypto');
 const bcrypt = require('bcrypt');
 // const pool = require('./db');
 const { Sequelize, DataTypes, Model } = require('sequelize');
@@ -53,6 +54,14 @@ User.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    passwordResetToken: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    passwordResetExpires: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
   },
   {
     // Other model options go here
@@ -62,9 +71,10 @@ User.init(
 );
 
 (async () => {
-  await sequelize.sync({ force: true });
+  await sequelize.sync();
 })();
 
+// TODO: check whether it's also running before an update
 User.beforeCreate(async (user) => {
   // hash password before saving to the database
   user.password = await bcrypt.hash(user.password, 10);
@@ -73,6 +83,20 @@ User.beforeCreate(async (user) => {
 // instance methods
 User.prototype.correctPassword = async (candidatePassword, userPassword) =>
   await bcrypt.compare(candidatePassword, userPassword);
+
+User.prototype.createPasswordResetToken = function () {
+  const resetToken = crypto.randomBytes(32).toString('hex');
+  this.passwordResetToken = crypto
+    .createHash('sha256')
+    .update(resetToken)
+    .digest('hex');
+
+  // console.log({ resetToken }, this.passwordResetToken);
+
+  this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
+
+  return resetToken;
+};
 
 // the defined model is the class itself
 console.log(User === sequelize.models.User); // true

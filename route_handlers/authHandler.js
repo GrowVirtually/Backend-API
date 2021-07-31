@@ -283,6 +283,10 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   // 1) Get user based on POSTed email
   const { email } = req.body;
 
+  if (!email) {
+    return next(new AppError('Please provide email', 404));
+  }
+
   const user = await User.findOne({
     where: {
       email,
@@ -296,6 +300,8 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   }
 
   // 2) Generate random reset token
+  const resetToken = user.createPasswordResetToken();
+  await user.save({ validate: false });
 
   // 3) Send if to user's email
 });
