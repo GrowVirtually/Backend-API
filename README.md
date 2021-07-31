@@ -75,7 +75,7 @@ MIT
 
 **Free Software, Hell Yeah!**
 
-[Mongo DB]: <https://www.postgresql.org/>
+[PostgreSQL]: <https://www.postgresql.org/>
 [Material UI]: <https://material-ui.com/>
 [React-native]: <http://ace.ajax.org>
 [Node.js]: <http://nodejs.com/>
