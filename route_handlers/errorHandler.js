@@ -6,6 +6,9 @@ const handleJWTError = () =>
 const handleJWTExpiredError = () =>
   new AppError('Your token has expired! Please log in again', 401);
 
+const handleSequelizeValidationError = () =>
+  new AppError('Some fields are missing', 400);
+
 const sendErrorDev = (err, res) => {
   res.status(err.statusCode).json({
     status: err.status,
@@ -50,6 +53,8 @@ module.exports = (err, req, res, next) => {
     let error = { ...err };
     if (error.name === 'JsonWebTokenError') error = handleJWTError();
     if (error.name === 'TokenExpiredError') error = handleJWTExpiredError();
+    if (error.name === 'SequelizeValidationError')
+      error = handleSequelizeValidationError();
     sendErrProd(error, res);
   }
 };

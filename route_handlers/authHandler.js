@@ -8,7 +8,7 @@ const smsKey = process.env.SMS_SECRET_KEY;
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require('twilio')(accountSid, authToken);
-const { oneUser, createUser } = require('../models/User');
+const User = require('../models/User');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 
@@ -136,7 +136,14 @@ exports.login = catchAsync(async (req, res, next) => {
 });
 
 exports.signup = catchAsync(async (req, res, next) => {
-  const newUser = await createUser(req, res, next);
+  // const newUser = await createUser(req, res, next);
+  const newUser = await User.create({
+    fname: req.body.fname,
+    lname: req.body.lname,
+    tel: req.body.tel,
+    email: req.body.email,
+    password: req.body.password,
+  });
 
   console.log('new user - ', newUser);
 
@@ -270,7 +277,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
 
   // 2) Generate random reset token
 
-
   // 3) Send if to user's email
 });
-exports.resetPassword = (req, res, next) => {};
+exports.resetPassword = (req, res, next) => {
+};

@@ -1,8 +1,6 @@
 const bcrypt = require('bcrypt');
 // const pool = require('./db');
 const { Sequelize, DataTypes, Model } = require('sequelize');
-const catchAsync = require('../utils/catchAsync');
-const AppError = require('../utils/appError');
 const sequelize = require('./db');
 
 class User extends Model {}
@@ -62,47 +60,29 @@ User.init(
   }
 );
 
+(async () => {
+  await sequelize.sync({ force: true });
+  // Code here
+})();
+
+User.beforeCreate(async (user) => {
+  // hash password before saving to the database
+  const salt = await bcrypt.genSaltSync(10, 'a');
+  user.password = bcrypt.hashSync(user.password, salt);
+});
+
+User.beforeUpdate(async (user) => {
+  // hash password before update
+  if (user.password) {
+    const salt = await bcrypt.genSaltSync(10, 'a');
+    user.password = bcrypt.hashSync(user.password, salt);
+  }
+});
+
 // the defined model is the class itself
 console.log(User === sequelize.models.User); // true
 
-const hashPassword = async (pwd) => {
-  const password = pwd;
-  const saltRounds = 10;
-
-  const hashedPassword = await new Promise((resolve, reject) => {
-    bcrypt.hash(password, saltRounds, (err, hash) => {
-      if (err) reject(err);
-      resolve(hash);
-    });
-  });
-
-  return hashedPassword;
-};
-
-// create new systemuser
-exports.createUser = async (req, res, next) => {
-  const { password } = req.body;
-
-  const hashedPwd = await hashPassword(password);
-
-  try {
-    await sequelize.sync();
-    const user = await User.create({
-      fname: req.body.fname,
-      lname: req.body.lname,
-      tel: req.body.tel,
-      email: req.body.email,
-      password: hashedPwd,
-    });
-    const success = await user.save();
-    return success;
-  } catch (err) {
-    console.log('insert error - ', err);
-    return err;
-  }
-};
-
-exports.oneUser = async (columns) => {
+const oneUser = async (columns) => {
   try {
     const { phone, email } = columns;
     if (phone) {
@@ -124,3 +104,5 @@ exports.oneUser = async (columns) => {
     console.log(err);
   }
 };
+
+module.exports = User;
