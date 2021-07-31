@@ -50,6 +50,10 @@ HOST=localhost
 PG_DATABASE=grovi
 PWD=your db password
 PG_PORT=5432
+EMAIL_HOST=smtp.mailtrap.io
+EMAIL_PORT=2525
+EMAIL_USERNAME=mailtrap-email-username
+EMAIL_PASSWORD=mailtrap-email-password
 ```
 
 
