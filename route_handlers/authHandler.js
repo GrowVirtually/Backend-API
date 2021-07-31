@@ -1,6 +1,5 @@
 const { promisify } = require('util');
 const crypto = require('crypto');
-const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const smsKey = process.env.SMS_SECRET_KEY;
@@ -99,6 +98,7 @@ exports.verifyOTP = catchAsync(async (req, res, next) => {
   });
 });
 
+// password login
 exports.login = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
 
@@ -108,15 +108,19 @@ exports.login = catchAsync(async (req, res, next) => {
   }
 
   // check if the user exists
-  const user = await oneUser({ email });
+  const user = await User.findOne({
+    where: {
+      email,
+    },
+  });
+
+  // console.log(`the user is :`, user);
+
+  const xx = await user.correctPassword(password, user.password);
+  console.log(`sssss ${xx}`);
 
   // check pwd is correct
-  let passwordCorrect;
-  if (user) {
-    passwordCorrect = await bcrypt.compare(password, user.password);
-  }
-
-  if (!user || !passwordCorrect) {
+  if (!user || !(await user.correctPassword(password, user.password))) {
     return next(new AppError('Incorrect email or password', 401));
   }
 
@@ -145,7 +149,9 @@ exports.signup = catchAsync(async (req, res, next) => {
     password: req.body.password,
   });
 
-  console.log('new user - ', newUser);
+  await newUser.save();
+
+  // console.log('new user - ', newUser);
 
   const token = signToken(newUser.tel);
 
@@ -279,5 +285,4 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
 
   // 3) Send if to user's email
 });
-exports.resetPassword = (req, res, next) => {
-};
+exports.resetPassword = (req, res, next) => {};

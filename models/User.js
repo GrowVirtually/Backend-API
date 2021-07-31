@@ -35,6 +35,7 @@ User.init(
     },
     email: {
       type: DataTypes.STRING,
+      unique: true,
       allowNull: false,
     },
     gender: {
@@ -61,48 +62,26 @@ User.init(
 );
 
 (async () => {
-  await sequelize.sync({ force: true });
-  // Code here
+  await sequelize.sync();
 })();
 
 User.beforeCreate(async (user) => {
   // hash password before saving to the database
-  const salt = await bcrypt.genSaltSync(10, 'a');
-  user.password = bcrypt.hashSync(user.password, salt);
+  user.password = await bcrypt.hash(user.password, 10);
 });
 
 User.beforeUpdate(async (user) => {
   // hash password before update
   if (user.password) {
-    const salt = await bcrypt.genSaltSync(10, 'a');
-    user.password = bcrypt.hashSync(user.password, salt);
+    user.password = await bcrypt.hash(user.password, 10);
   }
 });
 
+// instance methods
+User.prototype.correctPassword = async (candidatePassword, userPassword) =>
+  await bcrypt.compare(candidatePassword, userPassword);
+
 // the defined model is the class itself
 console.log(User === sequelize.models.User); // true
-
-const oneUser = async (columns) => {
-  try {
-    const { phone, email } = columns;
-    if (phone) {
-      const result = await pool.query(
-        'SELECT * FROM systemuser WHERE tel = $1',
-        [phone]
-      );
-      return result.rows[0];
-    }
-
-    if (email) {
-      const result = await pool.query(
-        'SELECT * FROM systemuser WHERE email = $1',
-        [email]
-      );
-      return result.rows[0];
-    }
-  } catch (err) {
-    console.log(err);
-  }
-};
 
 module.exports = User;
