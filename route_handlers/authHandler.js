@@ -138,6 +138,8 @@ exports.login = catchAsync(async (req, res, next) => {
 exports.signup = catchAsync(async (req, res, next) => {
   const newUser = await createUser(req, res, next);
 
+  console.log('new user - ', newUser);
+
   const token = signToken(newUser.tel);
 
   res.status(201).json({
