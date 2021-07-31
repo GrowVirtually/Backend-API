@@ -1,8 +1,6 @@
 const bcrypt = require('bcrypt');
 // const pool = require('./db');
 const { Sequelize, DataTypes, Model } = require('sequelize');
-const catchAsync = require('../utils/catchAsync');
-const AppError = require('../utils/appError');
 const sequelize = require('./db');
 
 class User extends Model {}
@@ -23,7 +21,7 @@ User.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    tel: {
+    phone: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
@@ -37,6 +35,7 @@ User.init(
     },
     email: {
       type: DataTypes.STRING,
+      unique: true,
       allowNull: false,
     },
     gender: {
@@ -62,65 +61,20 @@ User.init(
   }
 );
 
+(async () => {
+  await sequelize.sync({ force: true });
+})();
+
+User.beforeCreate(async (user) => {
+  // hash password before saving to the database
+  user.password = await bcrypt.hash(user.password, 10);
+});
+
+// instance methods
+User.prototype.correctPassword = async (candidatePassword, userPassword) =>
+  await bcrypt.compare(candidatePassword, userPassword);
+
 // the defined model is the class itself
 console.log(User === sequelize.models.User); // true
 
-const hashPassword = async (pwd) => {
-  const password = pwd;
-  const saltRounds = 10;
-
-  const hashedPassword = await new Promise((resolve, reject) => {
-    bcrypt.hash(password, saltRounds, (err, hash) => {
-      if (err) reject(err);
-      resolve(hash);
-    });
-  });
-
-  return hashedPassword;
-};
-
-// create new systemuser
-exports.createUser = async (req, res, next) => {
-  const { password } = req.body;
-
-  const hashedPwd = await hashPassword(password);
-
-  try {
-    await sequelize.sync();
-    const user = await User.create({
-      fname: req.body.fname,
-      lname: req.body.lname,
-      tel: req.body.tel,
-      email: req.body.email,
-      password: hashedPwd,
-    });
-    const success = await user.save();
-    return success;
-  } catch (err) {
-    console.log('insert error - ', err);
-    return err;
-  }
-};
-
-exports.oneUser = async (columns) => {
-  try {
-    const { phone, email } = columns;
-    if (phone) {
-      const result = await pool.query(
-        'SELECT * FROM systemuser WHERE tel = $1',
-        [phone]
-      );
-      return result.rows[0];
-    }
-
-    if (email) {
-      const result = await pool.query(
-        'SELECT * FROM systemuser WHERE email = $1',
-        [email]
-      );
-      return result.rows[0];
-    }
-  } catch (err) {
-    console.log(err);
-  }
-};
+module.exports = User;

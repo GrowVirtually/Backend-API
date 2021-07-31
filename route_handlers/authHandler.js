@@ -1,6 +1,5 @@
 const { promisify } = require('util');
 const crypto = require('crypto');
-const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const smsKey = process.env.SMS_SECRET_KEY;
@@ -8,7 +7,7 @@ const smsKey = process.env.SMS_SECRET_KEY;
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require('twilio')(accountSid, authToken);
-const { oneUser, createUser } = require('../models/User');
+const User = require('../models/User');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 
@@ -76,7 +75,11 @@ exports.verifyOTP = catchAsync(async (req, res, next) => {
   }
 
   // if validation is done, search for user in the database
-  const user = await oneUser({ phone }); // db call
+  const user = await User.findOne({
+    where: {
+      phone,
+    },
+  });
 
   console.log(!!user);
 
@@ -99,6 +102,7 @@ exports.verifyOTP = catchAsync(async (req, res, next) => {
   });
 });
 
+// password login
 exports.login = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
 
@@ -108,20 +112,21 @@ exports.login = catchAsync(async (req, res, next) => {
   }
 
   // check if the user exists
-  const user = await oneUser({ email });
+  const user = await User.findOne({
+    where: {
+      email,
+    },
+  });
+
+  // console.log(`the user is :`, user);
 
   // check pwd is correct
-  let passwordCorrect;
-  if (user) {
-    passwordCorrect = await bcrypt.compare(password, user.password);
-  }
-
-  if (!user || !passwordCorrect) {
+  if (!user || !(await user.correctPassword(password, user.password))) {
     return next(new AppError('Incorrect email or password', 401));
   }
 
   // if everything ok, send the token to client
-  const token = signToken(user.tel);
+  const token = signToken(user.phone);
 
   res.status(200).json({
     status: 'success',
@@ -136,11 +141,20 @@ exports.login = catchAsync(async (req, res, next) => {
 });
 
 exports.signup = catchAsync(async (req, res, next) => {
-  const newUser = await createUser(req, res, next);
+  // const newUser = await createUser(req, res, next);
+  const newUser = await User.create({
+    fname: req.body.fname,
+    lname: req.body.lname,
+    phone: req.body.phone,
+    email: req.body.email,
+    password: req.body.password,
+  });
 
-  console.log('new user - ', newUser);
+  await newUser.save();
 
-  const token = signToken(newUser.tel);
+  // console.log('new user - ', newUser);
+
+  const token = signToken(newUser.phone);
 
   res.status(201).json({
     status: 'success',
@@ -232,7 +246,13 @@ exports.protect = catchAsync(async (req, res, next) => {
 
   // 3) Check if user if exists
   const { phone } = decoded;
-  const freshUser = await oneUser({ phone });
+
+  const freshUser = await User.findOne({
+    where: {
+      phone,
+    },
+  });
+
   if (!freshUser) {
     return next(
       new AppError('The user belongs to this token does no longer exists', 401)
@@ -258,3 +278,25 @@ exports.restrictTo =
 
     next();
   };
+
+exports.forgotPassword = catchAsync(async (req, res, next) => {
+  // 1) Get user based on POSTed email
+  const { email } = req.body;
+
+  const user = await User.findOne({
+    where: {
+      email,
+    },
+  });
+
+  if (!user) {
+    return next(
+      new AppError('There is no user with provided email address', 404)
+    );
+  }
+
+  // 2) Generate random reset token
+
+  // 3) Send if to user's email
+});
+exports.resetPassword = (req, res, next) => {};
