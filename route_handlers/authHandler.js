@@ -75,7 +75,11 @@ exports.verifyOTP = catchAsync(async (req, res, next) => {
   }
 
   // if validation is done, search for user in the database
-  const user = await oneUser({ phone }); // db call
+  const user = await User.findOne({
+    where: {
+      phone,
+    },
+  });
 
   console.log(!!user);
 
@@ -116,16 +120,13 @@ exports.login = catchAsync(async (req, res, next) => {
 
   // console.log(`the user is :`, user);
 
-  const xx = await user.correctPassword(password, user.password);
-  console.log(`sssss ${xx}`);
-
   // check pwd is correct
   if (!user || !(await user.correctPassword(password, user.password))) {
     return next(new AppError('Incorrect email or password', 401));
   }
 
   // if everything ok, send the token to client
-  const token = signToken(user.tel);
+  const token = signToken(user.phone);
 
   res.status(200).json({
     status: 'success',
@@ -144,7 +145,7 @@ exports.signup = catchAsync(async (req, res, next) => {
   const newUser = await User.create({
     fname: req.body.fname,
     lname: req.body.lname,
-    tel: req.body.tel,
+    phone: req.body.phone,
     email: req.body.email,
     password: req.body.password,
   });
@@ -153,7 +154,7 @@ exports.signup = catchAsync(async (req, res, next) => {
 
   // console.log('new user - ', newUser);
 
-  const token = signToken(newUser.tel);
+  const token = signToken(newUser.phone);
 
   res.status(201).json({
     status: 'success',
@@ -245,7 +246,13 @@ exports.protect = catchAsync(async (req, res, next) => {
 
   // 3) Check if user if exists
   const { phone } = decoded;
-  const freshUser = await oneUser({ phone });
+
+  const freshUser = await User.findOne({
+    where: {
+      phone,
+    },
+  });
+
   if (!freshUser) {
     return next(
       new AppError('The user belongs to this token does no longer exists', 401)
@@ -274,7 +281,14 @@ exports.restrictTo =
 
 exports.forgotPassword = catchAsync(async (req, res, next) => {
   // 1) Get user based on POSTed email
-  const user = await oneUser({ email: req.body.email });
+  const { email } = req.body;
+
+  const user = await User.findOne({
+    where: {
+      email,
+    },
+  });
+
   if (!user) {
     return next(
       new AppError('There is no user with provided email address', 404)

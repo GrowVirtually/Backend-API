@@ -21,7 +21,7 @@ User.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    tel: {
+    phone: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
@@ -62,19 +62,12 @@ User.init(
 );
 
 (async () => {
-  await sequelize.sync();
+  await sequelize.sync({ force: true });
 })();
 
 User.beforeCreate(async (user) => {
   // hash password before saving to the database
   user.password = await bcrypt.hash(user.password, 10);
-});
-
-User.beforeUpdate(async (user) => {
-  // hash password before update
-  if (user.password) {
-    user.password = await bcrypt.hash(user.password, 10);
-  }
 });
 
 // instance methods
