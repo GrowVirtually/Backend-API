@@ -20,7 +20,7 @@ Grovi uses a number of open source projects to work properly:
 - [Material UI] - A popular React UI framework
 - [Node.js] - Evented I/O for the backend
 - [Express] - Fast node.js network app framework
-- [Mongo DB] - Document base NOSQL databse
+- [PostgreSQL] - Relational open source DBMS
 
 ## Installation
 
@@ -39,8 +39,17 @@ Add following details in it
 NODE_ENV=development
 PORT=5000
 DATABASE_LOCAL=mongodb://localhost:27017/grovi?poolSize=20&writeConcern=majority
-JWT_SECRET= add a secret(random string with 32 characters would be enough)
+JWT_SECRET=add a secret(random string with 32 characters would be enough)
 JWT_EXPIRES_IN=90d
+TWILIO_ACCOUNT_SID=your twilio account sid
+TWILIO_AUTH_TOKEN=your twilio auth token
+TWILIO_PHONE_NUMBER=your twilio phone number
+SMS_SECRET_KEY=add a secret(random string with 32 characters would be enough)
+USER=postgres
+HOST=localhost
+PG_DATABASE=grovi
+PWD=your db password
+PG_PORT=5432
 ```
 
 
@@ -66,7 +75,7 @@ MIT
 
 **Free Software, Hell Yeah!**
 
-[Mongo DB]: <https://mongodb.com/>
+[Mongo DB]: <https://www.postgresql.org/>
 [Material UI]: <https://material-ui.com/>
 [React-native]: <http://ace.ajax.org>
 [Node.js]: <http://nodejs.com/>

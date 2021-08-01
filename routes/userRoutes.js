@@ -10,6 +10,9 @@ const router = express.Router();
 
 router.post('/signup', signup);
 router.post('/login', login);
+
+router.post('/forgotPassword', login);
+router.post('/resetPassword', login);
 router.post('/sendOTP', sendOTP);
 router.post('/verifyOTP', verifyOTP);
 
