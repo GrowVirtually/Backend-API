@@ -6,12 +6,16 @@ const {
   verifyOTP,
   forgotPassword,
   resetPassword,
+  sample,
+  protect,
 } = require('../route_handlers/authHandler');
 
 const router = express.Router();
 
 router.post('/signup', signup);
 router.post('/login', login);
+
+router.get('/test', protect, sample);
 
 router.post('/forgotPassword', forgotPassword);
 router.patch('/resetPassword/:token', resetPassword);
