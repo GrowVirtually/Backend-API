@@ -1,8 +1,5 @@
 const bcrypt = require('bcrypt');
-// const pool = require('./db');
 const { Sequelize, DataTypes, Model } = require('sequelize');
-const catchAsync = require('../utils/catchAsync');
-const AppError = require('../utils/appError');
 const sequelize = require('./db');
 
 class User extends Model {}
@@ -62,9 +59,6 @@ User.init(
   }
 );
 
-// the defined model is the class itself
-console.log(User === sequelize.models.User); // true
-
 const hashPassword = async (pwd) => {
   const password = pwd;
   const saltRounds = 10;
@@ -106,18 +100,12 @@ exports.oneUser = async (columns) => {
   try {
     const { phone, email } = columns;
     if (phone) {
-      const result = await pool.query(
-        'SELECT * FROM systemuser WHERE tel = $1',
-        [phone]
-      );
+      const result = await User.findOne({ where: { tel: phone } });
       return result.rows[0];
     }
 
     if (email) {
-      const result = await pool.query(
-        'SELECT * FROM systemuser WHERE email = $1',
-        [email]
-      );
+      const result = await User.findOne({ where: { email: email } });
       return result.rows[0];
     }
   } catch (err) {
