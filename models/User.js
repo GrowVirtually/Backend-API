@@ -60,6 +60,9 @@ User.init(
   }
 );
 
+// User - associations
+// User.Gigs = User.hasMany(Gig);
+
 (async () => {
   await sequelize.sync({ force: true });
 })();

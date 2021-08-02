@@ -17,7 +17,7 @@ const { Sequelize } = require('sequelize');
 
 // Passing a connection -> URI DEV_DATABASE_URL=postgres://<db_user>:<db_password>@127.0.0.1:5432/dev_db
 const sequelize = new Sequelize(
-  'postgres://postgres:root@localhost:5432/grovi'
+  'postgres://postgres:admin@localhost:5432/grovi'
 );
 
 module.exports = sequelize;
