@@ -37,7 +37,7 @@ exports.oneUser = catchAsync(async (req, res, next) => {
   const { id } = req.params;
 
   const users = await pool.query(
-    'SELECT * FROM systemuser WHERE userid = $1',
+    'SELECT * FROM "Users" WHERE userid = $1',
     [id],
     (error, results) => {
       if (error) {
