@@ -10,6 +10,8 @@ const client = require('twilio')(accountSid, authToken);
 const User = require('../models/User');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
+const sendEmail = require('../utils/email');
+const { Op } = require('sequelize');
 
 const refreshTokens = [];
 
@@ -224,6 +226,13 @@ exports.logout = catchAsync(async (req, res, next) => {
     });
 });
 
+exports.sample = catchAsync(async (req, res, next) => {
+  res.status(200).json({
+    status: 'success',
+    message: 'sample protected',
+  });
+});
+
 exports.protect = catchAsync(async (req, res, next) => {
   // 1) Getting token and check if it's there
   let token;
@@ -245,7 +254,7 @@ exports.protect = catchAsync(async (req, res, next) => {
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
 
   // 3) Check if user if exists
-  const { phone } = decoded;
+  const { phone, iat } = decoded;
 
   const freshUser = await User.findOne({
     where: {
@@ -260,7 +269,13 @@ exports.protect = catchAsync(async (req, res, next) => {
   }
 
   // 4) Check user changes password after token was issued
-  // TODO: do this using schemas
+  if (freshUser.changedPasswordAfter(iat)) {
+    return next(
+      new AppError('User recently changed password! Please log in again', 401)
+    );
+  }
+
+  // GRANT ACCESS TO PROTECTED ROUTE
   req.user = freshUser;
 
   next();
@@ -283,6 +298,10 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   // 1) Get user based on POSTed email
   const { email } = req.body;
 
+  if (!email) {
+    return next(new AppError('Please provide email', 404));
+  }
+
   const user = await User.findOne({
     where: {
       email,
@@ -296,8 +315,75 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   }
 
   // 2) Generate random reset token
+  const resetToken = user.createPasswordResetToken();
+  await user.save({ validate: false });
 
-  // 3) Send if to user's email
+  // 3) Send it to user's email
+  // const resetURL = `${req.protocol}://${req.get(
+  //   'host'
+  // )}/api/v1/users/resetPassword/${resetToken}`;
+  //
+  // const message = `Forgot your password? Submit a PATCH request with your new password and password Confirm
+  // to ${resetURL}.\nIf you didn't forget your password, please ignore this email!`;
+
+  const message = `Enter this code in your mobile app screen ${resetToken}`;
+
+  try {
+    await sendEmail({
+      email,
+      subject: 'Your password reset token (valid for 10 min)',
+      message,
+    });
+  } catch (err) {
+    user.passwordResetToken = undefined;
+    user.passwordResetExpires = undefined;
+    await user.save({ validate: false });
+
+    return next(
+      new AppError(
+        'There was an error sending the email. Try again later!',
+        500
+      )
+    );
+  }
+
+  res.status(200).json({
+    status: 'success',
+    message: 'Token sent to email',
+  });
 });
-exports.resetPassword = (req, res, next) => {
-};
+exports.resetPassword = catchAsync(async (req, res, next) => {
+  // 1) Get user based on the token
+  const hashedToken = crypto
+    .createHash('sha256')
+    .update(req.params.token)
+    .digest('hex');
+
+  const user = await User.findOne({
+    where: {
+      passwordResetToken: hashedToken,
+      passwordResetExpires: { [Op.gt]: Date.now() },
+    },
+  });
+
+  // 2) If token has not expired, and there is user, set the new password
+  if (!user) {
+    return next(new AppError('Token is invalid or has expired', 400));
+  }
+
+  user.password = req.body.password;
+  user.passwordResetToken = undefined;
+  user.passwordResetExpires = undefined;
+  await user.save();
+
+  // 3) Update changedPasswordAt property for the user
+
+  // 4) Log the user in, send JWT
+  const token = signToken(user.phone);
+
+  res.status(200).json({
+    status: 'success',
+    token,
+  });
+});
+
