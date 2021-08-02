@@ -43,7 +43,7 @@ app.use((req, res, next) => {
 // ROUTES
 // route mounting
 app.use('/api/v1/tours', tourRouter);
-app.use('/gigs', gig);
+app.use('/api/v1/gigs', gig);
 app.use('/api/v1/users', userRouter);
 
 app.all('*', (req, res, next) => {

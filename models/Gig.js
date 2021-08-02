@@ -1,7 +1,7 @@
 const { Sequelize, DataTypes, Model } = require('sequelize');
 const sequelize = require('./db');
 
-// const User = require('./User');
+const User = require('./User');
 
 class Gig extends Model {}
 
@@ -49,6 +49,10 @@ Gig.init(
       type: DataTypes.DATEONLY,
       allowNull: false,
     },
+    userid: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
   },
   {
     // Other model options go here
@@ -58,6 +62,7 @@ Gig.init(
 );
 
 // Gig - associations
-// const Creator = Gig.belongsTo(User, { as: 'creator' });
+User.hasMany(Gig, { foreignKey: 'userid', as: 'gigs' });
+Gig.belongsTo(User, { as: 'user' });
 
 module.exports = Gig;
