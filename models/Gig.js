@@ -17,6 +17,10 @@ Gig.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    gigCategory: {
+      type: DataTypes.ENUM('vegetable', 'fruit'),
+      allowNull: false,
+    },
     gigTitle: {
       type: DataTypes.STRING,
       allowNull: false,
