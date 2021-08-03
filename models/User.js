@@ -77,7 +77,7 @@ User.init(
 // Gig.belongsTo(User, { as: 'user' });
 
 (async () => {
-  await sequelize.sync({ force: true });
+  await sequelize.sync();
 })();
 
 User.beforeUpdate(async (user) => {

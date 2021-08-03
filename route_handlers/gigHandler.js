@@ -29,11 +29,11 @@ exports.createGig = catchAsync(async (req, res, next) => {
 
 exports.getAllGigs = catchAsync(async (req, res, next) => {
   const result = await User.findAll({ include: 'gigs' });
-  console.log('result ------ ', result);
+
   res.status(201).json({
     status: 'success',
     data: {
-      gigs: result,
+      gigs: result[0].dataValues.gigs,
     },
   });
 });
