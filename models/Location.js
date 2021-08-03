@@ -13,13 +13,8 @@ Location.init(
       autoIncrement: true,
       primaryKey: true,
     },
-    longitude: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    latitude: {
-      type: DataTypes.STRING,
-      allowNull: false,
+    coordinates: {
+      type: DataTypes.GEOGRAPHY,
     },
   },
   {

@@ -1,9 +1,12 @@
+const { QueryTypes } = require('sequelize');
 const Gig = require('../models/Gig');
 const Location = require('../models/Location');
 const catchAsync = require('../utils/catchAsync');
+const sequelize = require('../models/db');
 
 exports.createGig = catchAsync(async (req, res, next) => {
-  const newGig = await Gig.create({
+  // add gig details to the table
+  let newGig = await Gig.create({
     gigType: req.body.gigType,
     gigCategory: req.body.gigCategory,
     gigTitle: req.body.gigTitle,
@@ -17,7 +20,17 @@ exports.createGig = catchAsync(async (req, res, next) => {
     userid: 1,
   });
 
-  await newGig.save();
+  newGig = await newGig.save();
+
+  // add locations to the table
+  await Promise.all(
+    req.body.locations.map(async (location) => {
+      await Location.create({
+        coordinates: sequelize.fn('ST_MakePoint', location.lat, location.lng),
+        gigId: newGig.gigId,
+      });
+    })
+  );
 
   res.status(201).json({
     status: 'success',
