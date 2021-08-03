@@ -73,11 +73,8 @@ User.init(
   }
 );
 
-// User.hasMany(Gig, { foreignKey: 'userId', as: 'gigs' });
-// Gig.belongsTo(User, { as: 'user' });
-
 (async () => {
-  await sequelize.sync();
+  await sequelize.sync({ force: true });
 })();
 
 User.beforeUpdate(async (user) => {

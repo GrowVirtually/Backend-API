@@ -49,10 +49,6 @@ Gig.init(
       type: DataTypes.DATEONLY,
       allowNull: false,
     },
-    userid: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
   },
   {
     // Other model options go here
@@ -63,6 +59,5 @@ Gig.init(
 
 // Gig - associations
 User.hasMany(Gig, { foreignKey: 'userid', as: 'gigs' });
-Gig.belongsTo(User, { as: 'user' });
 
 module.exports = Gig;

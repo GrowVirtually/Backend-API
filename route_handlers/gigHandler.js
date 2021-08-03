@@ -1,9 +1,7 @@
 const Gig = require('../models/Gig');
 const catchAsync = require('../utils/catchAsync');
-const User = require('../models/User');
 
 exports.createGig = catchAsync(async (req, res, next) => {
-  // await Gig.sync({ alter: true });
   const newGig = await Gig.create({
     gigType: req.body.gigType,
     gigTitle: req.body.gigTitle,
