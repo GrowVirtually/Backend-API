@@ -1,6 +1,5 @@
 const crypto = require('crypto');
 const bcrypt = require('bcrypt');
-// const pool = require('./db');
 const { Sequelize, DataTypes, Model } = require('sequelize');
 const sequelize = require('./db');
 
@@ -75,7 +74,7 @@ User.init(
 );
 
 (async () => {
-  await sequelize.sync();
+  await sequelize.sync({ force: true });
 })();
 
 User.beforeUpdate(async (user) => {
