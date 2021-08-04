@@ -13,11 +13,13 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
+
   Test.init(
     {
       firstName: DataTypes.STRING,
       lastName: DataTypes.STRING,
       email: DataTypes.STRING,
+      pwd: DataTypes.STRING,
     },
     {
       sequelize,

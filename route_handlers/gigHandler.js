@@ -1,4 +1,4 @@
-const Gig = require('../models/Gig');
+const Gig = require('../Old/Gig');
 const catchAsync = require('../utils/catchAsync');
 
 exports.createGig = catchAsync(async (req, res, next) => {
