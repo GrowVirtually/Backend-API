@@ -1,29 +1,58 @@
+const { QueryTypes } = require('sequelize');
 const Gig = require('../models/Gig');
 const Location = require('../models/Location');
 const catchAsync = require('../utils/catchAsync');
 const sequelize = require('../models/db');
 const AppError = require('../utils/appError');
-const { QueryTypes } = require('sequelize');
 
 exports.createGig = catchAsync(async (req, res, next) => {
   // start the transaction
+
+  const {
+    gigType,
+    gigCategory,
+    gigTitle,
+    gigDescription,
+    minOrderAmount,
+    unit,
+    unitPrice,
+    stock,
+    sold,
+    userid,
+  } = req.body;
+
+  if (
+    !gigType ||
+    !gigCategory ||
+    !gigTitle ||
+    !gigDescription ||
+    !minOrderAmount ||
+    !unit ||
+    !unitPrice ||
+    !stock ||
+    !sold ||
+    !userid
+  ) {
+    return next(new AppError('Some values missing', 400));
+  }
+
   const t = await sequelize.transaction();
 
   try {
     // add gig details to the table
     let newGig = await Gig.create(
       {
-        gigType: req.body.gigType,
-        gigCategory: req.body.gigCategory,
-        gigTitle: req.body.gigTitle,
-        gigDescription: req.body.gigDescription,
-        minOrderAmount: req.body.minOrderAmount,
-        unit: req.body.unit,
-        unitPrice: req.body.unitPrice,
-        stock: req.body.stock,
-        sold: req.body.sold,
+        gigType,
+        gigCategory,
+        gigTitle,
+        gigDescription,
+        minOrderAmount,
+        unit,
+        unitPrice,
+        stock,
+        sold,
         gigDuration: Date.now(),
-        userid: 1,
+        userid,
       },
       {
         transaction: t,
@@ -66,15 +95,25 @@ exports.createGig = catchAsync(async (req, res, next) => {
 });
 
 exports.getAllGigs = catchAsync(async (req, res, next) => {
-  const query = `SELECT "Gigs".*
-                 FROM (SELECT DISTINCT "gigId"
-                       FROM (SELECT "gigId"
+  const { location, distance, limit } = req.body;
+
+  if (!location || !distance || !limit) {
+    return next(new AppError('Some values missing', 400));
+  }
+
+  if (!location.lat || !location.lng) {
+    return next(new AppError('Latitude or Longitude missing', 400));
+  }
+
+  const query = `SELECT "Gigs".*, json_build_object('lat', lat, 'lng', lng) AS location
+                 FROM (SELECT DISTINCT ON ("gigId") "gigId", lat, lng
+                       FROM (SELECT "gigId", st_x(coordinates::geometry) as lat, st_y(coordinates::geometry) as lng
                              FROM "Locations"
                              WHERE ST_DWithin(coordinates,
-                                              ST_MakePoint(${req.body.location.lat}, ${req.body.location.lng})::geography,
-                                              ${req.body.distance})
-                             ORDER BY coordinates <-> ST_MakePoint(${req.body.location.lat}, ${req.body.location.lng})::geography
-                             LIMIT ${req.body.limit}) AS nearGigIds) AS distinctGigIds
+                                              ST_MakePoint(${location.lat}, ${location.lng})::geography,
+                                              ${distance})
+                             ORDER BY coordinates <-> ST_MakePoint(${location.lat}, ${location.lng})::geography
+                             LIMIT ${limit}) AS nearGigIds) AS distinctGigIds
                           INNER JOIN "Gigs"
                                      ON distinctGigIds."gigId" = "Gigs"."gigId" `;
 
@@ -82,7 +121,7 @@ exports.getAllGigs = catchAsync(async (req, res, next) => {
     type: QueryTypes.SELECT,
   });
 
-  res.status(201).json({
+  res.status(200).json({
     status: 'success',
     data: {
       gigs,
