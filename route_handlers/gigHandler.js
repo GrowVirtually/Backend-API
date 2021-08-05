@@ -136,9 +136,7 @@ exports.getAllGigs = catchAsync(async (req, res, next) => {
                                      ON distinctGigIds."gigId" = "Gigs"."gigId"
                           INNER JOIN "Users" U
                                      ON U.userid = "Gigs".userid
-                 ORDER BY (CASE "userType"
-                               WHEN 'premium' THEN 1
-                               WHEN 'normal' THEN 2 END);`;
+                 ORDER BY points;`;
 
   const gigs = await sequelize.query(query, {
     type: QueryTypes.SELECT,
