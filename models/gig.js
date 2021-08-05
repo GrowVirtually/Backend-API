@@ -15,6 +15,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'userid',
         as: 'user',
       });
+      Gig.hasMany(models.Location, {
+        foreignKey: 'gigid',
+        as: 'locations',
+      });
     }
   }
 
