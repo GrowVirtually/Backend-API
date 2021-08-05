@@ -1,8 +1,9 @@
-const Gig = require('../Old/Gig');
 const catchAsync = require('../utils/catchAsync');
 
+const db = require('../models');
+
 exports.createGig = catchAsync(async (req, res, next) => {
-  const newGig = await Gig.create({
+  const newGig = await db.Gig.create({
     gigType: req.body.gigType,
     gigTitle: req.body.gigTitle,
     gigDescription: req.body.gigDescription,
@@ -26,7 +27,7 @@ exports.createGig = catchAsync(async (req, res, next) => {
 });
 
 exports.getAllGigs = catchAsync(async (req, res, next) => {
-  const result = await Gig.findAll();
+  const result = await db.Gig.findAll();
 
   res.status(201).json({
     status: 'success',

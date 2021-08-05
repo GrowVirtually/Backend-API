@@ -3,7 +3,7 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('Users', {
-      userid: {
+      id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
@@ -38,12 +38,16 @@ module.exports = {
         type: Sequelize.ENUM('male', 'female', 'none'),
         defaultValue: 'none',
       },
-      imglink: {
+      imgLink: {
         type: Sequelize.STRING,
       },
       role: {
         type: Sequelize.ENUM('user', 'admin'),
         defaultValue: 'user',
+      },
+      userType: {
+        type: Sequelize.ENUM('premium', 'normal'),
+        defaultValue: 'normal',
       },
       password: {
         type: Sequelize.STRING,

@@ -11,6 +11,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      User.hasMany(models.Gig, {
+        foreignKey: 'userid',
+        as: 'gigs',
+      });
     }
   }
 
@@ -25,6 +29,7 @@ module.exports = (sequelize, DataTypes) => {
       gender: DataTypes.ENUM('male', 'female', 'none'),
       imgLink: DataTypes.STRING,
       role: DataTypes.ENUM('user', 'admin'),
+      userType: DataTypes.ENUM('premium', 'normal'),
       password: DataTypes.STRING,
       passwordChangedAt: DataTypes.DATE,
       passwordResetToken: DataTypes.STRING,
@@ -35,5 +40,6 @@ module.exports = (sequelize, DataTypes) => {
       modelName: 'User',
     }
   );
+
   return User;
 };

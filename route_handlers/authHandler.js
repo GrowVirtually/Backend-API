@@ -8,7 +8,9 @@ const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require('twilio')(accountSid, authToken);
 const { Op } = require('sequelize');
-const User = require('../Old/User');
+const db = require('../models');
+
+const { User } = db.User;
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const sendEmail = require('../utils/email');
@@ -144,7 +146,7 @@ exports.login = catchAsync(async (req, res, next) => {
 
 exports.signup = catchAsync(async (req, res, next) => {
   // const newUser = await createUser(req, res, next);
-  const newUser = await User.create({
+  const newUser = await db.User.create({
     fname: req.body.fname,
     lname: req.body.lname,
     phone: req.body.phone,

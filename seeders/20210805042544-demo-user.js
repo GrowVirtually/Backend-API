@@ -21,6 +21,15 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      {
+        fname: 'Kamal',
+        lname: 'Perera',
+        phone: '0772327724',
+        email: 'sample@sample.com',
+        password: 'afl23dfafs2342sdfs',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
     ]),
   down: async (queryInterface, Sequelize) =>
     /**
