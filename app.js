@@ -1,5 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
+const rateLimit = require('express-rate-limit');
+const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 // const bodyParser = require('body-parser');
@@ -13,10 +15,23 @@ const userRouter = require('./routes/userRoutes');
 
 const app = express();
 
-// MIDDLEWARES
+// GLOBAL MIDDLEWARES
+// Set security HTTP headers
+app.use(helmet());
+
+// Development logging
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev')); // prints readable req messages in console
 }
+
+// Limit requests from same IP
+const limiter = rateLimit({
+  max: 100,
+  windowMs: 60 * 60 * 1000,
+  message: 'Too many requests from this IP, please try again in an hour!',
+});
+
+app.use('/api', limiter);
 
 //body-parser middleware
 // app.use(bodyParser.urlencoded({
@@ -24,7 +39,8 @@ if (process.env.NODE_ENV === 'development') {
 // }));
 
 // get access to the request body of a request object
-app.use(express.json()); // body parser
+// reading data from body into req.body
+app.use(express.json({ limit: '10kb' })); // body parser
 app.use(express.urlencoded());
 
 app.use(cookieParser());
@@ -35,6 +51,7 @@ app.use(
   })
 );
 
+// Test middleware
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
   next();

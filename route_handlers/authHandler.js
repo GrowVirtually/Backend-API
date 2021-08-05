@@ -152,6 +152,9 @@ exports.signup = catchAsync(async (req, res, next) => {
     phone: req.body.phone,
     email: req.body.email,
     password: req.body.password,
+    ratings: req.body.ratings, //todo: delete this
+    userType: req.body.userType, //todo: delete this
+    totalOrders: req.body.totalOrders, //todo: delete this
   });
 
   await newUser.save();
