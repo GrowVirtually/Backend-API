@@ -1,8 +1,5 @@
 const { QueryTypes } = require('sequelize');
-// const Gig = require('../models/Gig');       // -------------
-// const Location = require('../models/Location');     // ---------------------
 const catchAsync = require('../utils/catchAsync');
-// const sequelize = require('../models/db');
 const AppError = require('../utils/appError');
 
 const db = require('../models');
@@ -68,7 +65,7 @@ exports.createGig = catchAsync(async (req, res, next) => {
       req.body.locations.map(async (location) => {
         await db.Location.create(
           {
-            coordinates: sequelize.fn(
+            coordinates: db.sequelize.fn(
               'ST_MakePoint',
               location.lat,
               location.lng
