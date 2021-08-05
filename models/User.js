@@ -49,6 +49,22 @@ User.init(
       type: DataTypes.ENUM('user', 'admin'),
       defaultValue: 'user',
     },
+    userType: {
+      type: DataTypes.ENUM('premium', 'normal'),
+      defaultValue: 'normal',
+    },
+    points: {
+      type: DataTypes.FLOAT,
+      defaultValue: 0.0,
+    },
+    ratings: {
+      type: DataTypes.FLOAT,
+      defaultValue: 0.0,
+    },
+    totalOrders: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+    },
     password: {
       type: DataTypes.STRING,
       allowNull: false,

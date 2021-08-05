@@ -95,9 +95,10 @@ exports.createGig = catchAsync(async (req, res, next) => {
 });
 
 exports.getAllGigs = catchAsync(async (req, res, next) => {
-  const { location, distance, limit } = req.body;
+  const { location, distance } = req.body;
+  let { limit } = req.body;
 
-  if (!location || !distance || !limit) {
+  if (!location || !distance) {
     return next(new AppError('Some values missing', 400));
   }
 
@@ -105,7 +106,24 @@ exports.getAllGigs = catchAsync(async (req, res, next) => {
     return next(new AppError('Latitude or Longitude missing', 400));
   }
 
-  const query = `SELECT "Gigs".*, json_build_object('lat', lat, 'lng', lng) AS location
+  if (!limit) {
+    limit = 10;
+  }
+
+  const query = `SELECT "Gigs"."gigId",
+                        "gigType",
+                        "gigCategory",
+                        "gigTitle",
+                        "gigDescription",
+                        "minOrderAmount",
+                        unit,
+                        "unitPrice",
+                        stock,
+                        sold,
+                        "gigDuration",
+                        "Gigs".userid                             AS "sellerId",
+                        "userType"                                AS "sellerType",
+                        json_build_object('lat', lat, 'lng', lng) AS location
                  FROM (SELECT DISTINCT ON ("gigId") "gigId", lat, lng
                        FROM (SELECT "gigId", st_x(coordinates::geometry) as lat, st_y(coordinates::geometry) as lng
                              FROM "Locations"
@@ -115,7 +133,12 @@ exports.getAllGigs = catchAsync(async (req, res, next) => {
                              ORDER BY coordinates <-> ST_MakePoint(${location.lat}, ${location.lng})::geography
                              LIMIT ${limit}) AS nearGigIds) AS distinctGigIds
                           INNER JOIN "Gigs"
-                                     ON distinctGigIds."gigId" = "Gigs"."gigId" `;
+                                     ON distinctGigIds."gigId" = "Gigs"."gigId"
+                          INNER JOIN "Users" U
+                                     ON U.userid = "Gigs".userid
+                 ORDER BY (CASE "userType"
+                               WHEN 'premium' THEN 1
+                               WHEN 'normal' THEN 2 END);`;
 
   const gigs = await sequelize.query(query, {
     type: QueryTypes.SELECT,
