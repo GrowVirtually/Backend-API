@@ -49,6 +49,22 @@ User.init(
       type: DataTypes.ENUM('user', 'admin'),
       defaultValue: 'user',
     },
+    userType: {
+      type: DataTypes.ENUM('premium', 'normal'),
+      defaultValue: 'normal',
+    },
+    points: {
+      type: DataTypes.FLOAT,
+      defaultValue: 0.0,
+    },
+    ratings: {
+      type: DataTypes.FLOAT,
+      defaultValue: 0.0,
+    },
+    totalOrders: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+    },
     password: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -74,8 +90,27 @@ User.init(
 );
 
 (async () => {
-  await sequelize.sync({ force: true });
+  await sequelize.sync();
 })();
+
+User.beforeUpdate(async (user) => {
+  // calculate points
+  let pointBasedOnUserType = 0;
+  switch (user.userType) {
+    case 'normal':
+      pointBasedOnUserType = 1;
+      break;
+    case 'premium':
+      pointBasedOnUserType = 2;
+      break;
+    default:
+  }
+
+  // points calculation algorithm
+  // TODO: update this algorithm
+  const algo = (user.ratings + user.totalOrders + pointBasedOnUserType) / 3;
+  user.points = Math.round(algo * 100) / 100;
+});
 
 User.beforeUpdate(async (user) => {
   // hash password before saving to the database

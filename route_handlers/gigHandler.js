@@ -1,39 +1,151 @@
+const { QueryTypes } = require('sequelize');
 const Gig = require('../models/Gig');
 const Location = require('../models/Location');
 const catchAsync = require('../utils/catchAsync');
+const sequelize = require('../models/db');
+const AppError = require('../utils/appError');
 
 exports.createGig = catchAsync(async (req, res, next) => {
-  const newGig = await Gig.create({
-    gigType: req.body.gigType,
-    gigCategory: req.body.gigCategory,
-    gigTitle: req.body.gigTitle,
-    gigDescription: req.body.gigDescription,
-    minOrderAmount: req.body.minOrderAmount,
-    unit: req.body.unit,
-    unitPrice: req.body.unitPrice,
-    stock: req.body.stock,
-    sold: req.body.sold,
-    gigDuration: Date.now(),
-    userid: 1,
-  });
+  // start the transaction
 
-  await newGig.save();
+  const {
+    gigType,
+    gigCategory,
+    gigTitle,
+    gigDescription,
+    minOrderAmount,
+    unit,
+    unitPrice,
+    stock,
+    sold,
+    userid,
+  } = req.body;
 
-  res.status(201).json({
-    status: 'success',
-    data: {
-      user: newGig,
-    },
-  });
+  if (
+    !gigType ||
+    !gigCategory ||
+    !gigTitle ||
+    !gigDescription ||
+    !minOrderAmount ||
+    !unit ||
+    !unitPrice ||
+    !stock ||
+    !sold ||
+    !userid
+  ) {
+    return next(new AppError('Some values missing', 400));
+  }
+
+  const t = await sequelize.transaction();
+
+  try {
+    // add gig details to the table
+    let newGig = await Gig.create(
+      {
+        gigType,
+        gigCategory,
+        gigTitle,
+        gigDescription,
+        minOrderAmount,
+        unit,
+        unitPrice,
+        stock,
+        sold,
+        gigDuration: Date.now(),
+        userid,
+      },
+      {
+        transaction: t,
+      }
+    );
+
+    newGig = await newGig.save();
+
+    // add locations to the table
+    await Promise.all(
+      req.body.locations.map(async (location) => {
+        await Location.create(
+          {
+            coordinates: sequelize.fn(
+              'ST_MakePoint',
+              location.lat,
+              location.lng
+            ),
+            gigId: newGig.gigId,
+          },
+          {
+            transaction: t,
+          }
+        );
+      })
+    );
+
+    await t.commit();
+
+    res.status(201).json({
+      status: 'success',
+      data: {
+        user: newGig,
+      },
+    });
+  } catch (error) {
+    await t.rollback();
+    return next(new AppError('Transaction failed, data not inserted', 502));
+  }
 });
 
 exports.getAllGigs = catchAsync(async (req, res, next) => {
-  const result = await Gig.findAll();
+  const { location, distance } = req.body;
+  let { limit } = req.body;
 
-  res.status(201).json({
+  if (!location || !distance) {
+    return next(new AppError('Some values missing', 400));
+  }
+
+  if (!location.lat || !location.lng) {
+    return next(new AppError('Latitude or Longitude missing', 400));
+  }
+
+  if (!limit) {
+    limit = 10;
+  }
+
+  const query = `SELECT "Gigs"."gigId",
+                        "gigType",
+                        "gigCategory",
+                        "gigTitle",
+                        "gigDescription",
+                        "minOrderAmount",
+                        unit,
+                        "unitPrice",
+                        stock,
+                        sold,
+                        "gigDuration",
+                        "Gigs".userid                             AS "sellerId",
+                        "userType"                                AS "sellerType",
+                        json_build_object('lat', lat, 'lng', lng) AS location
+                 FROM (SELECT DISTINCT ON ("gigId") "gigId", lat, lng
+                       FROM (SELECT "gigId", st_x(coordinates::geometry) as lat, st_y(coordinates::geometry) as lng
+                             FROM "Locations"
+                             WHERE ST_DWithin(coordinates,
+                                              ST_MakePoint(${location.lat}, ${location.lng})::geography,
+                                              ${distance})
+                             ORDER BY coordinates <-> ST_MakePoint(${location.lat}, ${location.lng})::geography
+                             LIMIT ${limit}) AS nearGigIds) AS distinctGigIds
+                          INNER JOIN "Gigs"
+                                     ON distinctGigIds."gigId" = "Gigs"."gigId"
+                          INNER JOIN "Users" U
+                                     ON U.userid = "Gigs".userid
+                 ORDER BY points;`;
+
+  const gigs = await sequelize.query(query, {
+    type: QueryTypes.SELECT,
+  });
+
+  res.status(200).json({
     status: 'success',
     data: {
-      gigs: result,
+      gigs,
     },
   });
 });
