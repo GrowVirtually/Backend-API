@@ -21,10 +21,16 @@ Grovi uses a number of open source projects to work properly:
 - [Node.js] - Evented I/O for the backend
 - [Express] - Fast node.js network app framework
 - [PostgreSQL] - Relational open source DBMS
+- [PostGIS] - Spatial and Geographic objects for PostgreSQL
+- [Sequelize] - ORM for node.js
 
 ## Installation
 
-Grovi requires [Node.js](https://nodejs.org/) v14+ to run.
+* Install [PostgreSQL](https://www.postgresql.org) v13
+
+* Configure [PostGIS](https://www.youtube.com/watch?v=afK8GWpb8RU)
+
+* Grovi requires [Node.js](https://nodejs.org/) v14+ to run.
 
 Change the directory
 
@@ -85,4 +91,6 @@ MIT
 [Node.js]: <http://nodejs.com/>
 [express]: <http://expressjs.com>
 [ReactJS]: <https://reactjs.org/>
+[Sequelize]: <https://sequelize.org/master/>
+[PostGIS]: <https://postgis.net/>
 
