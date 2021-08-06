@@ -8,7 +8,9 @@ const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require('twilio')(accountSid, authToken);
 const { Op } = require('sequelize');
-const User = require('../models/User');
+const db = require('../models');
+
+// const { User } = db.User;
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const sendEmail = require('../utils/email');
@@ -77,7 +79,7 @@ exports.verifyOTP = catchAsync(async (req, res, next) => {
   }
 
   // if validation is done, search for user in the database
-  const user = await User.findOne({
+  const user = await db.User.findOne({
     where: {
       phone,
     },
@@ -114,7 +116,7 @@ exports.login = catchAsync(async (req, res, next) => {
   }
 
   // check if the user exists
-  const user = await User.findOne({
+  const user = await db.User.findOne({
     where: {
       email,
     },
@@ -144,7 +146,7 @@ exports.login = catchAsync(async (req, res, next) => {
 
 exports.signup = catchAsync(async (req, res, next) => {
   // const newUser = await createUser(req, res, next);
-  const newUser = await User.create({
+  const newUser = await db.User.create({
     fname: req.body.fname,
     lname: req.body.lname,
     phone: req.body.phone,
@@ -259,7 +261,7 @@ exports.protect = catchAsync(async (req, res, next) => {
   // 3) Check if user if exists
   const { phone, iat } = decoded;
 
-  const freshUser = await User.findOne({
+  const freshUser = await db.User.findOne({
     where: {
       phone,
     },
@@ -305,7 +307,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
     return next(new AppError('Please provide email', 404));
   }
 
-  const user = await User.findOne({
+  const user = await db.User.findOne({
     where: {
       email,
     },
@@ -362,7 +364,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
     .update(req.params.token)
     .digest('hex');
 
-  const user = await User.findOne({
+  const user = await db.User.findOne({
     where: {
       passwordResetToken: hashedToken,
       passwordResetExpires: { [Op.gt]: Date.now() },

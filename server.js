@@ -10,7 +10,7 @@ process.on('uncaughtException', (err) => {
 dotenv.config({ path: './config.env' });
 
 const app = require('./app');
-const sequelize = require('./models/db');
+// const sequelize = require('./Old/db');
 
 // const pool = new Pool({
 //   user: process.env.USER,
@@ -25,14 +25,14 @@ const server = app.listen(port, () => {
   console.log(`Server started on port ${port}`);
 });
 
-(async () => {
-  try {
-    await sequelize.authenticate();
-    console.log('Connection has been established successfully.');
-  } catch (error) {
-    console.error('Unable to connect to the database:', error);
-  }
-})();
+// (async () => {
+//   try {
+//     await sequelize.authenticate();
+//     console.log('Connection has been established successfully.');
+//   } catch (error) {
+//     console.error('Unable to connect to the database:', error);
+//   }
+// })();
 
 // for unhandled promise exceptions
 process.on('unhandledRejection', (err) => {
