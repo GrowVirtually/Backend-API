@@ -13,6 +13,10 @@ module.exports = {
         type: Sequelize.ENUM('pre', 'post'),
         defaultValue: 'post',
       },
+      gigCategory: {
+        type: Sequelize.ENUM('vegetable', 'fruit'),
+        defaultValue: 'vegetable',
+      },
       gigTitle: {
         type: Sequelize.STRING,
         allowNull: false,

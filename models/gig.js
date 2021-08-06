@@ -25,6 +25,7 @@ module.exports = (sequelize, DataTypes) => {
   Gig.init(
     {
       gigType: DataTypes.ENUM('pre', 'post'),
+      gigCategory: DataTypes.ENUM('vegetable', 'fruit'),
       gigTitle: DataTypes.STRING,
       gigDescription: DataTypes.STRING,
       minOrderAmount: DataTypes.DECIMAL(10, 2),

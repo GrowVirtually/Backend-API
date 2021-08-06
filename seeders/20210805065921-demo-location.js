@@ -1,5 +1,7 @@
 'use strict';
 
+const db = require('../models');
+
 module.exports = {
   up: async (queryInterface, Sequelize) =>
     /**
@@ -13,8 +15,11 @@ module.exports = {
      */
     queryInterface.bulkInsert('Locations', [
       {
-        latitude: '5.948644',
-        longitude: '80.546736',
+        coordinates: db.sequelize.fn(
+          'ST_MakePoint',
+          '5.951957986708315',
+          '80.54349562603379'
+        ),
         gigid: 1,
         createdAt: new Date(),
         updatedAt: new Date(),

@@ -9,13 +9,8 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      latitude: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      longitude: {
-        type: Sequelize.STRING,
-        allowNull: false,
+      coordinates: {
+        type: Sequelize.GEOGRAPHY,
       },
       gigid: {
         allowNull: false,

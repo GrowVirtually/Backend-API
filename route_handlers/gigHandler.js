@@ -35,7 +35,7 @@ exports.createGig = catchAsync(async (req, res, next) => {
     return next(new AppError('Some values missing', 400));
   }
 
-  const t = await sequelize.transaction();
+  const t = await db.sequelize.transaction();
 
   try {
     // add gig details to the table
@@ -63,19 +63,20 @@ exports.createGig = catchAsync(async (req, res, next) => {
     // add locations to the table
     await Promise.all(
       req.body.locations.map(async (location) => {
-        await db.Location.create(
+        const newLocation = await db.Location.create(
           {
             coordinates: db.sequelize.fn(
               'ST_MakePoint',
               location.lat,
               location.lng
             ),
-            gigId: newGig.gigId,
+            gigid: newGig.dataValues.id,
           },
           {
             transaction: t,
           }
         );
+        await newLocation.save();
       })
     );
 
@@ -109,7 +110,7 @@ exports.getAllGigs = catchAsync(async (req, res, next) => {
     limit = 10;
   }
 
-  const query = `SELECT "Gigs"."gigId",
+  const query = `SELECT "Gigs"."id",
                         "gigType",
                         "gigCategory",
                         "gigTitle",
@@ -123,8 +124,8 @@ exports.getAllGigs = catchAsync(async (req, res, next) => {
                         "Gigs".userid                             AS "sellerId",
                         "userType"                                AS "sellerType",
                         json_build_object('lat', lat, 'lng', lng) AS location
-                 FROM (SELECT DISTINCT ON ("gigId") "gigId", lat, lng
-                       FROM (SELECT "gigId", st_x(coordinates::geometry) as lat, st_y(coordinates::geometry) as lng
+                 FROM (SELECT DISTINCT ON ("Gigs"."id") "Gigs"."id", lat, lng
+                       FROM (SELECT "Gigs"."id", st_x(coordinates::geometry) as lat, st_y(coordinates::geometry) as lng
                              FROM "Locations"
                              WHERE ST_DWithin(coordinates,
                                               ST_MakePoint(${location.lat}, ${location.lng})::geography,
@@ -132,12 +133,12 @@ exports.getAllGigs = catchAsync(async (req, res, next) => {
                              ORDER BY coordinates <-> ST_MakePoint(${location.lat}, ${location.lng})::geography
                              LIMIT ${limit}) AS nearGigIds) AS distinctGigIds
                           INNER JOIN "Gigs"
-                                     ON distinctGigIds."gigId" = "Gigs"."gigId"
+                                     ON distinctGigIds."id" = "Gigs"."id"
                           INNER JOIN "Users" U
-                                     ON U.userid = "Gigs".userid
+                                     ON U.id = "Gigs".userid
                  ORDER BY points;`;
 
-  const gigs = await sequelize.query(query, {
+  const gigs = await db.sequelize.query(query, {
     type: QueryTypes.SELECT,
   });
 

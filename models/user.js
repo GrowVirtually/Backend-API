@@ -1,6 +1,7 @@
 'use strict';
 
 const { Model } = require('sequelize');
+const bcrypt = require('bcrypt');
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
@@ -56,31 +57,31 @@ module.exports = (sequelize, DataTypes) => {
         break;
       default:
     }
-  
+
     // points calculation algorithm
     // TODO: update this algorithm
     const algo = (user.ratings + user.totalOrders + pointBasedOnUserType) / 3;
     user.points = Math.round(algo * 100) / 100;
   });
-  
+
   User.beforeUpdate(async (user) => {
     // hash password before saving to the database
     user.password = await bcrypt.hash(user.password, 10);
-  
+
     // console.log(`create user is: `, user);
   });
-  
+
   User.beforeUpdate(async (user) => {
     if (!user._changed.has('password') || user.isNewRecord) {
       return;
     }
     user.passwordChangedAt = Date.now();
   });
-  
+
   // instance methods
   User.prototype.correctPassword = async (candidatePassword, userPassword) =>
     await bcrypt.compare(candidatePassword, userPassword);
-  
+
   User.prototype.changedPasswordAfter = function (JWTTimestamp) {
     if (this.passwordChangedAt) {
       const changedTimestamp = parseInt(
@@ -90,11 +91,11 @@ module.exports = (sequelize, DataTypes) => {
       console.log(changedTimestamp, JWTTimestamp);
       return JWTTimestamp < changedTimestamp;
     }
-  
+
     // false means not change
     return false;
   };
-  
+
   User.prototype.createPasswordResetToken = function (isMobile = true) {
     let resetToken;
     if (isMobile) {
@@ -106,14 +107,14 @@ module.exports = (sequelize, DataTypes) => {
       .createHash('sha256')
       .update(resetToken)
       .digest('hex');
-  
+
     // console.log({ resetToken }, this.passwordResetToken);
-  
+
     this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
-  
+
     return resetToken;
   };
-  
+
   // the defined model is the class itself
   // console.log(User === sequelize.models.User); // true
 

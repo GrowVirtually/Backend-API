@@ -1,30 +1,32 @@
-const { Sequelize, DataTypes, Model } = require('sequelize');
-const sequelize = require('./db');
+'use strict';
 
-const Gig = require('./Gig');
+const { Model } = require('sequelize');
 
-class Location extends Model {}
-
-Location.init(
-  {
-    // Model attributes are defined here
-    locationId: {
-      type: Sequelize.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-    },
-    coordinates: {
-      type: DataTypes.GEOGRAPHY,
-    },
-  },
-  {
-    // Other model options go here
-    sequelize, // We need to pass the connection instance
-    modelName: 'Location', // We need to choose the model name
+module.exports = (sequelize, DataTypes) => {
+  class Location extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      // define association here
+      Location.belongsTo(models.Gig, {
+        foreignKey: 'gigid',
+        as: 'gig',
+      });
+    }
   }
-);
 
-// Location - associations
-Gig.hasMany(Location, { foreignKey: 'gigId', as: 'locations' });
-
-module.exports = Location;
+  Location.init(
+    {
+      coordinates: DataTypes.GEOGRAPHY,
+      gigid: DataTypes.INTEGER,
+    },
+    {
+      sequelize,
+      modelName: 'Location',
+    }
+  );
+  return Location;
+};
