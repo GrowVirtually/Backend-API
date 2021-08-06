@@ -77,6 +77,59 @@ npm install --production
 npm run start:prod
 ```
 
+For database environments...
+
+Create config/config.json file as follows
+
+```
+{
+  "development": {
+    "username": <db_username>,
+    "password": <db_password>,
+    "database": <db_name>,
+    "host": <host_name>,
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": <db_username>,
+    "password": <db_password>,
+    "database": <db_name>,
+    "host": <host_name>,
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": <db_username>,
+    "password": <db_password>,
+    "database": <db_name>,
+    "host": <host_name>,
+    "dialect": "postgres"
+  }
+}
+
+```
+
+Migrate tables into postgres database
+```sh
+npx sequelize-cli db:migrate
+```
+
+Undo Migrations for all tables
+```sh
+npx sequelize-cli db:migrate:undo:all
+```
+
+Populate all tables with provided data (Seeding)
+```sh
+npx sequelize-cli db:seed:all
+```
+
+Undo seeding for all tables
+```sh
+npx sequelize-cli db:seed:undo:all
+```
+
+Sequelize documentation for migrations - https://sequelize.org/master/manual/migrations.html
+
 Open http://localhost:5000 and take a look around.
 
 ## License
