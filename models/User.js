@@ -114,7 +114,11 @@ User.beforeUpdate(async (user) => {
 
 User.beforeUpdate(async (user) => {
   // hash password before saving to the database
-  user.password = await bcrypt.hash(user.password, 10);
+  try {
+    user.password = await bcrypt.hash(user.password, 10);
+  } catch (error) {
+    // return new App Error
+  }
 
   // console.log(`create user is: `, user);
 });
