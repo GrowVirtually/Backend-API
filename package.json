@@ -49,7 +49,8 @@
     "eslint-plugin-react": "^7.24.0",
     "ndb": "^1.1.5",
     "nodemon": "^2.0.7",
-    "prettier": "2.3.1"
+    "prettier": "2.3.1",
+    "sequelize-cli": "^6.2.0"
   },
   "engines": {
     "node": ">=14.0.0"
