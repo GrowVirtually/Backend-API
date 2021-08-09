@@ -17,6 +17,11 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'userid',
         as: 'gigs',
       });
+
+      User.hasMany(models.Customer, {
+        foreignKey: 'userid',
+        as: 'customers',
+      });
     }
   }
 
@@ -31,10 +36,6 @@ module.exports = (sequelize, DataTypes) => {
       gender: DataTypes.ENUM('male', 'female', 'none'),
       imgLink: DataTypes.STRING,
       role: DataTypes.ENUM('user', 'admin'),
-      userType: DataTypes.ENUM('premium', 'normal'),
-      points: DataTypes.DECIMAL(10, 2),
-      ratings: DataTypes.DECIMAL(2, 1),
-      totalOrders: DataTypes.INTEGER,
       password: DataTypes.STRING,
       passwordChangedAt: DataTypes.DATE,
       passwordResetToken: DataTypes.STRING,
