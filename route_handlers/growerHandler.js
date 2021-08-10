@@ -14,8 +14,6 @@ exports.myReviews = catchAsync(async (req, res, next) => {
     },
   });
 
-  console.log(reviews);
-
   res.status(201).json({
     status: 'success',
     data: {
