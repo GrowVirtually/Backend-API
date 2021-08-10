@@ -3,6 +3,7 @@ const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
+const compression = require('compression');
 const cors = require('cors');
 // const bodyParser = require('body-parser');
 
@@ -52,6 +53,8 @@ app.use(
     credentials: true,
   })
 );
+
+app.use(compression());
 
 // Test middleware
 app.use((req, res, next) => {

@@ -22,7 +22,7 @@ const app = require('./app');
 
 const port = process.env.SERVER_PORT || 3000;
 const server = app.listen(port, () => {
-  console.log(`Server started on port ${port}`);
+  // console.log(`Server started on port ${port}`);
 });
 
 // (async () => {
@@ -37,7 +37,7 @@ const server = app.listen(port, () => {
 // for unhandled promise exceptions
 process.on('unhandledRejection', (err) => {
   console.log('UNHANDLED REJECTION! 😔😔 Shutting down..');
-  console.log(err);
+  // console.log(err);
   server.close(() => {
     process.exit(1);
   });

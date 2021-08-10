@@ -45,7 +45,7 @@ exports.sendOTP = catchAsync(async (req, res, next) => {
       to: phone,
     })
     .then((message) => {
-      console.log(message);
+      // console.log(message);
       res.status(200).json({
         status: 'success',
         phone,
@@ -85,7 +85,7 @@ exports.verifyOTP = catchAsync(async (req, res, next) => {
     },
   });
 
-  console.log(!!user);
+  // console.log(!!user);
 
   if (user) {
     // if user found immediately authenticate him
@@ -125,7 +125,7 @@ exports.login = catchAsync(async (req, res, next) => {
     },
   });
 
-  console.log(`the user is :`, user);
+  // console.log(`the user is :`, user);
 
   // check pwd is correct
   if (!user || !(await user.correctPassword(password, user.password))) {

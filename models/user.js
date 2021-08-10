@@ -90,7 +90,7 @@ module.exports = (sequelize, DataTypes) => {
         new Date(this.passwordChangedAt).getTime() / 1000,
         10
       );
-      console.log(changedTimestamp, JWTTimestamp);
+      // console.log(changedTimestamp, JWTTimestamp);
       return JWTTimestamp < changedTimestamp;
     }
 
