@@ -49,7 +49,7 @@ app.use(express.urlencoded());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: `http://localhost:${process.env.PORT}`,
+    origin: `https://grovi-backend.herokuapp.com:${process.env.PORT}`,
     credentials: true,
   })
 );
