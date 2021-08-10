@@ -110,27 +110,63 @@ Create config/config.json file as follows
 
 Migrate tables into postgres database
 ```sh
-npx sequelize-cli db:migrate
+npm run migrate
 ```
 
 Undo Migrations for all tables
 ```sh
-npx sequelize-cli db:migrate:undo:all
+npm run undoMigrate
 ```
 
 Populate all tables with provided data (Seeding)
 ```sh
-npx sequelize-cli db:seed:all
+npm run seed
 ```
 
 Undo seeding for all tables
 ```sh
-npx sequelize-cli db:seed:undo:all
+npm run undoSeed
 ```
 
 Sequelize documentation for migrations - https://sequelize.org/master/manual/migrations.html
 
 Open http://localhost:5000 and take a look around.
+
+## Deployment
+
+1. Connect Github branch to Heroku
+2. Edit config/config.json file with necessary Heroku db credentials
+3. Add following code snippet to config/config.json file under 'development', 'test', 'production' objects
+```json
+"dialectOptions": {
+      "ssl": {
+        "require": true,
+        "rejectUnauthorized": false
+      }
+}
+```
+4. Change cors in app.js as following
+```javascript
+app.use(
+  cors({
+    origin: `https://grovi-backend.herokuapp.com:${process.env.PORT}`,
+    credentials: true,
+  })
+);
+```
+5. Setup configurations as in config.env
+6. Setup deployment
+7. Setup pgAdmin remotely by giving necessary credentials.
+8. Install postgis and postgis_topology extensions from pgAdmin
+9. From Heroku dashboard CLI do the migrations
+
+### Heroku migration commands (from Heroku dashboard)
+```shell
+heroku run sequelize-cli db:migrate
+```
+```shell
+heroku run sequelize-cli db:seed:all
+```
 
 ## License
 
