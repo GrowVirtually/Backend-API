@@ -155,14 +155,28 @@ exports.signup = catchAsync(async (req, res, next) => {
     phone: req.body.phone,
     email: req.body.email,
     password: req.body.password,
-    ratings: req.body.ratings, //todo: delete this
-    userType: req.body.userType, //todo: delete this
-    totalOrders: req.body.totalOrders, //todo: delete this
   });
-
   await newUser.save();
 
-  // console.log('new user - ', newUser);
+  const newCustomer = await db.Customer.create({
+    userid: newUser.dataValues.id,
+  });
+  await newCustomer.save();
+
+  const newConsumer = await db.Consumer.create({
+    userid: newUser.dataValues.id,
+  });
+  await newConsumer.save();
+
+  const newGrower = await db.Grower.create({
+    userid: newUser.dataValues.id,
+    ratings: req.body.ratings,
+    growerType: req.body.growerType,
+    gOrderCount: req.body.gOrderCount,
+  });
+  await newGrower.save();
+
+  // console.log('new user - ', newUser.dataValues.id);
 
   const token = signToken(newUser.phone);
 
