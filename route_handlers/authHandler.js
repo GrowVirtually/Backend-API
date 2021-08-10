@@ -120,9 +120,12 @@ exports.login = catchAsync(async (req, res, next) => {
     where: {
       email,
     },
+    attributes: {
+      exclude: ['createdAt', 'updatedAt'],
+    },
   });
 
-  // console.log(`the user is :`, user);
+  console.log(`the user is :`, user);
 
   // check pwd is correct
   if (!user || !(await user.correctPassword(password, user.password))) {
