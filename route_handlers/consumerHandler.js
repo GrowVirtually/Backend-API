@@ -4,18 +4,22 @@ const AppError = require('../utils/appError');
 const db = require('../models');
 
 exports.makeReview = catchAsync(async (req, res, next) => {
-  const newLocation = await db.Location.create({
-    longitude: req.body.longitude,
-    latitude: req.body.latitude,
-    gigId: 1,
+  if (!req.body.content || !req.body.consumerId || !req.body.growerId) {
+    return next(new AppError('Values are missing', 400));
+  }
+
+  const newReview = await db.Review.create({
+    content: req.body.content,
+    consumerId: req.body.consumerId,
+    growerId: req.body.growerId,
   });
 
-  await newLocation.save();
+  await newReview.save();
 
   res.status(201).json({
     status: 'success',
     data: {
-      location: newLocation,
+      review: newReview,
     },
   });
 });
