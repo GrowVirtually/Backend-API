@@ -1,5 +1,5 @@
 // const { Pool } = require('pg');
-const dotenv = require('dotenv');
+// const dotenv = require('dotenv').config();
 
 process.on('uncaughtException', (err) => {
   console.log('UNCAUGHT REJECTION! 😔😔 Shutting down..');
@@ -7,7 +7,8 @@ process.on('uncaughtException', (err) => {
   process.exit(1);
 });
 
-dotenv.config({ path: './config.env' });
+// dotenv.config({ path: './.env' });
+require('dotenv').config({ path: './.env' });
 
 const app = require('./app');
 // const sequelize = require('./Old/db');
@@ -20,7 +21,7 @@ const app = require('./app');
 //   port: process.env.PG_PORT,
 // });
 
-const port = process.env.SERVER_PORT || 3000;
+const port = process.env.PORT || 3000;
 const server = app.listen(port, () => {
   console.log(`Server started on port ${port}`);
 });
