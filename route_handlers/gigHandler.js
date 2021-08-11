@@ -1,4 +1,5 @@
 const { QueryTypes } = require('sequelize');
+const cloudinary = require('cloudinary');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 
@@ -163,6 +164,22 @@ exports.setLocation = catchAsync(async (req, res, next) => {
     status: 'success',
     data: {
       location: newLocation,
+    },
+  });
+});
+
+exports.uploadImg = catchAsync(async (req, res, next) => {
+  const val = await cloudinary.uploader.upload(req.files.img.path, (result) => {
+    if (!result) {
+      console.log('Error uploading');
+      return next(new AppError('Error uploading photo', 400));
+    }
+  });
+
+  res.status(201).json({
+    status: 'success',
+    data: {
+      link: val.url,
     },
   });
 });

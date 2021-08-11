@@ -5,6 +5,8 @@ const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 const compression = require('compression');
 const cors = require('cors');
+const cloudinary = require('cloudinary');
+const formData = require('express-form-data');
 // const bodyParser = require('body-parser');
 
 const AppError = require('./utils/appError');
@@ -49,7 +51,7 @@ app.use(express.urlencoded());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: `https://grovi-backend.herokuapp.com:${process.env.PORT}`,
+    origin: `https://localhost:${process.env.PORT}`,
     credentials: true,
   })
 );
@@ -60,6 +62,14 @@ app.use(compression());
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
   next();
+});
+
+// image upload - cloudinary middleware
+app.use(formData.parse());
+cloudinary.config({
+  cloud_name: process.env.IMG_CLOUD_NAME,
+  api_key: process.env.IMG_API_KEY,
+  api_secret: process.env.IMG_API_SECRET,
 });
 
 // ROUTES
