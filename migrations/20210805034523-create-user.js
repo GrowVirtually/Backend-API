@@ -48,6 +48,7 @@ module.exports = {
       password: {
         type: Sequelize.STRING,
         allowNull: false,
+        select: false,
       },
       passwordChangedAt: {
         type: Sequelize.DATE,
