@@ -14,6 +14,7 @@ module.exports = {
     queryInterface.bulkInsert('Gigs', [
       {
         gigType: 'pre',
+        gigCategory: 'vegetable',
         gigTitle: 'Carrot',
         gigDescription: 'For sale',
         minOrderAmount: '100.00',
@@ -28,6 +29,7 @@ module.exports = {
       },
       {
         gigType: 'post',
+        gigCategory: 'vegetable',
         gigTitle: 'Raddish',
         gigDescription: 'For sale',
         minOrderAmount: '100.00',

@@ -108,6 +108,5 @@ dist
 
 # Config files
 *.env
-config/
 
 package-lock.json

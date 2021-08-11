@@ -22,7 +22,7 @@ exports.checkBody = (req, res, next) => {
 };
 
 exports.createTour = (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
   res.status(201).send('done');
 };
 

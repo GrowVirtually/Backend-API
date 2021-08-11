@@ -3,6 +3,7 @@ const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
+const compression = require('compression');
 const cors = require('cors');
 // const bodyParser = require('body-parser');
 
@@ -48,10 +49,12 @@ app.use(express.urlencoded());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: `http://localhost:${process.env.PORT}`,
+    origin: `https://grovi-backend.herokuapp.com:${process.env.PORT}`,
     credentials: true,
   })
 );
+
+app.use(compression());
 
 // Test middleware
 app.use((req, res, next) => {
