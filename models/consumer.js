@@ -15,6 +15,16 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'userid',
         as: 'customer',
       });
+
+      Consumer.hasOne(models.ConsumerLocation, {
+        foreignKey: 'userid',
+        as: 'location',
+      });
+
+      Consumer.hasMany(models.Review, {
+        foreignKey: 'consumerId',
+        as: 'reviews',
+      });
     }
   }
   Consumer.init(
