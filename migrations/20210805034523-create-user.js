@@ -45,21 +45,6 @@ module.exports = {
         type: Sequelize.ENUM('user', 'admin'),
         defaultValue: 'user',
       },
-      userType: {
-        type: Sequelize.ENUM('premium', 'normal'),
-        defaultValue: 'normal',
-      },
-      points: {
-        type: Sequelize.DECIMAL(10, 2),
-      },
-      ratings: {
-        type: Sequelize.DECIMAL(2, 1),
-        defaultValue: 0.0,
-      },
-      totalOrders: {
-        type: Sequelize.INTEGER,
-        defaultValue: 0,
-      },
       password: {
         type: Sequelize.STRING,
         allowNull: false,
