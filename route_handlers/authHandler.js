@@ -45,7 +45,7 @@ exports.sendOTP = catchAsync(async (req, res, next) => {
       to: phone,
     })
     .then((message) => {
-      console.log(message);
+      // console.log(message);
       res.status(200).json({
         status: 'success',
         phone,
@@ -85,7 +85,7 @@ exports.verifyOTP = catchAsync(async (req, res, next) => {
     },
   });
 
-  console.log(!!user);
+  // console.log(!!user);
 
   if (user) {
     // if user found immediately authenticate him
@@ -119,6 +119,9 @@ exports.login = catchAsync(async (req, res, next) => {
   const user = await db.User.findOne({
     where: {
       email,
+    },
+    attributes: {
+      exclude: ['createdAt', 'updatedAt'],
     },
   });
 
