@@ -182,3 +182,46 @@ exports.uploadImg = catchAsync(async (req, res, next) => {
     });
   });
 });
+
+exports.getSingleGig = catchAsync(async (req, res, next) => {
+  const gig = await db.Gig.findByPk(req.params.id, {
+    include: [
+      {
+        model: db.User,
+        as: 'user',
+        attributes: ['fname', 'lname'],
+        include: [
+          {
+            model: db.Customer,
+            as: 'customers',
+            attributes: { exclude: ['createdAt', 'updatedAt'] },
+            include: [
+              {
+                model: db.Grower,
+                as: 'growers',
+                attributes: ['growerType'],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        model: db.Location,
+        as: 'locations',
+        where: {
+          id: 1,
+        },
+        attributes: ['coordinates'],
+      },
+    ],
+    attributes: { exclude: ['createdAt', 'updatedAt'] },
+  });
+  console.log(gig);
+
+  res.status(201).json({
+    status: 'success',
+    data: {
+      link: gig,
+    },
+  });
+});

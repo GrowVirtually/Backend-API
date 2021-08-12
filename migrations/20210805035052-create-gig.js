@@ -45,9 +45,13 @@ module.exports = {
         type: Sequelize.DECIMAL(10, 2),
         allowNull: false,
       },
-      gigDuration: {
+      expireDate: {
         type: Sequelize.DATEONLY,
         allowNull: false,
+      },
+      deliverAbility: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
       },
       createdAt: {
         allowNull: false,
