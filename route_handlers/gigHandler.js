@@ -191,7 +191,7 @@ exports.uploadImg = catchAsync(async (req, res, next) => {
 });
 
 exports.getSingleGig = catchAsync(async (req, res, next) => {
-  const gig = await db.Gig.findByPk(req.params.id, {
+  const gig = await db.Gig.findByPk(req.params.gigId, {
     include: [
       {
         model: db.User,
@@ -216,7 +216,7 @@ exports.getSingleGig = catchAsync(async (req, res, next) => {
         model: db.Location,
         as: 'locations',
         where: {
-          id: req.params.id1,
+          id: req.params.locationId,
         },
         attributes: ['coordinates'],
       },
@@ -228,17 +228,6 @@ exports.getSingleGig = catchAsync(async (req, res, next) => {
     status: 'success',
     data: {
       gig: gig,
-    },
-  });
-});
-
-exports.getMyGigs = catchAsync(async (req, res, next) => {
-  const gigs = await db.Gig.findAll({ where: { userid: req.params.id } });
-
-  res.status(201).json({
-    status: 'success',
-    data: {
-      gigs: gigs,
     },
   });
 });
