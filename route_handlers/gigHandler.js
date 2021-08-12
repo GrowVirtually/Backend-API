@@ -128,12 +128,12 @@ exports.getAllGigs = catchAsync(async (req, res, next) => {
        "unitPrice",
        stock,
        sold,
-       "gigDuration",
+       "expireDate",
        "Gigs".userid                             AS "sellerId",
-       "userType"                                AS "sellerType",
-       json_build_object('lat', lat, 'lng', lng) AS location
-FROM (SELECT DISTINCT ON ("gigid") "gigid", lat, lng
-      FROM (SELECT "gigid", st_x(coordinates::geometry) as lat, st_y(coordinates::geometry) as lng
+       "growerType"                                AS "sellerType",
+       json_build_object('id', "locationId",'lat', lat, 'lng', lng) AS location
+FROM (SELECT DISTINCT ON ("gigid") "gigid", "locationId", lat, lng
+      FROM (SELECT "gigid", id as "locationId", st_x(coordinates::geometry) as lat, st_y(coordinates::geometry) as lng
             FROM "Locations"
             WHERE ST_DWithin(coordinates,
                              ST_MakePoint(${location.lat}, ${location.lng})::geography,
@@ -144,6 +144,8 @@ FROM (SELECT DISTINCT ON ("gigid") "gigid", lat, lng
                     ON distinctGigIds."gigid" = "Gigs"."id"
          INNER JOIN "Users" U
                     ON U.id = "Gigs".userid
+        INNER JOIN "Customers" C on U.id = C.userid
+        INNER JOIN "Growers" G on C.userid = G.userid
 ORDER BY points;`;
 
   const gigs = await db.sequelize.query(query, {
