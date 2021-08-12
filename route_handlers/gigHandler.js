@@ -18,6 +18,7 @@ exports.createGig = catchAsync(async (req, res, next) => {
     unitPrice,
     stock,
     sold,
+    gigDuration,
     userid,
   } = req.body;
 
@@ -31,10 +32,16 @@ exports.createGig = catchAsync(async (req, res, next) => {
     !unitPrice ||
     !stock ||
     !sold ||
+    !gigDuration ||
     !userid
   ) {
     return next(new AppError('Some values missing', 400));
   }
+
+  const currentDate = new Date();
+  const expireDate = new Date(
+    currentDate.setTime(currentDate.getTime() + gigDuration * 86400000)
+  );
 
   const t = await db.sequelize.transaction();
 
@@ -51,7 +58,7 @@ exports.createGig = catchAsync(async (req, res, next) => {
         unitPrice,
         stock,
         sold,
-        gigDuration: Date.now(),
+        expireDate,
         userid,
       },
       {
@@ -209,19 +216,29 @@ exports.getSingleGig = catchAsync(async (req, res, next) => {
         model: db.Location,
         as: 'locations',
         where: {
-          id: 1,
+          id: req.params.id1,
         },
         attributes: ['coordinates'],
       },
     ],
     attributes: { exclude: ['createdAt', 'updatedAt'] },
   });
-  console.log(gig);
 
   res.status(201).json({
     status: 'success',
     data: {
-      link: gig,
+      gig: gig,
+    },
+  });
+});
+
+exports.getMyGigs = catchAsync(async (req, res, next) => {
+  const gigs = await db.Gig.findAll({ where: { userid: req.params.id } });
+
+  res.status(201).json({
+    status: 'success',
+    data: {
+      gigs: gigs,
     },
   });
 });
