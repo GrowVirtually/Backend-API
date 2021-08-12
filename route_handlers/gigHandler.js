@@ -169,17 +169,16 @@ exports.setLocation = catchAsync(async (req, res, next) => {
 });
 
 exports.uploadImg = catchAsync(async (req, res, next) => {
-  const val = await cloudinary.uploader.upload(req.files.img.path, (result) => {
-    if (!result) {
-      console.log('Error uploading');
+  cloudinary.uploader.upload(req.files.img.path, (result) => {
+    if (result.error) {
       return next(new AppError('Error uploading photo', 400));
     }
-  });
 
-  res.status(201).json({
-    status: 'success',
-    data: {
-      link: val.url,
-    },
+    res.status(201).json({
+      status: 'success',
+      data: {
+        link: result.url,
+      },
+    });
   });
 });
