@@ -37,7 +37,7 @@ Change the directory
 ```sh
 cd Backend-API
 ```
-Create 'config.env' file in the root folder
+Create '.env' file in the root folder
 
 Add following details in it
 
