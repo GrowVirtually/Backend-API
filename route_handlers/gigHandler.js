@@ -103,10 +103,13 @@ exports.createGig = catchAsync(async (req, res, next) => {
 });
 
 exports.getAllGigs = catchAsync(async (req, res, next) => {
+  console.log(req.body);
   const { location, distance } = req.body;
   let { limit } = req.body;
 
-  if (!location || !distance) {
+  const { offset } = req.body;
+
+  if (!location || !distance || typeof offset === 'undefined') {
     return next(new AppError('Some values missing', 400));
   }
 
@@ -131,6 +134,7 @@ exports.getAllGigs = catchAsync(async (req, res, next) => {
        "expireDate",
        "Gigs".userid                             AS "sellerId",
        "growerType"                                AS "sellerType",
+       "points",
        json_build_object('id', "locationId",'lat', lat, 'lng', lng) AS location
 FROM (SELECT DISTINCT ON ("gigid") "gigid", "locationId", lat, lng
       FROM (SELECT "gigid", id as "locationId", st_x(coordinates::geometry) as lat, st_y(coordinates::geometry) as lng
@@ -146,7 +150,7 @@ FROM (SELECT DISTINCT ON ("gigid") "gigid", "locationId", lat, lng
                     ON U.id = "Gigs".userid
         INNER JOIN "Customers" C on U.id = C.userid
         INNER JOIN "Growers" G on C.userid = G.userid
-ORDER BY points;`;
+ORDER BY points DESC OFFSET ${offset} LIMIT 10;`;
 
   const gigs = await db.sequelize.query(query, {
     type: QueryTypes.SELECT,
@@ -154,6 +158,7 @@ ORDER BY points;`;
 
   res.status(200).json({
     status: 'success',
+    length: gigs.length,
     data: {
       gigs,
     },
