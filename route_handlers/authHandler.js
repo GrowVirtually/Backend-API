@@ -282,6 +282,16 @@ exports.protect = catchAsync(async (req, res, next) => {
     where: {
       phone,
     },
+    attributes: {
+      exclude: [
+        'createdAt',
+        'updatedAt',
+        'password',
+        'passwordChangedAt',
+        'passwordResetToken',
+        'passwordResetExpires',
+      ],
+    },
   });
 
   if (!freshUser) {
