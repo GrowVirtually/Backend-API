@@ -48,25 +48,6 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   User.beforeUpdate(async (user) => {
-    // calculate points
-    let pointBasedOnUserType = 0;
-    switch (user.userType) {
-      case 'normal':
-        pointBasedOnUserType = 1;
-        break;
-      case 'premium':
-        pointBasedOnUserType = 2;
-        break;
-      default:
-    }
-
-    // points calculation algorithm
-    // TODO: update this algorithm
-    const algo = (user.ratings + user.totalOrders + pointBasedOnUserType) / 3;
-    user.points = Math.round(algo * 100) / 100;
-  });
-
-  User.beforeUpdate(async (user) => {
     // hash password before saving to the database
     user.password = await bcrypt.hash(user.password, 10);
 

@@ -60,6 +60,9 @@ EMAIL_HOST=smtp.mailtrap.io
 EMAIL_PORT=2525
 EMAIL_USERNAME=mailtrap-email-username
 EMAIL_PASSWORD=mailtrap-email-password
+IMG_CLOUD_NAME=<cloudinary_cloud_name>
+IMG_API_KEY=<cloudinary_api_key>
+IMG_API_SECRET=<cloudinary_api_secret>
 ```
 
 
