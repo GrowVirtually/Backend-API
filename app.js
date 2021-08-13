@@ -5,6 +5,7 @@ const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 const compression = require('compression');
 const cors = require('cors');
+const xss = require('xss-clean');
 const cloudinary = require('cloudinary');
 const formData = require('express-form-data');
 // const bodyParser = require('body-parser');
@@ -22,7 +23,7 @@ const app = express();
 
 // GLOBAL MIDDLEWARES
 // Set security HTTP headers
-// app.use(helmet());
+app.use(helmet());
 
 // Development logging
 if (process.env.NODE_ENV === 'development') {
@@ -46,6 +47,10 @@ app.use('/api', limiter);
 // get access to the request body of a request object
 // reading data from body into req.body
 app.use(express.json({ limit: '10kb' })); // body parser
+
+// data sanitization against XSS
+app.use(xss());
+
 app.use(express.urlencoded());
 
 app.use(cookieParser());

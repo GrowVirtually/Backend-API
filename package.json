@@ -45,7 +45,8 @@
     "sequelize": "^6.6.5",
     "stripe": "^8.168.0",
     "twilio": "^3.65.0",
-    "validator": "^13.6.0"
+    "validator": "^13.6.0",
+    "xss-clean": "^0.1.1"
   },
   "devDependencies": {
     "eslint": "^7.28.0",
