@@ -20,7 +20,7 @@ const app = express();
 
 // GLOBAL MIDDLEWARES
 // Set security HTTP headers
-app.use(helmet());
+// app.use(helmet());
 
 // Development logging
 if (process.env.NODE_ENV === 'development') {
@@ -49,7 +49,7 @@ app.use(express.urlencoded());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: `https://grovi-backend.herokuapp.com:${process.env.PORT}`,
+    origin: `http://localhost:${process.env.PORT}`,
     credentials: true,
   })
 );
