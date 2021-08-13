@@ -33,7 +33,8 @@ module.exports = (sequelize, DataTypes) => {
       unitPrice: DataTypes.DECIMAL(10, 2),
       stock: DataTypes.DECIMAL(10, 2),
       sold: DataTypes.DECIMAL(10, 2),
-      gigDuration: DataTypes.DATEONLY,
+      expireDate: DataTypes.DATEONLY,
+      deliverAbility: DataTypes.BOOLEAN,
       userid: DataTypes.INTEGER,
     },
     {
