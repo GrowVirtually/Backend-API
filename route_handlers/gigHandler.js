@@ -102,6 +102,19 @@ exports.createGig = catchAsync(async (req, res, next) => {
   }
 });
 
+// to change the format of date object
+const formatDate = (date) => {
+  const d = new Date(date);
+  let month = `${d.getMonth() + 1}`;
+  let day = `${d.getDate()}`;
+  const year = d.getFullYear();
+
+  if (month.length < 2) month = `0${month}`;
+  if (day.length < 2) day = `0${day}`;
+
+  return [year, month, day].join('');
+};
+
 exports.getAllGigs = catchAsync(async (req, res, next) => {
   console.log(req.body);
   const { location, distance } = req.body;
@@ -120,6 +133,8 @@ exports.getAllGigs = catchAsync(async (req, res, next) => {
   if (!limit) {
     limit = 10;
   }
+
+  const today = formatDate(new Date());
 
   const query = `SELECT "Gigs"."id",
        "gigType",
@@ -150,6 +165,7 @@ FROM (SELECT DISTINCT ON ("gigid") "gigid", "locationId", lat, lng
                     ON U.id = "Gigs".userid
         INNER JOIN "Customers" C on U.id = C.userid
         INNER JOIN "Growers" G on C.userid = G.userid
+        WHERE "expireDate" > ${today}::text::date
 ORDER BY points DESC OFFSET ${offset} LIMIT 10;`;
 
   const gigs = await db.sequelize.query(query, {
