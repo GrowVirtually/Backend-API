@@ -25,8 +25,14 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'consumerId',
         as: 'reviews',
       });
+
+      Consumer.hasMany(models.Order, {
+        foreignKey: 'consumerId',
+        as: 'orders',
+      });
     }
   }
+
   Consumer.init(
     {
       userid: DataTypes.INTEGER,
