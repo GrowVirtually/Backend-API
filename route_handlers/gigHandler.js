@@ -1,4 +1,4 @@
-const { QueryTypes } = require('sequelize');
+const { QueryTypes, Op } = require('sequelize');
 const cloudinary = require('cloudinary');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
@@ -112,11 +112,11 @@ const formatDate = (date) => {
   if (month.length < 2) month = `0${month}`;
   if (day.length < 2) day = `0${day}`;
 
-  return [year, month, day].join('');
+  return [year, month, day].join('-');
 };
 
 exports.getAllGigs = catchAsync(async (req, res, next) => {
-  console.log(req.body);
+  console.log(req.query);
   const { location, distance } = req.body;
   let { limit } = req.body;
 
@@ -136,47 +136,97 @@ exports.getAllGigs = catchAsync(async (req, res, next) => {
 
   const today = formatDate(new Date());
 
-  const query = `SELECT "Gigs"."id",
-       "gigType",
-       "gigCategory",
-       "gigTitle",
-       "gigDescription",
-       "minOrderAmount",
-       unit,
-       "unitPrice",
-       stock,
-       sold,
-       "expireDate",
-       "Gigs".userid                             AS "sellerId",
-       "growerType"                                AS "sellerType",
-       "points",
-       json_build_object('id', "locationId",'lat', lat, 'lng', lng) AS location
-FROM (SELECT DISTINCT ON ("gigid") "gigid", "locationId", lat, lng
-      FROM (SELECT "gigid", id as "locationId", st_x(coordinates::geometry) as lat, st_y(coordinates::geometry) as lng
-            FROM "Locations"
-            WHERE ST_DWithin(coordinates,
-                             ST_MakePoint(${location.lat}, ${location.lng})::geography,
-                             ${distance})
-            ORDER BY coordinates <-> ST_MakePoint(${location.lat}, ${location.lng})::geography
-            LIMIT ${limit}) AS nearGigIds) AS distinctGigIds
-         INNER JOIN "Gigs"
-                    ON distinctGigIds."gigid" = "Gigs"."id"
-         INNER JOIN "Users" U
-                    ON U.id = "Gigs".userid
-        INNER JOIN "Customers" C on U.id = C.userid
-        INNER JOIN "Growers" G on C.userid = G.userid
-        WHERE "expireDate" > ${today}::text::date
-ORDER BY points DESC OFFSET ${offset} LIMIT 10;`;
-
-  const gigs = await db.sequelize.query(query, {
-    type: QueryTypes.SELECT,
+  const locations = await db.Location.findAll({
+    // attributes: [
+    //   [db.sequelize.fn('distinct', db.sequelize.col('gigid')), 'gigid'],
+    // ],
+    attributes: {
+      exclude: ['createdAt', 'updatedAt'],
+    },
+    // group: ['gigid', 'Location.id'],
+    where: db.sequelize.where(
+      db.sequelize.fn(
+        'filter_by_distance',
+        db.sequelize.col('coordinates'),
+        location.lat,
+        location.lng,
+        distance
+      ),
+      true
+    ),
+    order: [
+      [
+        db.sequelize.fn(
+          'sort_by_location',
+          db.sequelize.col('coordinates'),
+          location.lat,
+          location.lng
+        ),
+      ],
+    ],
+    offset: offset,
+    limit: limit,
+    include: [
+      {
+        model: db.Gig,
+        as: 'gig',
+        attributes: {
+          exclude: ['createdAt', 'updatedAt'],
+        },
+        where: db.sequelize.where(
+          db.sequelize.fn('date', db.sequelize.col('expireDate')),
+          '>',
+          today
+        ),
+        include: [
+          {
+            model: db.User,
+            as: 'user',
+            attributes: {
+              exclude: [
+                'password',
+                'passwordChangedAt',
+                'passwordResetToken',
+                'passwordResetExpires',
+                'createdAt',
+                'updatedAt',
+              ],
+            },
+            include: [
+              {
+                model: db.Customer,
+                as: 'customers',
+                attributes: {
+                  exclude: ['userid', 'createdAt', 'updatedAt'],
+                },
+                include: [
+                  {
+                    model: db.Grower,
+                    as: 'growers',
+                    attributes: {
+                      exclude: ['userid', 'createdAt', 'updatedAt'],
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
   });
+
+  locations.sort(
+    (loc1, loc2) =>
+      loc2.dataValues.gig.user.customers[0].growers[0].dataValues.points * 1 -
+      loc1.dataValues.gig.user.customers[0].growers[0].dataValues.points * 1
+  );
 
   res.status(200).json({
     status: 'success',
-    length: gigs.length,
+    results: locations.length,
     data: {
-      gigs,
+      locations,
     },
   });
 });

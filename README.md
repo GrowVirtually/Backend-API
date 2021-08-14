@@ -44,6 +44,7 @@ Add following details in it
 ```
 NODE_ENV=development
 PORT=5000
+HOST=localhost (if you are in production environment, use 'grovi-backend.herokuapp.com')
 DATABASE_LOCAL=mongodb://localhost:27017/grovi?poolSize=20&writeConcern=majority
 JWT_SECRET=add a secret(random string with 32 characters would be enough)
 JWT_EXPIRES_IN=90d
