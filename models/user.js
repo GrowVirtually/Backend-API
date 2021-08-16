@@ -18,9 +18,9 @@ module.exports = (sequelize, DataTypes) => {
         as: 'gigs',
       });
 
-      User.hasMany(models.Customer, {
+      User.hasOne(models.Customer, {
         foreignKey: 'userid',
-        as: 'customers',
+        as: 'customer',
       });
     }
   }
