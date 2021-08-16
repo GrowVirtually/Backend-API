@@ -69,7 +69,7 @@ IMG_API_SECRET=<cloudinary_api_secret>
 
 Install the dependencies and devDependencies and start the server.
 
-```sh
+```shell
 npm install
 npm start
 ```
@@ -82,35 +82,6 @@ npm run start:prod
 ```
 
 For database environments...
-
-Create config/config.json file as follows
-
-```
-{
-  "development": {
-    "username": <db_username>,
-    "password": <db_password>,
-    "database": <db_name>,
-    "host": <host_name>,
-    "dialect": "postgres"
-  },
-  "test": {
-    "username": <db_username>,
-    "password": <db_password>,
-    "database": <db_name>,
-    "host": <host_name>,
-    "dialect": "postgres"
-  },
-  "production": {
-    "username": <db_username>,
-    "password": <db_password>,
-    "database": <db_name>,
-    "host": <host_name>,
-    "dialect": "postgres"
-  }
-}
-
-```
 
 Migrate tables into postgres database
 ```sh
