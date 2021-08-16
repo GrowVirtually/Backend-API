@@ -195,14 +195,14 @@ exports.getAllGigs = catchAsync(async (req, res, next) => {
             include: [
               {
                 model: db.Customer,
-                as: 'customers',
+                as: 'customer',
                 attributes: {
                   exclude: ['userid', 'createdAt', 'updatedAt'],
                 },
                 include: [
                   {
                     model: db.Grower,
-                    as: 'growers',
+                    as: 'grower',
                     attributes: {
                       exclude: ['userid', 'createdAt', 'updatedAt'],
                     },
@@ -218,8 +218,8 @@ exports.getAllGigs = catchAsync(async (req, res, next) => {
 
   locations.sort(
     (loc1, loc2) =>
-      loc2.dataValues.gig.user.customers[0].growers[0].dataValues.points * 1 -
-      loc1.dataValues.gig.user.customers[0].growers[0].dataValues.points * 1
+      loc2.dataValues.gig.user.customer.grower.points * 1 -
+      loc1.dataValues.gig.user.customer.grower.points * 1
   );
 
   res.status(200).json({
@@ -273,12 +273,12 @@ exports.getSingleGig = catchAsync(async (req, res, next) => {
         include: [
           {
             model: db.Customer,
-            as: 'customers',
+            as: 'customer',
             attributes: { exclude: ['createdAt', 'updatedAt'] },
             include: [
               {
                 model: db.Grower,
-                as: 'growers',
+                as: 'grower',
                 attributes: ['growerType'],
               },
             ],

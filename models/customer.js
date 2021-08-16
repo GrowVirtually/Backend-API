@@ -16,14 +16,14 @@ module.exports = (sequelize, DataTypes) => {
         as: 'user',
       });
 
-      Customer.hasMany(models.Consumer, {
+      Customer.hasOne(models.Consumer, {
         foreignKey: 'userid',
-        as: 'consumers',
+        as: 'consumer',
       });
 
-      Customer.hasMany(models.Grower, {
+      Customer.hasOne(models.Grower, {
         foreignKey: 'userid',
-        as: 'growers',
+        as: 'grower',
       });
     }
   }
