@@ -53,6 +53,9 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         defaultValue: false,
       },
+      coordinates: {
+        type: Sequelize.GEOGRAPHY,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

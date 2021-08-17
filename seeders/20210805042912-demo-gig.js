@@ -1,5 +1,7 @@
 'use strict';
 
+const db = require('../models');
+
 module.exports = {
   up: async (queryInterface, Sequelize) =>
     /**
@@ -23,6 +25,11 @@ module.exports = {
         stock: '50.00',
         sold: '20.34',
         expireDate: new Date(),
+        coordinates: db.sequelize.fn(
+          'ST_MakePoint',
+          '6.933906500876093',
+          '79.8502538395318'
+        ),
         createdAt: new Date(),
         updatedAt: new Date(),
         userid: 1,
@@ -38,6 +45,11 @@ module.exports = {
         stock: '50.00',
         sold: '20.34',
         expireDate: new Date(),
+        coordinates: db.sequelize.fn(
+          'ST_MakePoint',
+          '5.951957986708315',
+          '80.54349562603379'
+        ),
         createdAt: new Date(),
         updatedAt: new Date(),
         userid: 2,
