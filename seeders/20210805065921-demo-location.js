@@ -34,6 +34,26 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      {
+        coordinates: db.sequelize.fn(
+          'ST_MakePoint',
+          '6.933906500876093',
+          '79.8502538395318'
+        ),
+        gigid: 3,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        coordinates: db.sequelize.fn(
+          'ST_MakePoint',
+          '6.933906500876093',
+          '79.8502538395318'
+        ),
+        gigid: 4,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
     ]),
   down: async (queryInterface, Sequelize) =>
     /**
