@@ -1,4 +1,4 @@
-const { QueryTypes, Op } = require('sequelize');
+const { Op } = require('sequelize');
 const cloudinary = require('cloudinary');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
@@ -6,8 +6,6 @@ const AppError = require('../utils/appError');
 const db = require('../models');
 
 exports.createGig = catchAsync(async (req, res, next) => {
-  // start the transaction
-
   const {
     gigType,
     gigCategory,
@@ -19,6 +17,7 @@ exports.createGig = catchAsync(async (req, res, next) => {
     stock,
     sold,
     gigDuration,
+    location,
     userid,
   } = req.body;
 
@@ -43,52 +42,24 @@ exports.createGig = catchAsync(async (req, res, next) => {
     currentDate.setTime(currentDate.getTime() + gigDuration * 86400000)
   );
 
-  const t = await db.sequelize.transaction();
-
   try {
     // add gig details to the table
-    let newGig = await db.Gig.create(
-      {
-        gigType,
-        gigCategory,
-        gigTitle,
-        gigDescription,
-        minOrderAmount,
-        unit,
-        unitPrice,
-        stock,
-        sold,
-        expireDate,
-        userid,
-      },
-      {
-        transaction: t,
-      }
-    );
+    let newGig = await db.Gig.create({
+      gigType,
+      gigCategory,
+      gigTitle,
+      gigDescription,
+      minOrderAmount,
+      unit,
+      unitPrice,
+      stock,
+      sold,
+      expireDate,
+      coordinates: db.sequelize.fn('ST_MakePoint', location.lat, location.lng),
+      userid,
+    });
 
     newGig = await newGig.save();
-
-    // add locations to the table
-    await Promise.all(
-      req.body.locations.map(async (location) => {
-        const newLocation = await db.Location.create(
-          {
-            coordinates: db.sequelize.fn(
-              'ST_MakePoint',
-              location.lat,
-              location.lng
-            ),
-            gigid: newGig.dataValues.id,
-          },
-          {
-            transaction: t,
-          }
-        );
-        await newLocation.save();
-      })
-    );
-
-    await t.commit();
 
     res.status(201).json({
       status: 'success',
@@ -97,7 +68,6 @@ exports.createGig = catchAsync(async (req, res, next) => {
       },
     });
   } catch (error) {
-    await t.rollback();
     return next(new AppError('Transaction failed, data not inserted', 502));
   }
 });
@@ -136,24 +106,61 @@ exports.getAllGigs = catchAsync(async (req, res, next) => {
 
   const today = formatDate(new Date());
 
-  const locations = await db.Location.findAll({
-    // attributes: [
-    //   [db.sequelize.fn('distinct', db.sequelize.col('gigid')), 'gigid'],
-    // ],
+  // filters
+  const { gigType, gigCategory, unit, unitPrice, deliverAbility } = req.query;
+
+  const gigs = await db.Gig.findAll({
     attributes: {
       exclude: ['createdAt', 'updatedAt'],
     },
-    // group: ['gigid', 'Location.id'],
-    where: db.sequelize.where(
-      db.sequelize.fn(
-        'filter_by_distance',
-        db.sequelize.col('coordinates'),
-        location.lat,
-        location.lng,
-        distance
-      ),
-      true
-    ),
+    where: {
+      [Op.and]: [
+        db.sequelize.where(
+          db.sequelize.fn(
+            'filter_by_distance',
+            db.sequelize.col('coordinates'),
+            location.lat,
+            location.lng,
+            distance
+          ),
+          true
+        ),
+        db.sequelize.where(
+          db.sequelize.fn('date', db.sequelize.col('expireDate')),
+          '>',
+          today
+        ),
+        // filters
+        gigType && { gigType },
+        gigCategory && { gigCategory },
+        unit && { unit },
+        unitPrice &&
+          unitPrice.gt && {
+            unitPrice: {
+              [Op.gt]: unitPrice.gt,
+            },
+          },
+        unitPrice &&
+          unitPrice.lt && {
+            unitPrice: {
+              [Op.lt]: unitPrice.lt,
+            },
+          },
+        unitPrice &&
+          unitPrice.gte && {
+            unitPrice: {
+              [Op.gte]: unitPrice.gte,
+            },
+          },
+        unitPrice &&
+          unitPrice.lte && {
+            unitPrice: {
+              [Op.lte]: unitPrice.lte,
+            },
+          },
+        deliverAbility && { deliverAbility },
+      ],
+    },
     order: [
       [
         db.sequelize.fn(
@@ -168,46 +175,32 @@ exports.getAllGigs = catchAsync(async (req, res, next) => {
     limit: limit,
     include: [
       {
-        model: db.Gig,
-        as: 'gig',
+        model: db.User,
+        as: 'user',
         attributes: {
-          exclude: ['createdAt', 'updatedAt'],
+          exclude: [
+            'password',
+            'passwordChangedAt',
+            'passwordResetToken',
+            'passwordResetExpires',
+            'createdAt',
+            'updatedAt',
+          ],
         },
-        where: db.sequelize.where(
-          db.sequelize.fn('date', db.sequelize.col('expireDate')),
-          '>',
-          today
-        ),
         include: [
           {
-            model: db.User,
-            as: 'user',
+            model: db.Customer,
+            as: 'customer',
             attributes: {
-              exclude: [
-                'password',
-                'passwordChangedAt',
-                'passwordResetToken',
-                'passwordResetExpires',
-                'createdAt',
-                'updatedAt',
-              ],
+              exclude: ['userid', 'createdAt', 'updatedAt'],
             },
             include: [
               {
-                model: db.Customer,
-                as: 'customer',
+                model: db.Grower,
+                as: 'grower',
                 attributes: {
                   exclude: ['userid', 'createdAt', 'updatedAt'],
                 },
-                include: [
-                  {
-                    model: db.Grower,
-                    as: 'grower',
-                    attributes: {
-                      exclude: ['userid', 'createdAt', 'updatedAt'],
-                    },
-                  },
-                ],
               },
             ],
           },
@@ -216,7 +209,7 @@ exports.getAllGigs = catchAsync(async (req, res, next) => {
     ],
   });
 
-  locations.sort(
+  gigs.sort(
     (loc1, loc2) =>
       loc2.dataValues.gig.user.customer.grower.points * 1 -
       loc1.dataValues.gig.user.customer.grower.points * 1
@@ -224,9 +217,9 @@ exports.getAllGigs = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     status: 'success',
-    results: locations.length,
+    results: gigs.length,
     data: {
-      locations,
+      gigs,
     },
   });
 });
