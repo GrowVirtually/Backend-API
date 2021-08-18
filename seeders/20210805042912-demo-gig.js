@@ -25,6 +25,11 @@ module.exports = {
         stock: '100.00',
         sold: '2.34',
         expireDate: new Date('2021-09-13'),
+        coordinates: db.sequelize.fn(
+          'ST_MakePoint',
+          '5.951957986708315',
+          '80.54349562603379'
+        ),
         createdAt: new Date(),
         updatedAt: new Date(),
         userid: 1,
@@ -40,6 +45,11 @@ module.exports = {
         stock: '55.00',
         sold: '2.34',
         expireDate: new Date('2021-09-21'),
+        coordinates: db.sequelize.fn(
+          'ST_MakePoint',
+          '5.951957986708315',
+          '80.54349562603379'
+        ),
         createdAt: new Date(),
         updatedAt: new Date(),
         userid: 2,

@@ -278,14 +278,6 @@ exports.getSingleGig = catchAsync(async (req, res, next) => {
           },
         ],
       },
-      {
-        model: db.Location,
-        as: 'locations',
-        where: {
-          id: req.params.locationId,
-        },
-        attributes: ['coordinates'],
-      },
     ],
     attributes: { exclude: ['createdAt', 'updatedAt'] },
   });
