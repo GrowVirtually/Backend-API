@@ -30,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
       stock: DataTypes.DECIMAL(10, 2),
       sold: DataTypes.DECIMAL(10, 2),
       expireDate: DataTypes.DATEONLY,
-      deliverAbility: DataTypes.BOOLEAN,
+      deliveryAbility: DataTypes.BOOLEAN,
       coordinates: DataTypes.GEOGRAPHY,
       userid: DataTypes.INTEGER,
     },

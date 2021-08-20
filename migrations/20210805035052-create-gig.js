@@ -49,7 +49,7 @@ module.exports = {
         type: Sequelize.DATEONLY,
         allowNull: false,
       },
-      deliverAbility: {
+      deliveryAbility: {
         type: Sequelize.BOOLEAN,
         defaultValue: false,
       },

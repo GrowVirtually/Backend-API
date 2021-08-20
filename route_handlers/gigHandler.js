@@ -209,11 +209,11 @@ exports.getAllGigs = catchAsync(async (req, res, next) => {
     ],
   });
 
-  gigs.sort(
-    (loc1, loc2) =>
-      loc2.dataValues.gig.user.customer.grower.points * 1 -
-      loc1.dataValues.gig.user.customer.grower.points * 1
-  );
+  // gigs.sort(
+  //   (loc1, loc2) =>
+  //     loc2.dataValues.gig.user.customer.grower.points * 1 -
+  //     loc1.dataValues.gig.user.customer.grower.points * 1
+  // );
 
   res.status(200).json({
     status: 'success',
