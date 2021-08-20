@@ -17,8 +17,8 @@ module.exports = {
       {
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '5.951957986708315',
-          '80.54349562603379'
+          '5.944847331848458',
+          '80.54872149000342'
         ),
         userid: 1,
         createdAt: new Date(),
@@ -27,8 +27,8 @@ module.exports = {
       {
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '6.951957986708315',
-          '81.54349562603379'
+          '6.03705329857342',
+          '80.224814630647'
         ),
         userid: 2,
         createdAt: new Date(),
