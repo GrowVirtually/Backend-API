@@ -106,7 +106,7 @@ exports.getAllGigs = catchAsync(async (req, res, next) => {
   const today = formatDate(new Date());
 
   // filters
-  const { gigType, gigCategory, unit, unitPrice, deliverAbility } = req.query;
+  const { gigType, gigCategory, unit, unitPrice, deliveryAbility } = req.query;
 
   const gigs = await db.Gig.findAll({
     attributes: {
@@ -157,7 +157,7 @@ exports.getAllGigs = catchAsync(async (req, res, next) => {
               [Op.lte]: unitPrice.lte,
             },
           },
-        deliverAbility && { deliverAbility },
+        deliveryAbility && { deliveryAbility },
       ],
     },
     order: [
