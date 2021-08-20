@@ -15,10 +15,6 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'userid',
         as: 'user',
       });
-      Gig.hasMany(models.Location, {
-        foreignKey: 'gigid',
-        as: 'locations',
-      });
     }
   }
 
@@ -33,7 +29,9 @@ module.exports = (sequelize, DataTypes) => {
       unitPrice: DataTypes.DECIMAL(10, 2),
       stock: DataTypes.DECIMAL(10, 2),
       sold: DataTypes.DECIMAL(10, 2),
-      gigDuration: DataTypes.DATEONLY,
+      expireDate: DataTypes.DATEONLY,
+      deliveryAbility: DataTypes.BOOLEAN,
+      coordinates: DataTypes.GEOGRAPHY,
       userid: DataTypes.INTEGER,
     },
     {

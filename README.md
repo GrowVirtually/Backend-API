@@ -37,13 +37,14 @@ Change the directory
 ```sh
 cd Backend-API
 ```
-Create 'config.env' file in the root folder
+Create '.env' file in the root folder
 
 Add following details in it
 
 ```
 NODE_ENV=development
 PORT=5000
+HOST=localhost (if you are in production environment, use 'grovi-backend.herokuapp.com')
 DATABASE_LOCAL=mongodb://localhost:27017/grovi?poolSize=20&writeConcern=majority
 JWT_SECRET=add a secret(random string with 32 characters would be enough)
 JWT_EXPIRES_IN=90d
@@ -60,12 +61,15 @@ EMAIL_HOST=smtp.mailtrap.io
 EMAIL_PORT=2525
 EMAIL_USERNAME=mailtrap-email-username
 EMAIL_PASSWORD=mailtrap-email-password
+IMG_CLOUD_NAME=<cloudinary_cloud_name>
+IMG_API_KEY=<cloudinary_api_key>
+IMG_API_SECRET=<cloudinary_api_secret>
 ```
 
 
 Install the dependencies and devDependencies and start the server.
 
-```sh
+```shell
 npm install
 npm start
 ```
@@ -79,34 +83,7 @@ npm run start:prod
 
 For database environments...
 
-Create config/config.json file as follows
-
-```
-{
-  "development": {
-    "username": <db_username>,
-    "password": <db_password>,
-    "database": <db_name>,
-    "host": <host_name>,
-    "dialect": "postgres"
-  },
-  "test": {
-    "username": <db_username>,
-    "password": <db_password>,
-    "database": <db_name>,
-    "host": <host_name>,
-    "dialect": "postgres"
-  },
-  "production": {
-    "username": <db_username>,
-    "password": <db_password>,
-    "database": <db_name>,
-    "host": <host_name>,
-    "dialect": "postgres"
-  }
-}
-
-```
+#### Execute the functions in the extra/db/functions.sql file in your database
 
 Migrate tables into postgres database
 ```sh

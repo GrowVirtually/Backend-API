@@ -19,6 +19,13 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      {
+        content: 'Delivered on time',
+        consumerId: 2,
+        growerId: 1,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
     ]);
   },
 

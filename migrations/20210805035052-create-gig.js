@@ -45,9 +45,16 @@ module.exports = {
         type: Sequelize.DECIMAL(10, 2),
         allowNull: false,
       },
-      gigDuration: {
+      expireDate: {
         type: Sequelize.DATEONLY,
         allowNull: false,
+      },
+      deliveryAbility: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+      },
+      coordinates: {
+        type: Sequelize.GEOGRAPHY,
       },
       createdAt: {
         allowNull: false,

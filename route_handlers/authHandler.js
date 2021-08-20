@@ -10,12 +10,9 @@ const client = require('twilio')(accountSid, authToken);
 const { Op } = require('sequelize');
 const db = require('../models');
 
-// const { User } = db.User;
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const sendEmail = require('../utils/email');
-
-const refreshTokens = [];
 
 const signToken = (phone) =>
   jwt.sign({ phone }, process.env.JWT_SECRET, {
@@ -205,38 +202,6 @@ exports.signup = catchAsync(async (req, res, next) => {
 //   });
 // };
 
-exports.refresh = catchAsync(async (req, res, next) => {
-  const { refreshToken } = req.cookies;
-  if (!refreshToken)
-    return new AppError('Refresh token not found, please log in again', 403);
-  if (!refreshTokens.includes(refreshToken))
-    return new AppError('Refresh token blocked, login again', 403);
-
-  jwt.verify(refreshToken, process.env.JWT_REFRESH_SECET, (err, phone) => {
-    if (err) {
-      return new AppError('Invalid refresh token', 403);
-    }
-
-    const accessToken = jwt.sign({ data: phone }, process.env.JWT_SECRET, {
-      expiresIn: '30s',
-    });
-    res
-      .status(202)
-      .cookie('accessToken', accessToken, {
-        expires: new Date(new Date().getTime() + 30 * 1000),
-        sameSite: 'strict',
-        httpOnly: true,
-      })
-      .cookie('authSession', true, {
-        expires: new Date(new Date().getTime() + 30 * 1000),
-      })
-      .json({
-        status: 'success',
-        previousSessionExpiry: true,
-      });
-  });
-});
-
 exports.logout = catchAsync(async (req, res, next) => {
   res
     .clearCookie('refreshToken')
@@ -281,6 +246,16 @@ exports.protect = catchAsync(async (req, res, next) => {
   const freshUser = await db.User.findOne({
     where: {
       phone,
+    },
+    attributes: {
+      exclude: [
+        'createdAt',
+        'updatedAt',
+        'password',
+        'passwordChangedAt',
+        'passwordResetToken',
+        'passwordResetExpires',
+      ],
     },
   });
 
@@ -374,6 +349,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
     message: 'Token sent to email',
   });
 });
+
 exports.resetPassword = catchAsync(async (req, res, next) => {
   // 1) Get user based on the token
   const hashedToken = crypto
@@ -406,5 +382,37 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: 'success',
     token,
+  });
+});
+
+exports.updatePassword = catchAsync(async (req, res, next) => {
+  const { currentPassword, newPassword } = req.body;
+
+  if (!currentPassword || !newPassword) {
+    return new AppError('Some values are missing', 404);
+  }
+
+  const user = await db.User.findByPk(req.user.id);
+
+  // check if posted current password is correct
+  if (!(await user.correctPassword(currentPassword, user.password))) {
+    return next(new AppError('Your current password is wrong!', 401));
+  }
+
+  // if so, update password
+  user.password = newPassword;
+  await user.save();
+
+  const token = signToken(user.phone);
+
+  res.status(200).json({
+    status: 'success',
+    token,
+    user: {
+      userid: user.userid,
+      fname: user.fname,
+      lname: user.lname,
+      email: user.email,
+    },
   });
 });
