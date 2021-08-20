@@ -86,7 +86,6 @@ const formatDate = (date) => {
 };
 
 exports.getAllGigs = catchAsync(async (req, res, next) => {
-  console.log(req.query);
   const { location, distance } = req.body;
   let { limit } = req.body;
 
