@@ -5,6 +5,10 @@ const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 const compression = require('compression');
 const cors = require('cors');
+const xss = require('xss-clean');
+const hpp = require('hpp');
+const cloudinary = require('cloudinary');
+const formData = require('express-form-data');
 // const bodyParser = require('body-parser');
 
 const AppError = require('./utils/appError');
@@ -44,12 +48,22 @@ app.use('/api', limiter);
 // get access to the request body of a request object
 // reading data from body into req.body
 app.use(express.json({ limit: '10kb' })); // body parser
+
+// data sanitization against XSS
+app.use(xss());
+
+// prevent parameter pollution
+app.use(hpp());
+
 app.use(express.urlencoded());
 
 app.use(cookieParser());
 app.use(
   cors({
-    origin: `https://grovi-backend.herokuapp.com:${process.env.PORT}`,
+    origin:
+      process.env.NODE_ENV === 'development'
+        ? `http://${process.env.HOST}:${process.env.PORT}`
+        : `https://${process.env.HOST}`,
     credentials: true,
   })
 );
@@ -60,6 +74,14 @@ app.use(compression());
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
   next();
+});
+
+// image upload - cloudinary middleware
+app.use(formData.parse());
+cloudinary.config({
+  cloud_name: process.env.IMG_CLOUD_NAME,
+  api_key: process.env.IMG_API_KEY,
+  api_secret: process.env.IMG_API_SECRET,
 });
 
 // ROUTES

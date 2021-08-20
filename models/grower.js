@@ -20,6 +20,11 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'growerId',
         as: 'reviews',
       });
+
+      Grower.hasMany(models.Order, {
+        foreignKey: 'growerId',
+        as: 'orders',
+      });
     }
   }
 
@@ -36,5 +41,26 @@ module.exports = (sequelize, DataTypes) => {
       modelName: 'Grower',
     }
   );
+
+  Grower.beforeUpdate(async (grower) => {
+    // calculate points
+    let pointBasedOnUserType = 0;
+    switch (grower.growerType) {
+      case 'normal':
+        pointBasedOnUserType = 1;
+        break;
+      case 'premium':
+        pointBasedOnUserType = 2;
+        break;
+      default:
+    }
+
+    // points calculation algorithm
+    // TODO: update this algorithm
+    const algo =
+      (grower.ratings + grower.totalOrders + pointBasedOnUserType) / 3;
+    grower.points = Math.round(algo * 100) / 100;
+  });
+
   return Grower;
 };
