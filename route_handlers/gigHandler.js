@@ -234,23 +234,6 @@ exports.getAllGigs = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.setLocation = catchAsync(async (req, res, next) => {
-  const newLocation = await db.Location.create({
-    longitude: req.body.longitude,
-    latitude: req.body.latitude,
-    gigId: 1,
-  });
-
-  await newLocation.save();
-
-  res.status(201).json({
-    status: 'success',
-    data: {
-      location: newLocation,
-    },
-  });
-});
-
 exports.uploadImg = catchAsync(async (req, res, next) => {
   cloudinary.uploader.upload(req.files.img.path, (result) => {
     if (result.error) {
