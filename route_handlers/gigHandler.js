@@ -108,6 +108,15 @@ exports.getAllGigs = catchAsync(async (req, res, next) => {
   // filters
   const { gigType, gigCategory, unit, unitPrice, deliveryAbility } = req.query;
 
+  // sorting
+  let { sort } = req.query;
+  let sortOrder = 'ASC';
+
+  if (sort[0] === '-') {
+    sortOrder = 'DESC';
+    sort = sort.substring(1);
+  }
+
   const gigs = await db.Gig.findAll({
     attributes: {
       exclude: ['createdAt', 'updatedAt'],
@@ -161,14 +170,16 @@ exports.getAllGigs = catchAsync(async (req, res, next) => {
       ],
     },
     order: [
-      [
-        db.sequelize.fn(
-          'sort_by_location',
-          db.sequelize.col('coordinates'),
-          location.lng,
-          location.lat
-        ),
-      ],
+      sort
+        ? [sort, sortOrder]
+        : [
+            db.sequelize.fn(
+              'sort_by_location',
+              db.sequelize.col('coordinates'),
+              location.lng,
+              location.lat
+            ),
+          ],
     ],
     offset: offset,
     limit: limit,
