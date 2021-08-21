@@ -55,7 +55,7 @@ exports.createGig = catchAsync(async (req, res, next) => {
       stock,
       sold,
       expireDate,
-      coordinates: db.sequelize.fn('ST_MakePoint', location.lat, location.lng),
+      coordinates: db.sequelize.fn('ST_MakePoint', location.lng, location.lat),
       userid,
     });
 
@@ -86,7 +86,6 @@ const formatDate = (date) => {
 };
 
 exports.getAllGigs = catchAsync(async (req, res, next) => {
-  console.log(req.query);
   const { location, distance } = req.body;
   let { limit } = req.body;
 
@@ -107,7 +106,7 @@ exports.getAllGigs = catchAsync(async (req, res, next) => {
   const today = formatDate(new Date());
 
   // filters
-  const { gigType, gigCategory, unit, unitPrice, deliverAbility } = req.query;
+  const { gigType, gigCategory, unit, unitPrice, deliveryAbility } = req.query;
 
   const gigs = await db.Gig.findAll({
     attributes: {
@@ -119,8 +118,8 @@ exports.getAllGigs = catchAsync(async (req, res, next) => {
           db.sequelize.fn(
             'filter_by_distance',
             db.sequelize.col('coordinates'),
-            location.lat,
             location.lng,
+            location.lat,
             distance
           ),
           true
@@ -158,7 +157,7 @@ exports.getAllGigs = catchAsync(async (req, res, next) => {
               [Op.lte]: unitPrice.lte,
             },
           },
-        deliverAbility && { deliverAbility },
+        deliveryAbility && { deliveryAbility },
       ],
     },
     order: [
@@ -166,8 +165,8 @@ exports.getAllGigs = catchAsync(async (req, res, next) => {
         db.sequelize.fn(
           'sort_by_location',
           db.sequelize.col('coordinates'),
-          location.lat,
-          location.lng
+          location.lng,
+          location.lat
         ),
       ],
     ],

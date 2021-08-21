@@ -27,8 +27,8 @@ module.exports = {
         expireDate: new Date('2021-09-13'),
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '5.951957986708315',
-          '80.54349562603379'
+          '80.54349562603379',
+          '5.951957986708315'
         ),
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -47,8 +47,8 @@ module.exports = {
         expireDate: new Date('2021-09-21'),
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '5.951957986708315',
-          '80.54349562603379'
+          '80.54349562603379',
+          '5.951957986708315'
         ),
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -67,8 +67,8 @@ module.exports = {
         expireDate: new Date(),
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '6.933906500876093',
-          '79.8502538395318'
+          '79.8502538395318',
+          '6.933906500876093'
         ),
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -87,8 +87,8 @@ module.exports = {
         expireDate: new Date(),
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '5.951957986708315',
-          '80.54349562603379'
+          '80.54349562603379',
+          '5.951957986708315'
         ),
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -109,8 +109,8 @@ module.exports = {
         deliveryAbility: true,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '5.951957986708315',
-          '80.54349562603379'
+          '80.54349562603379',
+          '5.951957986708315'
         ),
         createdAt: '2021-08-17T05:31:29-07:00',
         updatedAt: '2021-08-17T14:12:17-07:00',
@@ -131,8 +131,8 @@ module.exports = {
         deliveryAbility: false,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '5.951957986708315',
-          '80.54349562603379'
+          '80.54349562603379',
+          '5.951957986708315'
         ),
         createdAt: '2021-08-17T14:16:28-07:00',
         updatedAt: '2021-08-17T00:43:48-07:00',
@@ -152,8 +152,8 @@ module.exports = {
         deliveryAbility: true,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '5.951957986708315',
-          '80.54349562603379'
+          '80.54349562603379',
+          '5.951957986708315'
         ),
         createdAt: '2021-08-17T06:50:11-07:00',
         updatedAt: '2021-08-17T18:20:52-07:00',
@@ -173,8 +173,8 @@ module.exports = {
         deliveryAbility: true,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '5.951957986708315',
-          '80.54349562603379'
+          '80.54349562603379',
+          '5.951957986708315'
         ),
         createdAt: '2021-08-17T11:43:28-07:00',
         updatedAt: '2021-08-17T08:56:53-07:00',
@@ -194,8 +194,8 @@ module.exports = {
         deliveryAbility: false,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '5.951957986708315',
-          '80.54349562603379'
+          '80.54349562603379',
+          '5.951957986708315'
         ),
         createdAt: '2021-08-17T10:10:58-07:00',
         updatedAt: '2021-08-17T23:07:07-07:00',
@@ -215,8 +215,8 @@ module.exports = {
         deliveryAbility: true,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '5.951957986708315',
-          '80.54349562603379'
+          '80.54349562603379',
+          '5.951957986708315'
         ),
         createdAt: '2021-08-17T23:10:45-07:00',
         updatedAt: '2021-08-17T09:57:37-07:00',
@@ -236,8 +236,8 @@ module.exports = {
         deliveryAbility: true,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '5.951957986708315',
-          '80.54349562603379'
+          '80.54349562603379',
+          '5.951957986708315'
         ),
         createdAt: '2021-08-17T13:30:13-07:00',
         updatedAt: '2021-08-17T14:47:20-07:00',
@@ -258,8 +258,8 @@ module.exports = {
         deliveryAbility: true,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '5.951957986708315',
-          '80.54349562603379'
+          '80.54349562603379',
+          '5.951957986708315'
         ),
         createdAt: '2021-08-17T08:31:19-07:00',
         updatedAt: '2021-08-17T13:29:43-07:00',
@@ -280,8 +280,8 @@ module.exports = {
         deliveryAbility: true,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '5.951957986708315',
-          '80.54349562603379'
+          '80.54349562603379',
+          '5.951957986708315'
         ),
         createdAt: '2021-08-17T04:18:49-07:00',
         updatedAt: '2021-08-17T17:47:51-07:00',
@@ -302,8 +302,8 @@ module.exports = {
         deliveryAbility: true,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '5.951957986708315',
-          '80.54349562603379'
+          '80.54349562603379',
+          '5.951957986708315'
         ),
         createdAt: '2021-08-17T04:59:55-07:00',
         updatedAt: '2021-08-17T02:02:26-07:00',
@@ -323,8 +323,8 @@ module.exports = {
         deliveryAbility: true,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '5.951957986708315',
-          '80.54349562603379'
+          '80.54349562603379',
+          '5.951957986708315'
         ),
         createdAt: '2021-08-17T04:27:14-07:00',
         updatedAt: '2021-08-17T09:45:08-07:00',
@@ -344,8 +344,8 @@ module.exports = {
         deliveryAbility: false,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '5.951957986708315',
-          '80.54349562603379'
+          '80.54349562603379',
+          '5.951957986708315'
         ),
         createdAt: '2021-08-17T10:46:03-07:00',
         updatedAt: '2021-08-17T07:46:11-07:00',
@@ -366,8 +366,8 @@ module.exports = {
         deliveryAbility: true,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '5.951957986708315',
-          '80.54349562603379'
+          '80.54349562603379',
+          '5.951957986708315'
         ),
         createdAt: '2021-08-17T16:24:27-07:00',
         updatedAt: '2021-08-17T13:09:03-07:00',
@@ -388,8 +388,8 @@ module.exports = {
         deliveryAbility: true,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '5.951957986708315',
-          '80.54349562603379'
+          '80.54349562603379',
+          '5.951957986708315'
         ),
         createdAt: '2021-08-17T17:13:12-07:00',
         updatedAt: '2021-08-17T14:15:09-07:00',
@@ -410,8 +410,8 @@ module.exports = {
         deliveryAbility: true,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '5.951957986708315',
-          '80.54349562603379'
+          '80.54349562603379',
+          '5.951957986708315'
         ),
         createdAt: '2021-08-17T19:32:16-07:00',
         updatedAt: '2021-08-17T21:29:14-07:00',
@@ -432,8 +432,8 @@ module.exports = {
         deliveryAbility: false,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '5.951957986708315',
-          '80.54349562603379'
+          '80.54349562603379',
+          '5.951957986708315'
         ),
         createdAt: '2021-08-17T07:32:46-07:00',
         updatedAt: '2021-08-17T09:52:46-07:00',
@@ -454,8 +454,8 @@ module.exports = {
         deliveryAbility: false,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '6.038773635825261',
-          '80.22490998891791'
+          '80.22490998891791',
+          '6.038773635825261'
         ),
         createdAt: '2021-08-17T01:08:14-07:00',
         updatedAt: '2021-08-17T11:27:11-07:00',
@@ -475,8 +475,8 @@ module.exports = {
         deliveryAbility: false,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '6.038397544142301',
-          '80.22840268633216'
+          '80.22840268633216',
+          '6.038397544142301'
         ),
         createdAt: '2021-08-17T22:44:54-07:00',
         updatedAt: '2021-08-17T01:13:40-07:00',
@@ -497,8 +497,8 @@ module.exports = {
         deliveryAbility: true,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '6.037225021336941',
-          '80.22985983079478'
+          '80.22985983079478',
+          '6.037225021336941'
         ),
         createdAt: '2021-08-17T13:51:01-07:00',
         updatedAt: '2021-08-17T05:56:43-07:00',
@@ -519,8 +519,8 @@ module.exports = {
         deliveryAbility: true,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '6.039415203387574',
-          '80.22767967572094'
+          '80.22767967572094',
+          '6.039415203387574'
         ),
         createdAt: '2021-08-17T00:26:08-07:00',
         updatedAt: '2021-08-17T11:46:09-07:00',
@@ -541,8 +541,8 @@ module.exports = {
         deliveryAbility: false,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '6.036959544122989',
-          '80.22453179875204'
+          '80.22453179875204',
+          '6.036959544122989'
         ),
         createdAt: '2021-08-17T09:29:55-07:00',
         updatedAt: '2021-08-17T21:23:49-07:00',
@@ -563,8 +563,8 @@ module.exports = {
         deliveryAbility: false,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '6.035178206482587',
-          '80.21020164940684'
+          '80.21020164940684',
+          '6.035178206482587'
         ),
         createdAt: '2021-08-17T05:48:25-07:00',
         updatedAt: '2021-08-17T04:09:15-07:00',
@@ -585,8 +585,8 @@ module.exports = {
         deliveryAbility: false,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '5.942841300164974',
-          '80.55291561837097'
+          '80.55291561837097',
+          '5.942841300164974'
         ),
         createdAt: '2021-08-17T15:57:11-07:00',
         updatedAt: '2021-08-17T12:17:24-07:00',
@@ -607,8 +607,8 @@ module.exports = {
         deliveryAbility: false,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '5.944932290135793',
-          '80.54350535718483'
+          '80.54350535718483',
+          '5.944932290135793'
         ),
         createdAt: '2021-08-17T21:15:01-07:00',
         updatedAt: '2021-08-17T08:01:07-07:00',
@@ -629,8 +629,8 @@ module.exports = {
         deliveryAbility: false,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '5.942951934754017',
-          '80.55142510418781'
+          '80.55142510418781',
+          '5.942951934754017'
         ),
         createdAt: '2021-08-17T14:56:04-07:00',
         updatedAt: '2021-08-17T23:51:51-07:00',
@@ -650,8 +650,8 @@ module.exports = {
         deliveryAbility: true,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '5.944954416971299',
-          '80.55304909725305'
+          '80.55304909725305',
+          '5.944954416971299'
         ),
         createdAt: '2021-08-17T22:12:15-07:00',
         updatedAt: '2021-08-17T15:38:46-07:00',
@@ -672,8 +672,8 @@ module.exports = {
         deliveryAbility: true,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '5.9474989971194425',
-          '80.54849969202239'
+          '80.54849969202239',
+          '5.9474989971194425'
         ),
         createdAt: '2021-08-17T01:36:17-07:00',
         updatedAt: '2021-08-17T13:35:01-07:00',

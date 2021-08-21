@@ -8,6 +8,7 @@ const {
   resetPassword,
   sample,
   protect,
+  restrictTo,
   updatePassword,
 } = require('../route_handlers/authHandler');
 
@@ -16,7 +17,7 @@ const router = express.Router();
 router.post('/signup', signup);
 router.post('/login', login);
 
-router.get('/test', protect, sample);
+router.get('/test', protect, restrictTo('admin', 'user'), sample);
 
 router.post('/forgotPassword', forgotPassword);
 router.patch('/resetPassword/:token', resetPassword);
