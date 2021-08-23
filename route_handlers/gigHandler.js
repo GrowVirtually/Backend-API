@@ -86,12 +86,9 @@ const formatDate = (date) => {
 };
 
 exports.getAllGigs = catchAsync(async (req, res, next) => {
-  const { location, distance } = req.body;
-  let { limit } = req.body;
+  const { location } = req.body;
 
-  const { offset } = req.body;
-
-  if (!location || !distance || typeof offset === 'undefined') {
+  if (!location) {
     return next(new AppError('Some values missing', 400));
   }
 
@@ -99,16 +96,27 @@ exports.getAllGigs = catchAsync(async (req, res, next) => {
     return next(new AppError('Latitude or Longitude missing', 400));
   }
 
-  if (!limit) {
-    limit = 10;
-  }
-
   const today = formatDate(new Date());
 
   // filters
   const { gigType, gigCategory, unit, unitPrice, deliveryAbility } = req.query;
+  const distance = req.query.distance || 1000;
 
-  const gigs = await db.Gig.findAll({
+  // sorting
+  let { sort } = req.query;
+  let sortOrder = 'ASC';
+
+  if (sort[0] === '-') {
+    sortOrder = 'DESC';
+    sort = sort.substring(1);
+  }
+
+  // pagination
+  const page = req.query.page * 1 || 1;
+  const limit = req.query.limit * 1 || 10;
+  const offset = (page - 1) * limit;
+
+  const gigs = await db.Gig.findAndCountAll({
     attributes: {
       exclude: ['createdAt', 'updatedAt'],
     },
@@ -161,14 +169,16 @@ exports.getAllGigs = catchAsync(async (req, res, next) => {
       ],
     },
     order: [
-      [
-        db.sequelize.fn(
-          'sort_by_location',
-          db.sequelize.col('coordinates'),
-          location.lng,
-          location.lat
-        ),
-      ],
+      sort
+        ? [sort, sortOrder]
+        : [
+            db.sequelize.fn(
+              'sort_by_location',
+              db.sequelize.col('coordinates'),
+              location.lng,
+              location.lat
+            ),
+          ],
     ],
     offset: offset,
     limit: limit,
@@ -208,6 +218,10 @@ exports.getAllGigs = catchAsync(async (req, res, next) => {
     ],
   });
 
+  if (offset >= gigs.count) {
+    return next(new AppError('Cannot fetch more results', 404));
+  }
+
   // gigs.sort(
   //   (loc1, loc2) =>
   //     loc2.dataValues.gig.user.customer.grower.points * 1 -
@@ -216,26 +230,9 @@ exports.getAllGigs = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     status: 'success',
-    results: gigs.length,
+    results: gigs.rows.length,
     data: {
-      gigs,
-    },
-  });
-});
-
-exports.setLocation = catchAsync(async (req, res, next) => {
-  const newLocation = await db.Location.create({
-    longitude: req.body.longitude,
-    latitude: req.body.latitude,
-    gigId: 1,
-  });
-
-  await newLocation.save();
-
-  res.status(201).json({
-    status: 'success',
-    data: {
-      location: newLocation,
+      gigs: gigs.rows,
     },
   });
 });
