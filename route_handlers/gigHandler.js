@@ -106,7 +106,7 @@ exports.getAllGigs = catchAsync(async (req, res, next) => {
   let { sort } = req.query;
   let sortOrder = 'ASC';
 
-  if (sort[0] === '-') {
+  if (sort && sort[0] === '-') {
     sortOrder = 'DESC';
     sort = sort.substring(1);
   }
