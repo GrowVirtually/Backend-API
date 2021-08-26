@@ -36,3 +36,34 @@ exports.searchGigs = catchAsync(async (req, res, next) => {
     },
   });
 });
+
+exports.searchUsers = catchAsync(async (req, res, next) => {
+  if (!req.params.param || !req.params.value) {
+    return next(new AppError('Values are missing', 400));
+  }
+
+  const options = { where: {} };
+
+  switch (req.params.param) {
+    case 'nic':
+      options.where = { nic: { [Op.iLike]: `%${req.params.value}` } };
+      break;
+    case 'phone':
+      options.where.phone = req.params.value;
+      break;
+    case 'email':
+      options.where.email = req.params.value;
+      break;
+    default:
+      break;
+  }
+
+  const users = await db.User.findAll(options);
+
+  res.status(201).json({
+    status: 'success',
+    data: {
+      users,
+    },
+  });
+});
