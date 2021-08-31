@@ -214,9 +214,9 @@ exports.getAllGigs = catchAsync(async (req, res, next) => {
     ],
   });
 
-  // if (offset >= gigs.count) {
-  //   return next(new AppError('Cannot fetch more results', 404));
-  // }
+  if (offset >= gigs.count) {
+    return next(new AppError('Cannot fetch more results', 404));
+  }
 
   // gigs.sort(
   //   (loc1, loc2) =>
