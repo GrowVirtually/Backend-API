@@ -1,6 +1,7 @@
 const { promisify } = require('util');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
+const cloudinary = require('cloudinary');
 
 const smsKey = process.env.SMS_SECRET_KEY;
 
@@ -145,12 +146,25 @@ exports.login = catchAsync(async (req, res, next) => {
 });
 
 exports.signup = catchAsync(async (req, res, next) => {
-  // const newUser = await createUser(req, res, next);
+  let imgLink = '';
+  if (req.files.img.originalFilename) {
+    const img = await cloudinary.uploader.upload(
+      req.files.img.path,
+      (result) => {
+        if (result.error) {
+          return next(new AppError('Error uploading photo', 400));
+        }
+      }
+    );
+    imgLink = img.url;
+  }
+
   const newUser = await db.User.create({
     fname: req.body.fname,
     lname: req.body.lname,
     phone: req.body.phone,
     email: req.body.email,
+    imgLink,
     password: req.body.password,
   });
   await newUser.save();
