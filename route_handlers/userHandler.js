@@ -3,12 +3,17 @@ const AppError = require('../utils/appError');
 
 const db = require('../models');
 
-exports.getMe = catchAsync(async (req, res, next) => {
-  if (!req.body.userId) {
+exports.getMe = (req, res, next) => {
+  req.params.userId = req.user.dataValues.id;
+  next();
+};
+
+exports.getUser = catchAsync(async (req, res, next) => {
+  if (!req.params.userId) {
     return next(new AppError('Values are missing', 400));
   }
 
-  const user = await db.User.findByPk(req.body.userId, {
+  const user = await db.User.findByPk(req.params.userId, {
     attributes: {
       exclude: [
         'password',
