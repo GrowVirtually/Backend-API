@@ -11,6 +11,7 @@ const {
   restrictTo,
   updatePassword,
 } = require('../route_handlers/authHandler');
+const { getMe } = require('../route_handlers/userHandler');
 
 const router = express.Router();
 
@@ -23,6 +24,8 @@ router.post('/forgotPassword', forgotPassword);
 router.patch('/resetPassword/:token', resetPassword);
 router.post('/sendOTP', sendOTP);
 router.post('/verifyOTP', verifyOTP);
+
+router.post('/me', getMe);
 
 // protect all the routes after this middleware
 router.use(protect);

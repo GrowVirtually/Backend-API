@@ -55,7 +55,7 @@ exports.createGig = catchAsync(async (req, res, next) => {
       stock,
       sold,
       expireDate,
-      coordinates: db.sequelize.fn('ST_MakePoint', location.lng, location.lat),
+      coordinates: db.sequelize.fn('ST_MakePoint', location.lat, location.lng),
       userid,
     });
 
@@ -86,13 +86,9 @@ const formatDate = (date) => {
 };
 
 exports.getAllGigs = catchAsync(async (req, res, next) => {
-  const { location } = req.body;
+  const [lat, lng] = req.params.lnglat.split(',');
 
-  if (!location) {
-    return next(new AppError('Some values missing', 400));
-  }
-
-  if (!location.lat || !location.lng) {
+  if (!lat || !lng) {
     return next(new AppError('Latitude or Longitude missing', 400));
   }
 
@@ -126,8 +122,8 @@ exports.getAllGigs = catchAsync(async (req, res, next) => {
           db.sequelize.fn(
             'filter_by_distance',
             db.sequelize.col('coordinates'),
-            location.lng,
-            location.lat,
+            lat,
+            lng,
             distance
           ),
           true
@@ -175,8 +171,8 @@ exports.getAllGigs = catchAsync(async (req, res, next) => {
             db.sequelize.fn(
               'sort_by_location',
               db.sequelize.col('coordinates'),
-              location.lng,
-              location.lat
+              lat,
+              lng
             ),
           ],
     ],
@@ -218,9 +214,9 @@ exports.getAllGigs = catchAsync(async (req, res, next) => {
     ],
   });
 
-  if (offset >= gigs.count) {
-    return next(new AppError('Cannot fetch more results', 404));
-  }
+  // if (offset >= gigs.count) {
+  //   return next(new AppError('Cannot fetch more results', 404));
+  // }
 
   // gigs.sort(
   //   (loc1, loc2) =>
