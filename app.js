@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
@@ -22,6 +24,7 @@ const growerRouter = require('./routes/growerRoutes');
 const adminRouter = require('./routes/adminRoutes');
 
 const app = express();
+
 
 // GLOBAL MIDDLEWARES
 // Set security HTTP headers

@@ -11,7 +11,7 @@ const { protect } = require('../route_handlers/authHandler');
 
 const router = express.Router();
 
-router.use(protect);
+// router.use(protect);
 
 // routes
 router.route('/').post(createGig);
