@@ -55,7 +55,7 @@ exports.createGig = catchAsync(async (req, res, next) => {
       stock,
       sold,
       expireDate,
-      coordinates: db.sequelize.fn('ST_MakePoint', location.lng, location.lat),
+      coordinates: db.sequelize.fn('ST_MakePoint', location.lat, location.lng),
       userid,
     });
 
@@ -86,13 +86,9 @@ const formatDate = (date) => {
 };
 
 exports.getAllGigs = catchAsync(async (req, res, next) => {
-  const { location } = req.body;
+  const [lat, lng] = req.params.lnglat.split(',');
 
-  if (!location) {
-    return next(new AppError('Some values missing', 400));
-  }
-
-  if (!location.lat || !location.lng) {
+  if (!lat || !lng) {
     return next(new AppError('Latitude or Longitude missing', 400));
   }
 
@@ -106,7 +102,7 @@ exports.getAllGigs = catchAsync(async (req, res, next) => {
   let { sort } = req.query;
   let sortOrder = 'ASC';
 
-  if (sort[0] === '-') {
+  if (sort && sort[0] === '-') {
     sortOrder = 'DESC';
     sort = sort.substring(1);
   }
@@ -126,8 +122,8 @@ exports.getAllGigs = catchAsync(async (req, res, next) => {
           db.sequelize.fn(
             'filter_by_distance',
             db.sequelize.col('coordinates'),
-            location.lng,
-            location.lat,
+            lat,
+            lng,
             distance
           ),
           true
@@ -175,8 +171,8 @@ exports.getAllGigs = catchAsync(async (req, res, next) => {
             db.sequelize.fn(
               'sort_by_location',
               db.sequelize.col('coordinates'),
-              location.lng,
-              location.lat
+              lat,
+              lng
             ),
           ],
     ],
