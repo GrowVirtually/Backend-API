@@ -3,12 +3,15 @@ const express = require('express');
 const {
   createGig,
   getAllGigs,
-  setLocation,
   uploadImg,
   getSingleGig,
 } = require('../route_handlers/gigHandler');
 
+const { protect } = require('../route_handlers/authHandler');
+
 const router = express.Router();
+
+router.use(protect);
 
 // routes
 router.route('/').post(createGig);
