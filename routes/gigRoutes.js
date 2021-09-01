@@ -3,7 +3,6 @@ const express = require('express');
 const {
   createGig,
   getAllGigs,
-  setLocation,
   uploadImg,
   getSingleGig,
 } = require('../route_handlers/gigHandler');

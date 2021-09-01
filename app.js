@@ -70,12 +70,6 @@ app.use(
 
 app.use(compression());
 
-// Test middleware
-app.use((req, res, next) => {
-  req.requestTime = new Date().toISOString();
-  next();
-});
-
 // image upload - cloudinary middleware
 app.use(formData.parse());
 cloudinary.config({
