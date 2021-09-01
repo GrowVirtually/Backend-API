@@ -36,7 +36,7 @@ describe('Testing create gig functionality', () => {
       });
 
     expect(response.statusCode).toBe(201);
-  }, 40000);
+  });
 
   afterAll(async () => {
     await thisDB.sequelize.close();
