@@ -42,25 +42,33 @@ Create '.env' file in the root folder
 Add following details in it
 
 ```
+# server
 NODE_ENV=development
 PORT=5000
 HOST=localhost (if you are in production environment, use 'grovi-backend.herokuapp.com')
-DATABASE_LOCAL=mongodb://localhost:27017/grovi?poolSize=20&writeConcern=majority
-JWT_SECRET=add a secret(random string with 32 characters would be enough)
+
+# authentication
+JWT_SECRET=<add a secret(random string with 32 characters would be enough)>
 JWT_EXPIRES_IN=90d
-TWILIO_ACCOUNT_SID=your twilio account sid
-TWILIO_AUTH_TOKEN=your twilio auth token
-TWILIO_PHONE_NUMBER=your twilio phone number
-SMS_SECRET_KEY=add a secret(random string with 32 characters would be enough)
+TWILIO_ACCOUNT_SID=<your_twilio_account_sid>
+TWILIO_AUTH_TOKEN=<your_twilio_auth_token>
+TWILIO_PHONE_NUMBER=<your_twilio_phone_number>
+SMS_SECRET_KEY=<add a secret(random string with 32 characters would be enough)>
+
+# database
 DB_USER=postgres
 DB_HOST=localhost
 DB_DATABASE=grovi
 DB_PWD=admin
 DB_PORT=5432
+
+# email
 EMAIL_HOST=smtp.mailtrap.io
 EMAIL_PORT=2525
-EMAIL_USERNAME=mailtrap-email-username
-EMAIL_PASSWORD=mailtrap-email-password
+EMAIL_USERNAME=<mailtrap_email_username>
+EMAIL_PASSWORD=<mailtrap_email_password>
+
+# image upload
 IMG_CLOUD_NAME=<cloudinary_cloud_name>
 IMG_API_KEY=<cloudinary_api_key>
 IMG_API_SECRET=<cloudinary_api_secret>
