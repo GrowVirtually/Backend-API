@@ -147,7 +147,7 @@ exports.login = catchAsync(async (req, res, next) => {
 
 exports.signup = catchAsync(async (req, res, next) => {
   let imgLink = '';
-  if (req.files.img.originalFilename) {
+  if (req.files.img && req.files.img.originalFilename) {
     const img = await cloudinary.uploader.upload(
       req.files.img.path,
       (result) => {
