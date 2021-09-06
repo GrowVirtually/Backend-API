@@ -146,25 +146,11 @@ exports.login = catchAsync(async (req, res, next) => {
 });
 
 exports.signup = catchAsync(async (req, res, next) => {
-  let imgLink = '';
-  if (req.files.img && req.files.img.originalFilename) {
-    const img = await cloudinary.uploader.upload(
-      req.files.img.path,
-      (result) => {
-        if (result.error) {
-          return next(new AppError('Error uploading photo', 400));
-        }
-      }
-    );
-    imgLink = img.url;
-  }
-
   const newUser = await db.User.create({
     fname: req.body.fname,
     lname: req.body.lname,
     phone: req.body.phone,
     email: req.body.email,
-    imgLink,
     password: req.body.password,
   });
   await newUser.save();
