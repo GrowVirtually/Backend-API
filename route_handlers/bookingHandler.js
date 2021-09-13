@@ -14,6 +14,7 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
     success_url: `${req.protocol}://${req.get('host')}/gigs/${
       req.params.gigId
     }`,
+    mode: 'payment',
     cancel_url: `${req.protocol}://${req.get('host')}/gigs/${req.params.gigId}`,
     customer_email: req.user.email,
     client_reference_id: req.params.gigId,
@@ -21,7 +22,7 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
       {
         name: gig.gigTitle,
         description: gig.gigDescription,
-        amount: 100,
+        price: gig.unitPrice * req.params.units * 100,
         currency: 'lkr',
         quantity: 1,
       },

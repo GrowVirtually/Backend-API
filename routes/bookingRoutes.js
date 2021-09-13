@@ -5,6 +5,6 @@ const { getCheckoutSession } = require('../route_handlers/bookingHandler');
 const router = express.Router();
 router.use(protect);
 
-router.get('/checkout-session/:gigId', getCheckoutSession);
+router.get('/checkout-session/:gigId/:units', getCheckoutSession);
 
 module.exports = router;
