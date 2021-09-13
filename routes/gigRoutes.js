@@ -11,11 +11,11 @@ const { protect } = require('../route_handlers/authHandler');
 
 const router = express.Router();
 
-// router.use(protect);
+router.use(protect);
 
 // routes
 router.route('/').post(createGig);
-router.route('/:lnglat').get(getAllGigs);
+// router.route('/:lnglat').get(getAllGigs);
 router.route('/:gigId').get(getSingleGig);
 router.route('/upload').post(uploadImg); // testing for img upload
 
