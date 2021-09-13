@@ -22,7 +22,7 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
       {
         name: gig.gigTitle,
         description: gig.gigDescription,
-        price: gig.unitPrice * req.params.units * 100,
+        amount: gig.unitPrice * req.params.units * 100,
         currency: 'lkr',
         quantity: 1,
       },
@@ -30,7 +30,7 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
   });
 
   // 3) create session as response
-  res.send(200).json({
+  res.status(200).json({
     status: 'success',
     session,
   });
