@@ -11,7 +11,12 @@ const {
   restrictTo,
   updatePassword,
 } = require('../route_handlers/authHandler');
-const { getMe, getUser, updateUser } = require('../route_handlers/userHandler');
+const {
+  getMe,
+  getUser,
+  updateUser,
+  updateProfilePic,
+} = require('../route_handlers/userHandler');
 
 const router = express.Router();
 
@@ -27,6 +32,7 @@ router.post('/verifyOTP', verifyOTP);
 
 router.use(protect); // protect all the routes after this middleware
 router.route('/me').get(getMe, getUser).patch(getMe, updateUser);
+router.route('/me/picture').patch(getMe, updateProfilePic);
 
 router.patch('/updateMyPassword', updatePassword);
 

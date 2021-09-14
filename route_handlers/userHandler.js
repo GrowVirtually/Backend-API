@@ -40,6 +40,39 @@ exports.updateUser = catchAsync(async (req, res, next) => {
     return next(new AppError('Values are missing', 400));
   }
 
+  const result = await db.User.update(
+    {
+      fname: req.body.fname,
+      lname: req.body.lname,
+      phone: req.body.phone,
+      dob: req.body.dob,
+      nic: req.body.nic,
+      email: req.body.email,
+      gender: req.body.gender,
+    },
+    {
+      where: {
+        id: req.params.userId,
+      },
+      returning: true,
+    }
+  );
+
+  const user = result[1][0];
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      user,
+    },
+  });
+});
+
+exports.updateProfilePic = catchAsync(async (req, res, next) => {
+  if (!req.params.userId) {
+    return next(new AppError('Values are missing', 400));
+  }
+
   const link = await db.User.findByPk(req.params.userId, {
     attributes: ['imgLink'],
   });
@@ -71,13 +104,6 @@ exports.updateUser = catchAsync(async (req, res, next) => {
 
   const result = await db.User.update(
     {
-      fname: req.body.fname,
-      lname: req.body.lname,
-      phone: req.body.phone,
-      dob: req.body.dob,
-      nic: req.body.nic,
-      email: req.body.email,
-      gender: req.body.gender,
       imgLink,
     },
     {
@@ -85,7 +111,6 @@ exports.updateUser = catchAsync(async (req, res, next) => {
         id: req.params.userId,
       },
       returning: true,
-      attributes: { exclude: ['fname'] },
     }
   );
 
