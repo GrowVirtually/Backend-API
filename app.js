@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
@@ -20,6 +22,7 @@ const userRouter = require('./routes/userRoutes');
 const consumerRouter = require('./routes/consumerRoutes');
 const growerRouter = require('./routes/growerRoutes');
 const adminRouter = require('./routes/adminRoutes');
+const bookingRouter = require('./routes/bookingRoutes');
 
 const app = express();
 
@@ -87,6 +90,7 @@ app.use('/api/v1/users', userRouter);
 app.use('/api/v1/consumers', consumerRouter);
 app.use('/api/v1/growers', growerRouter);
 app.use('/api/v1/admins', adminRouter);
+app.use('/api/v1/bookings', bookingRouter);
 
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
