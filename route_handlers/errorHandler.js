@@ -19,9 +19,16 @@ const sendErrorDev = (err, res) => {
 };
 
 const sendErrProd = (err, res) => {
-  // Operational, trusted error: send message to client
-  // Ex: user trying to access a route doesn't exist or invalid inputs
-  if (err.isOperational) {
+  res.status(err.statusCode).json({
+    status: err.status,
+    error: err,
+    message: err.message,
+    stack: err.stack,
+  });
+  /**
+   // Operational, trusted error: send message to client
+   // Ex: user trying to access a route doesn't exist or invalid inputs
+   if (err.isOperational) {
     res.status(err.statusCode).json({
       status: err.status,
       message: err.message,
@@ -40,6 +47,7 @@ const sendErrProd = (err, res) => {
       message: 'Something went very wrong!',
     });
   }
+   **/
 };
 
 module.exports = (err, req, res, next) => {
