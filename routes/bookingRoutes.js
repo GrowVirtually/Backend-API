@@ -6,5 +6,4 @@ const router = express.Router();
 router.use(protect);
 
 router.get('/checkout-session/:gigId/:units', getCheckoutSession);
-
 module.exports = router;
