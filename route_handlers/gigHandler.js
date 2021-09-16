@@ -283,11 +283,28 @@ exports.getSingleGig = catchAsync(async (req, res, next) => {
 });
 
 exports.searchGigs = catchAsync(async (req, res, next) => {
+  if (!req.params.title) {
+    return next(new AppError('Search key word not found', 400));
+  }
   const gigs = await db.Gig.findAll({
     where: {
-      gigTitle: {
-        [Op.iLike]: req.params.title,
-      },
+      [Op.or]: [
+        {
+          gigTitle: {
+            [Op.iLike]: `%${req.params.title}`,
+          },
+        },
+        {
+          gigTitle: {
+            [Op.iLike]: `%${req.params.title}%`,
+          },
+        },
+        {
+          gigTitle: {
+            [Op.iLike]: `${req.params.title}%`,
+          },
+        },
+      ],
     },
   });
 
