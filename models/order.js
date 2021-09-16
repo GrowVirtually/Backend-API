@@ -16,6 +16,11 @@ module.exports = (sequelize, DataTypes) => {
         as: 'payment',
       });
 
+      Order.belongsTo(models.Gig, {
+        foreignKey: 'gigId',
+        as: 'gig',
+      });
+
       Order.belongsTo(models.Consumer, {
         foreignKey: 'consumerId',
         as: 'consumer',
@@ -39,6 +44,7 @@ module.exports = (sequelize, DataTypes) => {
       deliveryMethod: DataTypes.ENUM('self', 'seller'),
       growerId: DataTypes.INTEGER,
       consumerId: DataTypes.INTEGER,
+      gigId: DataTypes.INTEGER,
     },
     {
       sequelize,
