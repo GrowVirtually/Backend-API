@@ -58,11 +58,11 @@ module.exports = (err, req, res, next) => {
   if (process.env.NODE_ENV === 'development') {
     sendErrorDev(err, res);
   } else if (process.env.NODE_ENV === 'production') {
-    let error = { ...err };
-    if (error.name === 'JsonWebTokenError') error = handleJWTError();
-    if (error.name === 'TokenExpiredError') error = handleJWTExpiredError();
-    if (error.name === 'SequelizeValidationError')
-      error = handleSequelizeValidationError();
-    sendErrProd(error, res);
+    // let error = { ...err };
+    // if (error.name === 'JsonWebTokenError') error = handleJWTError();
+    // if (error.name === 'TokenExpiredError') error = handleJWTExpiredError();
+    // if (error.name === 'SequelizeValidationError')
+    //   error = handleSequelizeValidationError();
+    sendErrProd(err, res);
   }
 };

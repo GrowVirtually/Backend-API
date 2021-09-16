@@ -281,3 +281,20 @@ exports.getSingleGig = catchAsync(async (req, res, next) => {
     },
   });
 });
+
+exports.searchGigs = catchAsync(async (req, res, next) => {
+  const gigs = await db.Gig.findAll({
+    where: {
+      gigTitle: {
+        [Op.iLike]: req.params.title,
+      },
+    },
+  });
+
+  res.status(201).json({
+    status: 'success',
+    data: {
+      gigs: gigs,
+    },
+  });
+});
