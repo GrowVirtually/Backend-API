@@ -55,6 +55,15 @@ module.exports = {
           as: 'consumerId',
         },
       },
+      gigId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Gigs',
+          key: 'id',
+          as: 'gigId',
+        },
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
