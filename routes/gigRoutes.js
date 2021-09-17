@@ -5,6 +5,7 @@ const {
   getAllGigs,
   uploadImg,
   getSingleGig,
+  searchGigs,
 } = require('../route_handlers/gigHandler');
 
 const { protect } = require('../route_handlers/authHandler');
@@ -15,7 +16,8 @@ router.use(protect);
 
 // routes
 router.route('/').post(createGig);
-router.route('/:lnglat').get(getAllGigs);
+router.route('/all/:lnglat').get(getAllGigs);
+router.route('/search/:title').get(searchGigs);
 router.route('/:gigId').get(getSingleGig);
 router.route('/upload').post(uploadImg); // testing for img upload
 
