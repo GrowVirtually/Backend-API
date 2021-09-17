@@ -59,8 +59,8 @@ const createOrderCheckout = async (session) => {
     })
   ).id;
 
-  const paymentAmount = session.line_items[0].amount / 100;
-  const { quantity } = session.line_items[0];
+  const paymentAmount = session.amount_total / 100;
+  const quantity = 1;
 
   const newOrder = await db.Order.create({
     quantity,
