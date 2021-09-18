@@ -94,6 +94,20 @@ app.use('/api/v1/growers', growerRouter);
 app.use('/api/v1/admins', adminRouter);
 app.use('/api/v1/bookings', bookingRouter);
 
+
+//
+// const ff = {
+//   id: 45,
+//   name: 'asindu',
+// };
+// const ii = JSON.stringify(ff);
+//
+// // console.log(JSON.parse(ii));
+//
+
+//
+// generateQR(ii);
+
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 });

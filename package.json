@@ -44,6 +44,7 @@
     "nodemailer": "^6.6.3",
     "pg": "^8.6.0",
     "pg-hstore": "^2.3.4",
+    "qrcode": "^1.4.4",
     "sequelize": "^6.6.5",
     "stripe": "^8.168.0",
     "twilio": "^3.65.0",
