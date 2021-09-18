@@ -65,7 +65,7 @@ module.exports = {
         },
       },
       qrLink: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(1000),
       },
       createdAt: {
         allowNull: false,
