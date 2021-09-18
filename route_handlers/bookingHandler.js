@@ -1,4 +1,5 @@
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const QRCode = require('qrcode');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 
@@ -71,7 +72,32 @@ const createOrderCheckout = async (session) => {
     gigId,
   });
 
-  await newOrder.save();
+  const order = await newOrder.save();
+
+  const QRObject = {
+    orderId: order.id,
+    paymentAmount: order.paymentAmount,
+  };
+
+  const QRObjText = JSON.stringify(QRObject);
+
+  let QRText;
+  try {
+    QRText = await QRCode.toDataURL(QRObjText);
+  } catch (err) {
+    console.error(err);
+  }
+
+  await db.Order.update(
+    {
+      qrLink: QRText,
+    },
+    {
+      where: {
+        id: newOrder.id,
+      },
+    }
+  );
 };
 
 exports.webhookCheckout = catchAsync(async (req, res, next) => {

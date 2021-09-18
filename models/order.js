@@ -45,6 +45,7 @@ module.exports = (sequelize, DataTypes) => {
       growerId: DataTypes.INTEGER,
       consumerId: DataTypes.INTEGER,
       gigId: DataTypes.INTEGER,
+      qrLink: DataTypes.STRING,
     },
     {
       sequelize,

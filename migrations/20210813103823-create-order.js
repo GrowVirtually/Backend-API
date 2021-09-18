@@ -64,6 +64,9 @@ module.exports = {
           as: 'gigId',
         },
       },
+      qrLink: {
+        type: Sequelize.STRING,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
