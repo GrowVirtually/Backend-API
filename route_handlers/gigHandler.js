@@ -211,6 +211,11 @@ exports.getAllGigs = catchAsync(async (req, res, next) => {
           },
         ],
       },
+      {
+        model: db.GigImage,
+        as: 'images',
+        attributes: { exclude: ['createdAt', 'updatedAt'] },
+      },
     ],
   });
 
