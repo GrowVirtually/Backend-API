@@ -336,3 +336,46 @@ exports.searchGigs = catchAsync(async (req, res, next) => {
     },
   });
 });
+
+exports.getSavedGigs = catchAsync(async (req, res, next) => {
+  const savedGigs = await db.User.findAll({
+    attributes: {
+      exclude: [
+        'fname',
+        'lname',
+        'phone',
+        'dob',
+        'nic',
+        'email',
+        'gender',
+        'imgLink',
+        'role',
+        'password',
+        'passwordChangedAt',
+        'passwordResetToken',
+        'passwordResetExpires',
+        'createdAt',
+        'updatedAt',
+      ],
+    },
+    include: [
+      {
+        model: db.Gig,
+        as: 'savedGigs',
+        through: {
+          attributes: [],
+        },
+      },
+    ],
+    where: {
+      id: req.params.userId,
+    },
+  });
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      savedGigs,
+    },
+  });
+});
