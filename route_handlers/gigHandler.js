@@ -211,6 +211,11 @@ exports.getAllGigs = catchAsync(async (req, res, next) => {
           },
         ],
       },
+      {
+        model: db.GigImage,
+        as: 'images',
+        attributes: { exclude: ['createdAt', 'updatedAt'] },
+      },
     ],
   });
 
@@ -234,10 +239,21 @@ exports.getAllGigs = catchAsync(async (req, res, next) => {
 });
 
 exports.uploadImg = catchAsync(async (req, res, next) => {
+  if (!req.body.gigId) {
+    return next(new AppError('Missing Values', 400));
+  }
+
   cloudinary.uploader.upload(req.files.img.path, (result) => {
     if (result.error) {
       return next(new AppError('Error uploading photo', 400));
     }
+
+    db.GigImage.create({
+      gigId: req.body.gigId,
+      imgLink: result.url,
+    }).then((value) => {
+      value.save();
+    });
 
     res.status(201).json({
       status: 'success',
@@ -270,6 +286,11 @@ exports.getSingleGig = catchAsync(async (req, res, next) => {
           },
         ],
       },
+      {
+        model: db.GigImage,
+        as: 'images',
+        attributes: { exclude: ['createdAt', 'updatedAt'] },
+      },
     ],
     attributes: { exclude: ['createdAt', 'updatedAt'] },
   });
@@ -283,11 +304,28 @@ exports.getSingleGig = catchAsync(async (req, res, next) => {
 });
 
 exports.searchGigs = catchAsync(async (req, res, next) => {
+  if (!req.params.title) {
+    return next(new AppError('Search key word not found', 400));
+  }
   const gigs = await db.Gig.findAll({
     where: {
-      gigTitle: {
-        [Op.iLike]: req.params.title,
-      },
+      [Op.or]: [
+        {
+          gigTitle: {
+            [Op.iLike]: `%${req.params.title}`,
+          },
+        },
+        {
+          gigTitle: {
+            [Op.iLike]: `%${req.params.title}%`,
+          },
+        },
+        {
+          gigTitle: {
+            [Op.iLike]: `${req.params.title}%`,
+          },
+        },
+      ],
     },
   });
 
@@ -295,6 +333,49 @@ exports.searchGigs = catchAsync(async (req, res, next) => {
     status: 'success',
     data: {
       gigs: gigs,
+    },
+  });
+});
+
+exports.getSavedGigs = catchAsync(async (req, res, next) => {
+  const savedGigs = await db.User.findAll({
+    attributes: {
+      exclude: [
+        'fname',
+        'lname',
+        'phone',
+        'dob',
+        'nic',
+        'email',
+        'gender',
+        'imgLink',
+        'role',
+        'password',
+        'passwordChangedAt',
+        'passwordResetToken',
+        'passwordResetExpires',
+        'createdAt',
+        'updatedAt',
+      ],
+    },
+    include: [
+      {
+        model: db.Gig,
+        as: 'savedGigs',
+        through: {
+          attributes: [],
+        },
+      },
+    ],
+    where: {
+      id: req.params.userId,
+    },
+  });
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      savedGigs,
     },
   });
 });

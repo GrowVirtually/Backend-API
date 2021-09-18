@@ -20,6 +20,17 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'gigId',
         as: 'orders',
       });
+
+      Gig.hasMany(models.GigImage, {
+        foreignKey: 'gigId',
+        as: 'images',
+      });
+
+      Gig.belongsToMany(models.User, {
+        through: 'User_Gigs',
+        as: 'users',
+        foreignKey: 'gigId',
+      });
     }
   }
 
