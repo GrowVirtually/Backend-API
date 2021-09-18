@@ -88,7 +88,7 @@ const createOrderCheckout = async (session) => {
     console.error(err);
   }
 
-  const hh = await db.Order.update(
+  await db.Order.update(
     {
       qrLink: QRText,
     },
@@ -96,12 +96,8 @@ const createOrderCheckout = async (session) => {
       where: {
         id: newOrder.id,
       },
-      returning: true
     }
   );
-
-  console.log(hh);
-
 };
 
 exports.webhookCheckout = catchAsync(async (req, res, next) => {
