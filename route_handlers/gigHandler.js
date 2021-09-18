@@ -234,10 +234,21 @@ exports.getAllGigs = catchAsync(async (req, res, next) => {
 });
 
 exports.uploadImg = catchAsync(async (req, res, next) => {
+  if (!req.body.gigId) {
+    return next(new AppError('Missing Values', 400));
+  }
+
   cloudinary.uploader.upload(req.files.img.path, (result) => {
     if (result.error) {
       return next(new AppError('Error uploading photo', 400));
     }
+
+    db.GigImage.create({
+      gigId: req.body.gigId,
+      imgLink: result.url,
+    }).then((value) => {
+      value.save();
+    });
 
     res.status(201).json({
       status: 'success',
@@ -269,6 +280,11 @@ exports.getSingleGig = catchAsync(async (req, res, next) => {
             ],
           },
         ],
+      },
+      {
+        model: db.GigImage,
+        as: 'images',
+        attributes: { exclude: ['createdAt', 'updatedAt'] },
       },
     ],
     attributes: { exclude: ['createdAt', 'updatedAt'] },
