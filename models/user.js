@@ -22,6 +22,12 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'userid',
         as: 'customer',
       });
+
+      User.belongsToMany(models.Gig, {
+        through: 'User_Gigs',
+        as: 'savedGigs',
+        foreignKey: 'userId',
+      });
     }
   }
 

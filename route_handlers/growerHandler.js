@@ -23,7 +23,16 @@ exports.myReviews = catchAsync(async (req, res, next) => {
 });
 
 exports.getMyGigs = catchAsync(async (req, res, next) => {
-  const gigs = await db.Gig.findAll({ where: { userid: req.params.id } });
+  const gigs = await db.Gig.findAll({
+    where: { userid: req.params.id },
+    include: [
+      {
+        model: db.GigImage,
+        as: 'images',
+        attributes: { exclude: ['createdAt', 'updatedAt'] },
+      },
+    ],
+  });
 
   res.status(201).json({
     status: 'success',
