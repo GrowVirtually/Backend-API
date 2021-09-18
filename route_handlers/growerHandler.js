@@ -93,3 +93,95 @@ exports.completeOrder = catchAsync(async (req, res, next) => {
     },
   });
 });
+
+exports.toAccept = catchAsync(async (req, res, next) => {
+  if (!req.params.userId) {
+    return next(new AppError('Missing values', 400));
+  }
+
+  const orders = await db.Order.findAll({
+    where: {
+      growerId: req.params.userId,
+      isOrderCompleted: false,
+      isGrowerAccepted: false,
+      isConsumerCompleted: false,
+      isGrowerCompleted: false,
+    },
+  });
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      orders,
+    },
+  });
+});
+
+exports.toDeliver = catchAsync(async (req, res, next) => {
+  if (!req.params.userId) {
+    return next(new AppError('Missing values', 400));
+  }
+
+  const orders = await db.Order.findAll({
+    where: {
+      growerId: req.params.userId,
+      isOrderCompleted: false,
+      isGrowerAccepted: true,
+      isConsumerCompleted: false,
+      isGrowerCompleted: false,
+    },
+  });
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      orders,
+    },
+  });
+});
+
+exports.delivered = catchAsync(async (req, res, next) => {
+  if (!req.params.userId) {
+    return next(new AppError('Missing values', 400));
+  }
+
+  const orders = await db.Order.findAll({
+    where: {
+      growerId: req.params.userId,
+      isOrderCompleted: false,
+      isGrowerAccepted: true,
+      isConsumerCompleted: false,
+      isGrowerCompleted: true,
+    },
+  });
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      orders,
+    },
+  });
+});
+
+exports.completed = catchAsync(async (req, res, next) => {
+  if (!req.params.userId) {
+    return next(new AppError('Missing values', 400));
+  }
+
+  const orders = await db.Order.findAll({
+    where: {
+      growerId: req.params.userId,
+      isOrderCompleted: true,
+      isGrowerAccepted: true,
+      isConsumerCompleted: true,
+      isGrowerCompleted: true,
+    },
+  });
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      orders,
+    },
+  });
+});
