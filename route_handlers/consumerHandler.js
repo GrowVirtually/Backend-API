@@ -23,3 +23,30 @@ exports.makeReview = catchAsync(async (req, res, next) => {
     },
   });
 });
+
+exports.completeOrder = catchAsync(async (req, res, next) => {
+  if (!req.params.userId || !req.body.orderId) {
+    return next(new AppError('Missing values', 400));
+  }
+
+  const result = await db.Order.update(
+    {
+      isConsumerCompleted: true,
+      isOrderCompleted: true,
+    },
+    {
+      where: {
+        growerId: req.params.userId,
+        id: req.body.orderId,
+      },
+      returning: true,
+    }
+  );
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      result,
+    },
+  });
+});
