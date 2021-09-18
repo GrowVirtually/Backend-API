@@ -63,7 +63,7 @@ const createOrderCheckout = async (session) => {
   const paymentAmount = session.amount_total / 100;
   const quantity = 1;
 
-  const newOrder = await db.Order.create({
+  let newOrder = await db.Order.create({
     quantity,
     paymentAmount,
     deliveryMethod: gigDetails.deliveryAbility ? 'seller' : 'self',
@@ -72,11 +72,11 @@ const createOrderCheckout = async (session) => {
     gigId,
   });
 
-  const order = await newOrder.save();
+  newOrder = await newOrder.save();
 
   const QRObject = {
-    orderId: order.id,
-    paymentAmount: order.paymentAmount,
+    orderId: newOrder.id,
+    paymentAmount: newOrder.paymentAmount,
   };
 
   const QRObjText = JSON.stringify(QRObject);
@@ -88,7 +88,7 @@ const createOrderCheckout = async (session) => {
     console.error(err);
   }
 
-  await db.Order.update(
+  const hh = await db.Order.update(
     {
       qrLink: QRText,
     },
@@ -96,8 +96,12 @@ const createOrderCheckout = async (session) => {
       where: {
         id: newOrder.id,
       },
+      returning: true
     }
   );
+
+  console.log(hh);
+
 };
 
 exports.webhookCheckout = catchAsync(async (req, res, next) => {
