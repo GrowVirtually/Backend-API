@@ -11,6 +11,8 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
   // 1) get the currently paying gig
   const gig = await db.Gig.findByPk(gigId);
 
+  // 1.1) validate gig data with order requirements
+
   // 2) create checkout session
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ['card'],
