@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 const { promisify } = require('util');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
@@ -83,8 +84,6 @@ exports.verifyOTP = catchAsync(async (req, res, next) => {
     },
   });
 
-  // console.log(!!user);
-
   if (user) {
     // if user found immediately authenticate him
     const token = signToken(phone);
@@ -104,11 +103,46 @@ exports.verifyOTP = catchAsync(async (req, res, next) => {
   });
 });
 
-// password login
-exports.login = catchAsync(async (req, res, next) => {
-  const { email, password } = req.body;
+//// LOGIN ////
+const checkPWAndSendToken = async (user, req, res, next) => {
+  // check pwd is correct
+  catchAsync(async (req, res, next) => {
+    const { password } = req.body;
 
+    if (!user || !(await user.correctPassword(password, user.password))) {
+      return next(new AppError('Incorrect email or password', 401));
+    }
+
+    // if everything ok, send the token to client
+    const token = signToken(user.phone);
+
+    if (user.role === 'admin') {
+      res.cookie('jwt', token, {
+        expires: new Date(
+          Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
+        ),
+        httpOnly: true,
+        secure: req.secure || req.headers['x-forwarded-proto'] === 'https',
+      });
+    }
+
+    res.status(200).json({
+      status: 'success',
+      token,
+      user: {
+        userid: user.userid,
+        fname: user.fname,
+        lname: user.lname,
+        email: user.email,
+      },
+    });
+  })(req, res, next);
+};
+
+// password login for user
+exports.userLogin = catchAsync(async (req, res, next) => {
   // check email and password exits
+  const { email, password } = req.body;
   if (!email || !password) {
     return next(new AppError('Please provide email and password', 400));
   }
@@ -118,31 +152,37 @@ exports.login = catchAsync(async (req, res, next) => {
     where: {
       email,
     },
-    attributes: {
-      exclude: ['createdAt', 'updatedAt'],
-    },
+    attributes: ['id', 'fname', 'lname', 'phone', 'email', 'role', 'password'],
   });
 
-  // console.log(`the user is :`, user);
-
-  // check pwd is correct
-  if (!user || !(await user.correctPassword(password, user.password))) {
-    return next(new AppError('Incorrect email or password', 401));
+  if (user.role !== 'user') {
+    return next(new AppError('Forbidden access', 403));
   }
 
-  // if everything ok, send the token to client
-  const token = signToken(user.phone);
+  await checkPWAndSendToken(user, req, res, next);
+});
 
-  res.status(200).json({
-    status: 'success',
-    token,
-    user: {
-      userid: user.userid,
-      fname: user.fname,
-      lname: user.lname,
-      email: user.email,
+// password login for admin login
+exports.adminLogin = catchAsync(async (req, res, next) => {
+  // check email and password exits
+  const { email, password } = req.body;
+  if (!email || !password) {
+    return next(new AppError('Please provide email and password', 400));
+  }
+
+  // check if the user exists
+  const user = await db.User.findOne({
+    where: {
+      email,
     },
+    attributes: ['id', 'fname', 'lname', 'phone', 'email', 'role', 'password'],
   });
+
+  if (user.role !== 'admin') {
+    return next(new AppError('Forbidden access', 403));
+  }
+
+  await checkPWAndSendToken(user, req, res, next);
 });
 
 exports.signup = catchAsync(async (req, res, next) => {
@@ -173,8 +213,6 @@ exports.signup = catchAsync(async (req, res, next) => {
   });
   await newGrower.save();
 
-  // console.log('new user - ', newUser.dataValues.id);
-
   const token = signToken(newUser.phone);
 
   res.status(201).json({
@@ -185,22 +223,6 @@ exports.signup = catchAsync(async (req, res, next) => {
     },
   });
 });
-
-// const authenticateUser = async (req, res, next) => {
-//   const { accessToken } = req.cookies;
-//
-//   jwt.verify(accessToken, process.env.JWT_SECRET, async (err, phone) => {
-//     if (phone) {
-//       req.phone = phone;
-//       next();
-//     } else if (err.message === 'TokenExpiredError') {
-//       return new AppError('Access token expired', 403);
-//     } else {
-//       console.error(err);
-//       return new AppError('User not authenticated', 403);
-//     }
-//   });
-// };
 
 exports.logout = catchAsync(async (req, res, next) => {
   res
@@ -213,13 +235,6 @@ exports.logout = catchAsync(async (req, res, next) => {
     });
 });
 
-exports.sample = catchAsync(async (req, res, next) => {
-  res.status(200).json({
-    status: 'success',
-    message: 'sample protected',
-  });
-});
-
 exports.protect = catchAsync(async (req, res, next) => {
   // 1) Getting token and check if it's there
   let token;
@@ -229,6 +244,8 @@ exports.protect = catchAsync(async (req, res, next) => {
     req.headers.authorization.startsWith('Bearer')
   ) {
     token = req.headers.authorization.split(' ')[1];
+  } else if (req.cookie.jwt) {
+    token = req.cookies.jwt;
   }
 
   if (!token) {

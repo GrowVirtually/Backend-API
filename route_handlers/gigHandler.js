@@ -379,3 +379,28 @@ exports.getSavedGigs = catchAsync(async (req, res, next) => {
     },
   });
 });
+
+exports.getTitles = catchAsync(async (req, res, next) => {
+  if (!req.params.title) {
+    return next(new AppError('Search key word not found', 400));
+  }
+  const gigs = await db.Gig.findAll({
+    attributes: ['gigTitle'],
+    where: {
+      [Op.or]: [
+        {
+          gigTitle: {
+            [Op.iLike]: `${req.params.title}%`,
+          },
+        },
+      ],
+    },
+  });
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      gigs: gigs,
+    },
+  });
+});

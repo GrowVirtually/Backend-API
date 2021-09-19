@@ -15,7 +15,6 @@ const formData = require('express-form-data');
 
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./route_handlers/errorHandler');
-const tourRouter = require('./routes/tourRoutes');
 
 const gigRouter = require('./routes/gigRoutes');
 const userRouter = require('./routes/userRoutes');
@@ -86,27 +85,12 @@ cloudinary.config({
 
 // ROUTES
 // route mounting
-app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/gigs', gigRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/consumers', consumerRouter);
 app.use('/api/v1/growers', growerRouter);
 app.use('/api/v1/admins', adminRouter);
 app.use('/api/v1/bookings', bookingRouter);
-
-
-//
-// const ff = {
-//   id: 45,
-//   name: 'asindu',
-// };
-// const ii = JSON.stringify(ff);
-//
-// // console.log(JSON.parse(ii));
-//
-
-//
-// generateQR(ii);
 
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));

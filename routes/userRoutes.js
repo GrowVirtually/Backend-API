@@ -1,14 +1,12 @@
 const express = require('express');
 const {
   signup,
-  login,
+  userLogin,
   sendOTP,
   verifyOTP,
   forgotPassword,
   resetPassword,
-  sample,
   protect,
-  restrictTo,
   updatePassword,
 } = require('../route_handlers/authHandler');
 const {
@@ -22,9 +20,7 @@ const { getSavedGigs } = require('../route_handlers/gigHandler');
 const router = express.Router();
 
 router.post('/signup', signup);
-router.post('/login', login);
-
-router.get('/test', protect, restrictTo('admin', 'user'), sample);
+router.post('/login', userLogin);
 
 router.post('/forgotPassword', forgotPassword);
 router.patch('/resetPassword/:token', resetPassword);

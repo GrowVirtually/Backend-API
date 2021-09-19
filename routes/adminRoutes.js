@@ -1,9 +1,16 @@
 const express = require('express');
 
 const { searchGigs, searchUsers } = require('../route_handlers/adminHandler');
-const { protect, restrictTo } = require('../route_handlers/authHandler');
+const {
+  protect,
+  restrictTo,
+  adminLogin,
+} = require('../route_handlers/authHandler');
 
 const router = express.Router();
+
+router.post('/login', adminLogin);
+
 router.use(protect);
 router.use(restrictTo('user')); // to be changed to  admin
 
