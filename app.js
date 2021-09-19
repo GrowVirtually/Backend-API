@@ -23,6 +23,7 @@ const consumerRouter = require('./routes/consumerRoutes');
 const growerRouter = require('./routes/growerRoutes');
 const adminRouter = require('./routes/adminRoutes');
 const bookingRouter = require('./routes/bookingRoutes');
+const bookingHandler = require('./route_handlers/bookingHandler');
 
 const app = express();
 
@@ -44,10 +45,11 @@ const limiter = rateLimit({
 
 app.use('/api', limiter);
 
-//body-parser middleware
-// app.use(bodyParser.urlencoded({
-//   extended: true
-// }));
+app.post(
+  '/webhook-checkout',
+  express.raw({ type: 'application/json' }),
+  bookingHandler.webhookCheckout
+);
 
 // get access to the request body of a request object
 // reading data from body into req.body
