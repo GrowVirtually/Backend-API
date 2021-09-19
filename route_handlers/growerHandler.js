@@ -42,32 +42,6 @@ exports.getMyGigs = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.acceptOrder = catchAsync(async (req, res, next) => {
-  if (!req.params.userId || !req.body.orderId) {
-    return next(new AppError('Missing values', 400));
-  }
-
-  const result = await db.Order.update(
-    {
-      isGrowerAccepted: true,
-    },
-    {
-      where: {
-        growerId: req.params.userId,
-        id: req.body.orderId,
-      },
-      returning: true,
-    }
-  );
-
-  res.status(200).json({
-    status: 'success',
-    data: {
-      result,
-    },
-  });
-});
-
 exports.completeOrder = catchAsync(async (req, res, next) => {
   if (!req.params.userId || !req.body.orderId) {
     return next(new AppError('Missing values', 400));
@@ -90,29 +64,6 @@ exports.completeOrder = catchAsync(async (req, res, next) => {
     status: 'success',
     data: {
       result,
-    },
-  });
-});
-
-exports.toAccept = catchAsync(async (req, res, next) => {
-  if (!req.params.userId) {
-    return next(new AppError('Missing values', 400));
-  }
-
-  const orders = await db.Order.findAll({
-    where: {
-      growerId: req.params.userId,
-      isOrderCompleted: false,
-      isGrowerAccepted: false,
-      isConsumerCompleted: false,
-      isGrowerCompleted: false,
-    },
-  });
-
-  res.status(200).json({
-    status: 'success',
-    data: {
-      orders,
     },
   });
 });

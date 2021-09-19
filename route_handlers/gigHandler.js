@@ -68,6 +68,7 @@ exports.createGig = catchAsync(async (req, res, next) => {
       },
     });
   } catch (error) {
+    console.log('Error msg - gig create -- ', error);
     return next(new AppError('Transaction failed, data not inserted', 502));
   }
 });
@@ -301,7 +302,7 @@ exports.getSingleGig = catchAsync(async (req, res, next) => {
     attributes: { exclude: ['createdAt', 'updatedAt'] },
   });
 
-  res.status(201).json({
+  res.status(200).json({
     status: 'success',
     data: {
       gig: gig,
