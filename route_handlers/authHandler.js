@@ -155,6 +155,10 @@ exports.userLogin = catchAsync(async (req, res, next) => {
     attributes: ['id', 'fname', 'lname', 'phone', 'email', 'role', 'password'],
   });
 
+  if (user === null) {
+    return next(new AppError('Wrong credentials', 400));
+  }
+
   if (user.role !== 'user') {
     return next(new AppError('Forbidden access', 403));
   }
@@ -177,6 +181,10 @@ exports.adminLogin = catchAsync(async (req, res, next) => {
     },
     attributes: ['id', 'fname', 'lname', 'phone', 'email', 'role', 'password'],
   });
+
+  if (user === null) {
+    return next(new AppError('Wrong credentials', 400));
+  }
 
   if (user.role !== 'admin') {
     return next(new AppError('Forbidden access', 403));
