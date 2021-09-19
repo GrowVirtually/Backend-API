@@ -352,6 +352,8 @@ exports.getSavedGigs = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.addToSaved = catchAsync(async (req, res, next) => {});
+
 exports.getTitles = catchAsync(async (req, res, next) => {
   const gigs = await db.Gig.findAll({
     attributes: ['gigTitle'],
