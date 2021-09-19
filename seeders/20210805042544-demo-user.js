@@ -19,6 +19,7 @@ module.exports = {
         lname: 'Doe',
         phone: '0772347724',
         email: 'example@example.com',
+        role: 'user',
         password: await bcrypt.hash('test@123', 10),
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -28,6 +29,7 @@ module.exports = {
         lname: 'Perera',
         phone: '0772327724',
         email: 'sample@sample.com',
+        role: 'user',
         password: await bcrypt.hash('test@123', 10),
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -56,6 +58,7 @@ module.exports = {
         email: 'a.dui@sedhendrerita.ca',
         gender: 'female',
         imgLink: 'sit amet, risus. Donec nibh enim, gravida sit amet, dapibus',
+        role: 'user',
         password: await bcrypt.hash('test@123', 10),
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -70,6 +73,7 @@ module.exports = {
         gender: 'female',
         imgLink:
           'consequat purus. Maecenas libero est, congue a, aliquet vel, vulputate',
+        role: 'user',
         password: await bcrypt.hash('test@123', 10),
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -84,6 +88,7 @@ module.exports = {
         gender: 'male',
         imgLink:
           'urna et arcu imperdiet ullamcorper. Duis at lacus. Quisque purus',
+        role: 'user',
         password: await bcrypt.hash('test@123', 10),
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -98,6 +103,7 @@ module.exports = {
         gender: 'male',
         imgLink:
           'tristique pellentesque, tellus sem mollis dui, in sodales elit erat',
+        role: 'user',
         password: await bcrypt.hash('test@123', 10),
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -112,6 +118,7 @@ module.exports = {
         gender: 'male',
         imgLink:
           'Donec est. Nunc ullamcorper, velit in aliquet lobortis, nisi nibh',
+        role: 'user',
         password: await bcrypt.hash('test@123', 10),
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -126,6 +133,7 @@ module.exports = {
         gender: 'none',
         imgLink:
           'montes, nascetur ridiculus mus. Proin vel nisl. Quisque fringilla euismod',
+        role: 'user',
         password: await bcrypt.hash('test@123', 10),
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -139,6 +147,7 @@ module.exports = {
         email: 'Suspendisse.sed@iaculisodio.org',
         gender: 'none',
         imgLink: 'porta elit, a feugiat tellus lorem eu metus. In lorem.',
+        role: 'user',
         password: await bcrypt.hash('test@123', 10),
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -152,6 +161,7 @@ module.exports = {
         email: 'eu@cursuseteros.org',
         gender: 'none',
         imgLink: 'Nam interdum enim non nisi. Aenean eget metus. In nec',
+        role: 'user',
         password: await bcrypt.hash('test@123', 10),
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -165,6 +175,7 @@ module.exports = {
         email: 'Nulla.tempor.augue@quamdignissimpharetra.co.uk',
         gender: 'none',
         imgLink: 'at, iaculis quis, pede. Praesent eu dui. Cum sociis natoque',
+        role: 'user',
         password: await bcrypt.hash('test@123', 10),
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -179,6 +190,7 @@ module.exports = {
         gender: 'none',
         imgLink:
           'ac, eleifend vitae, erat. Vivamus nisi. Mauris nulla. Integer urna.',
+        role: 'user',
         password: await bcrypt.hash('test@123', 10),
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -193,6 +205,7 @@ module.exports = {
         gender: 'none',
         imgLink:
           'Integer aliquam adipiscing lacus. Ut nec urna et arcu imperdiet',
+        role: 'user',
         password: await bcrypt.hash('test@123', 10),
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -207,6 +220,7 @@ module.exports = {
         gender: 'none',
         imgLink:
           'senectus et netus et malesuada fames ac turpis egestas. Aliquam',
+        role: 'user',
         password: await bcrypt.hash('test@123', 10),
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -221,6 +235,7 @@ module.exports = {
         gender: 'female',
         imgLink:
           'Suspendisse eleifend. Cras sed leo. Cras vehicula aliquet libero. Integer',
+        role: 'user',
         password: await bcrypt.hash('test@123', 10),
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -235,6 +250,7 @@ module.exports = {
         gender: 'none',
         imgLink:
           'non, hendrerit id, ante. Nunc mauris sapien, cursus in, hendrerit',
+        role: 'user',
         password: await bcrypt.hash('test@123', 10),
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -249,6 +265,7 @@ module.exports = {
         gender: 'none',
         imgLink:
           'dolor sit amet, consectetuer adipiscing elit. Aliquam auctor, velit eget',
+        role: 'user',
         password: await bcrypt.hash('test@123', 10),
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -263,6 +280,7 @@ module.exports = {
         gender: 'none',
         imgLink:
           'pharetra. Nam ac nulla. In tincidunt congue turpis. In condimentum.',
+        role: 'user',
         password: await bcrypt.hash('test@123', 10),
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -277,6 +295,7 @@ module.exports = {
         gender: 'female',
         imgLink:
           'scelerisque sed, sapien. Nunc pulvinar arcu et pede. Nunc sed',
+        role: 'user',
         password: await bcrypt.hash('test@123', 10),
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -291,6 +310,7 @@ module.exports = {
         gender: 'female',
         imgLink:
           'Ut tincidunt orci quis lectus. Nullam suscipit, est ac facilisis',
+        role: 'user',
         password: await bcrypt.hash('test@123', 10),
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -304,6 +324,7 @@ module.exports = {
         email: 'id.ante@montes.edu',
         gender: 'none',
         imgLink: 'arcu ac orci. Ut semper pretium neque. Morbi quis urna.',
+        role: 'user',
         password: await bcrypt.hash('test@123', 10),
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -318,6 +339,7 @@ module.exports = {
         gender: 'none',
         imgLink:
           'pharetra. Nam ac nulla. In tincidunt congue turpis. In condimentum.',
+        role: 'user',
         password: await bcrypt.hash('test@123', 10),
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -332,6 +354,7 @@ module.exports = {
         gender: 'female',
         imgLink:
           'Integer mollis. Integer tincidunt aliquam arcu. Aliquam ultrices iaculis odio.',
+        role: 'user',
         password: await bcrypt.hash('test@123', 10),
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -346,6 +369,7 @@ module.exports = {
         gender: 'female',
         imgLink:
           'cursus vestibulum. Mauris magna. Duis dignissim tempor arcu. Vestibulum ut',
+        role: 'user',
         password: await bcrypt.hash('test@123', 10),
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -360,6 +384,7 @@ module.exports = {
         gender: 'female',
         imgLink:
           'congue a, aliquet vel, vulputate eu, odio. Phasellus at augue',
+        role: 'user',
         password: await bcrypt.hash('test@123', 10),
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -374,6 +399,7 @@ module.exports = {
         gender: 'female',
         imgLink:
           'Integer aliquam adipiscing lacus. Ut nec urna et arcu imperdiet',
+        role: 'user',
         password: await bcrypt.hash('test@123', 10),
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -388,6 +414,7 @@ module.exports = {
         gender: 'female',
         imgLink:
           'orci sem eget massa. Suspendisse eleifend. Cras sed leo. Cras',
+        role: 'user',
         password: await bcrypt.hash('test@123', 10),
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -402,6 +429,7 @@ module.exports = {
         gender: 'female',
         imgLink:
           'ante dictum cursus. Nunc mauris elit, dictum eu, eleifend nec,',
+        role: 'user',
         password: await bcrypt.hash('test@123', 10),
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -416,6 +444,7 @@ module.exports = {
         gender: 'female',
         imgLink:
           'a, dui. Cras pellentesque. Sed dictum. Proin eget odio. Aliquam',
+        role: 'user',
         password: await bcrypt.hash('test@123', 10),
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -430,6 +459,7 @@ module.exports = {
         gender: 'male',
         imgLink:
           'ligula. Aenean euismod mauris eu elit. Nulla facilisi. Sed neque.',
+        role: 'user',
         password: await bcrypt.hash('test@123', 10),
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -444,6 +474,7 @@ module.exports = {
         gender: 'female',
         imgLink:
           'sit amet, consectetuer adipiscing elit. Aliquam auctor, velit eget laoreet',
+        role: 'user',
         password: await bcrypt.hash('test@123', 10),
         createdAt: new Date(),
         updatedAt: new Date(),

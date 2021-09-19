@@ -27,6 +27,7 @@ const bookingHandler = require('./route_handlers/bookingHandler');
 const app = express();
 
 // GLOBAL MIDDLEWARES
+app.options('*', cors());
 // Set security HTTP headers
 app.use(helmet());
 
@@ -63,15 +64,15 @@ app.use(hpp());
 app.use(express.urlencoded());
 
 app.use(cookieParser());
-app.use(
-  cors({
-    origin:
-      process.env.NODE_ENV === 'development'
-        ? `http://${process.env.HOST}:${process.env.PORT}`
-        : `https://${process.env.HOST}`,
-    credentials: true,
-  })
-);
+// app.use(
+//   cors({
+//     origin:
+//       process.env.NODE_ENV === 'development'
+//         ? `http://${process.env.HOST}:${process.env.PORT}`
+//         : `https://${process.env.HOST}`,
+//     credentials: true,
+//   })
+// );
 
 app.use(compression());
 
@@ -89,7 +90,7 @@ app.use('/api/v1/gigs', gigRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/consumers', consumerRouter);
 app.use('/api/v1/growers', growerRouter);
-app.use('/api/v1/admins', adminRouter);
+app.use('/api/v1/admins', cors(), adminRouter);
 app.use('/api/v1/bookings', bookingRouter);
 
 app.all('*', (req, res, next) => {
