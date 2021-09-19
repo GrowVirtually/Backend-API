@@ -18,8 +18,7 @@ router.use(protect);
 // routes
 router.route('/').post(createGig);
 router.route('/all/:lnglat').get(getAllGigs);
-router.route('/titles/:title').get(getTitles);
-router.route('/search/:title').get(searchGigs);
+router.route('/titles').get(getTitles);
 router.route('/:gigId').get(getSingleGig);
 router.route('/upload').post(uploadImg); // testing for img upload
 
