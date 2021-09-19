@@ -84,8 +84,6 @@ exports.verifyOTP = catchAsync(async (req, res, next) => {
     },
   });
 
-  // console.log(!!user);
-
   if (user) {
     // if user found immediately authenticate him
     const token = signToken(phone);
@@ -225,22 +223,6 @@ exports.signup = catchAsync(async (req, res, next) => {
     },
   });
 });
-
-// const authenticateUser = async (req, res, next) => {
-//   const { accessToken } = req.cookies;
-//
-//   jwt.verify(accessToken, process.env.JWT_SECRET, async (err, phone) => {
-//     if (phone) {
-//       req.phone = phone;
-//       next();
-//     } else if (err.message === 'TokenExpiredError') {
-//       return new AppError('Access token expired', 403);
-//     } else {
-//       console.error(err);
-//       return new AppError('User not authenticated', 403);
-//     }
-//   });
-// };
 
 exports.logout = catchAsync(async (req, res, next) => {
   res
