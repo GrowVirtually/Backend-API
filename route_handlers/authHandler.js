@@ -5,7 +5,6 @@ const jwt = require('jsonwebtoken');
 const cloudinary = require('cloudinary');
 
 const smsKey = process.env.SMS_SECRET_KEY;
-
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require('twilio')(accountSid, authToken);
@@ -14,7 +13,7 @@ const db = require('../models');
 
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
-const sendEmail = require('../utils/email');
+const Email = require('../utils/email');
 
 const signToken = (phone) =>
   jwt.sign({ phone }, process.env.JWT_SECRET, {
@@ -194,6 +193,7 @@ exports.signup = catchAsync(async (req, res, next) => {
     password: req.body.password,
   });
   await newUser.save();
+  await new Email(newUser, 0).sendWelcome();
 
   const newCustomer = await db.Customer.create({
     userid: newUser.dataValues.id,
@@ -225,14 +225,11 @@ exports.signup = catchAsync(async (req, res, next) => {
 });
 
 exports.logout = catchAsync(async (req, res, next) => {
-  res
-    .clearCookie('refreshToken')
-    .clearCookie('accessToken')
-    .clearCookie('authSession')
-    .clearCookie('refreshTokenId')
-    .json({
-      status: 'success',
-    });
+  res.cookie('jwt', 'loggedout', {
+    expires: new Date(Date.now() + 10 * 1000),
+    httpOnly: true,
+  });
+  res.status(200).json({ status: 'success' });
 });
 
 exports.protect = catchAsync(async (req, res, next) => {
@@ -244,7 +241,7 @@ exports.protect = catchAsync(async (req, res, next) => {
     req.headers.authorization.startsWith('Bearer')
   ) {
     token = req.headers.authorization.split(' ')[1];
-  } else if (req.cookie.jwt) {
+  } else if (req.cookie) {
     token = req.cookies.jwt;
   }
 
@@ -332,22 +329,8 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   const resetToken = user.createPasswordResetToken();
   await user.save({ validate: false });
 
-  // 3) Send it to user's email
-  // const resetURL = `${req.protocol}://${req.get(
-  //   'host'
-  // )}/api/v1/users/resetPassword/${resetToken}`;
-  //
-  // const message = `Forgot your password? Submit a PATCH request with your new password and password Confirm
-  // to ${resetURL}.\nIf you didn't forget your password, please ignore this email!`;
-
-  const message = `Enter this code in your mobile app screen ${resetToken}`;
-
   try {
-    await sendEmail({
-      email,
-      subject: 'Your password reset token (valid for 10 min)',
-      message,
-    });
+    await new Email(user, resetToken).sendPasswordReset();
   } catch (err) {
     user.passwordResetToken = undefined;
     user.passwordResetExpires = undefined;

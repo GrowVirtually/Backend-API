@@ -19,9 +19,9 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
     // )}/api/v1/bookings/order-checkout?gigId=${gigId}&quantity=${units}&amount=${
     //   gig.unitPrice * units
     // }&consumerId=${req.user.id}`,
-    success_url: `${req.protocol}://${req.get('host')}`, // change this to my orders
+    success_url: `${req.protocol}://${req.get('host')}?sc_checkout=success`,
     mode: 'payment',
-    cancel_url: `${req.protocol}://${req.get('host')}/gigs/${gigId}`,
+    cancel_url: `${req.protocol}://${req.get('host')}?sc_checkout=cancel`,
     customer_email: req.user.email,
     client_reference_id: gigId,
     line_items: [
