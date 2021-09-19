@@ -6,9 +6,7 @@ const {
   verifyOTP,
   forgotPassword,
   resetPassword,
-  sample,
   protect,
-  restrictTo,
   updatePassword,
 } = require('../route_handlers/authHandler');
 const {
@@ -23,8 +21,6 @@ const router = express.Router();
 
 router.post('/signup', signup);
 router.post('/login', userLogin);
-
-router.get('/test', protect, restrictTo('admin', 'user'), sample);
 
 router.post('/forgotPassword', forgotPassword);
 router.patch('/resetPassword/:token', resetPassword);

@@ -15,7 +15,6 @@ const formData = require('express-form-data');
 
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./route_handlers/errorHandler');
-const tourRouter = require('./routes/tourRoutes');
 
 const gigRouter = require('./routes/gigRoutes');
 const userRouter = require('./routes/userRoutes');
@@ -86,7 +85,6 @@ cloudinary.config({
 
 // ROUTES
 // route mounting
-app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/gigs', gigRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/consumers', consumerRouter);
