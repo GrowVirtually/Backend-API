@@ -42,34 +42,30 @@ exports.createGig = catchAsync(async (req, res, next) => {
     currentDate.setTime(currentDate.getTime() + gigDuration * 86400000)
   );
 
-  try {
-    // add gig details to the table
-    let newGig = await db.Gig.create({
-      gigType,
-      gigCategory,
-      gigTitle,
-      gigDescription,
-      minOrderAmount,
-      unit,
-      unitPrice,
-      stock,
-      sold,
-      expireDate,
-      coordinates: db.sequelize.fn('ST_MakePoint', location.lat, location.lng),
-      userid,
-    });
+  // add gig details to the table
+  let newGig = await db.Gig.create({
+    gigType,
+    gigCategory,
+    gigTitle,
+    gigDescription,
+    minOrderAmount,
+    unit,
+    unitPrice,
+    stock,
+    sold,
+    expireDate,
+    coordinates: db.sequelize.fn('ST_MakePoint', location.lat, location.lng),
+    userid,
+  });
 
-    newGig = await newGig.save();
+  newGig = await newGig.save();
 
-    res.status(201).json({
-      status: 'success',
-      data: {
-        user: newGig,
-      },
-    });
-  } catch (error) {
-    return next(new AppError('Transaction failed, data not inserted', 502));
-  }
+  res.status(201).json({
+    status: 'success',
+    data: {
+      user: newGig,
+    },
+  });
 });
 
 // to change the format of date object
@@ -301,7 +297,7 @@ exports.getSingleGig = catchAsync(async (req, res, next) => {
     attributes: { exclude: ['createdAt', 'updatedAt'] },
   });
 
-  res.status(201).json({
+  res.status(200).json({
     status: 'success',
     data: {
       gig: gig,
