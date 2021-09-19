@@ -11,6 +11,19 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
   // 1) get the currently paying gig
   const gig = await db.Gig.findByPk(gigId);
 
+  // 1.1) validate gig data with order requirements
+  if (gig.stock * 1 < units * 1) {
+    return next(new AppError(`Requested amount is not in stock`, 400));
+  }
+  if (units * 1 < gig.minOrderAmount * 1) {
+    return next(
+      new AppError(
+        `Please make at least ${gig.minOrderAmount}s of ${gig.unit}`,
+        400
+      )
+    );
+  }
+
   // 2) create checkout session
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ['card'],

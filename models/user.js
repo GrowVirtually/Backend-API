@@ -53,6 +53,8 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
 
+  // await sequelize.sync({ force: true });
+  // await User.sync({ force: true });
   User.beforeUpdate(async (user) => {
     // hash password before saving to the database
     user.password = await bcrypt.hash(user.password, 10);

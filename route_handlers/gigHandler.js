@@ -95,7 +95,8 @@ exports.getAllGigs = catchAsync(async (req, res, next) => {
   const today = formatDate(new Date());
 
   // filters
-  const { gigType, gigCategory, unit, unitPrice, deliveryAbility } = req.query;
+  const { gigType, gigCategory, unit, unitPrice, deliveryAbility, searchTag } =
+    req.query;
   const distance = req.query.distance || 1000;
 
   // sorting
@@ -128,13 +129,18 @@ exports.getAllGigs = catchAsync(async (req, res, next) => {
           ),
           true
         ),
-        db.sequelize.where(
-          db.sequelize.fn('date', db.sequelize.col('expireDate')),
-          '>',
-          today
-        ),
+        // db.sequelize.where(    //TODO uncomment this function later
+        //   db.sequelize.fn('date', db.sequelize.col('expireDate')),
+        //   '>',
+        //   today
+        // ),
         // filters
         gigType && { gigType },
+        searchTag && {
+          gigTitle: {
+            [Op.iLike]: `%${searchTag}%`,
+          },
+        },
         gigCategory && { gigCategory },
         unit && { unit },
         unitPrice &&
@@ -303,40 +309,6 @@ exports.getSingleGig = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.searchGigs = catchAsync(async (req, res, next) => {
-  if (!req.params.title) {
-    return next(new AppError('Search key word not found', 400));
-  }
-  const gigs = await db.Gig.findAll({
-    where: {
-      [Op.or]: [
-        {
-          gigTitle: {
-            [Op.iLike]: `%${req.params.title}`,
-          },
-        },
-        {
-          gigTitle: {
-            [Op.iLike]: `%${req.params.title}%`,
-          },
-        },
-        {
-          gigTitle: {
-            [Op.iLike]: `${req.params.title}%`,
-          },
-        },
-      ],
-    },
-  });
-
-  res.status(201).json({
-    status: 'success',
-    data: {
-      gigs: gigs,
-    },
-  });
-});
-
 exports.getSavedGigs = catchAsync(async (req, res, next) => {
   const savedGigs = await db.User.findAll({
     attributes: {
@@ -380,21 +352,11 @@ exports.getSavedGigs = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.addToSaved = catchAsync(async (req, res, next) => {});
+
 exports.getTitles = catchAsync(async (req, res, next) => {
-  if (!req.params.title) {
-    return next(new AppError('Search key word not found', 400));
-  }
   const gigs = await db.Gig.findAll({
     attributes: ['gigTitle'],
-    where: {
-      [Op.or]: [
-        {
-          gigTitle: {
-            [Op.iLike]: `${req.params.title}%`,
-          },
-        },
-      ],
-    },
   });
 
   res.status(200).json({
