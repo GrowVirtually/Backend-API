@@ -95,7 +95,8 @@ exports.getAllGigs = catchAsync(async (req, res, next) => {
   const today = formatDate(new Date());
 
   // filters
-  const { gigType, gigCategory, unit, unitPrice, deliveryAbility } = req.query;
+  const { gigType, gigCategory, unit, unitPrice, deliveryAbility, searchTag } =
+    req.query;
   const distance = req.query.distance || 1000;
 
   // sorting
@@ -135,6 +136,25 @@ exports.getAllGigs = catchAsync(async (req, res, next) => {
         ),
         // filters
         gigType && { gigType },
+        searchTag && {
+          [Op.or]: [
+            {
+              gigTitle: {
+                [Op.iLike]: `%${searchTag}`,
+              },
+            },
+            {
+              gigTitle: {
+                [Op.iLike]: `%${searchTag}%`,
+              },
+            },
+            {
+              gigTitle: {
+                [Op.iLike]: `${searchTag}%`,
+              },
+            },
+          ],
+        },
         gigCategory && { gigCategory },
         unit && { unit },
         unitPrice &&
