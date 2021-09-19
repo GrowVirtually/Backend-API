@@ -90,7 +90,7 @@ app.use('/api/v1/gigs', gigRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/consumers', consumerRouter);
 app.use('/api/v1/growers', growerRouter);
-app.use('/api/v1/admins', cors({ origin: '192:168:1:101:3001' }), adminRouter);
+app.use('/api/v1/admins', cors(), adminRouter);
 app.use('/api/v1/bookings', bookingRouter);
 
 app.all('*', (req, res, next) => {
