@@ -1,7 +1,7 @@
 const express = require('express');
 const {
   signup,
-  login,
+  userLogin,
   sendOTP,
   verifyOTP,
   forgotPassword,
@@ -22,7 +22,7 @@ const { getSavedGigs } = require('../route_handlers/gigHandler');
 const router = express.Router();
 
 router.post('/signup', signup);
-router.post('/login', login);
+router.post('/login', userLogin);
 
 router.get('/test', protect, restrictTo('admin', 'user'), sample);
 
