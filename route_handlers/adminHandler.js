@@ -67,3 +67,7 @@ exports.searchUsers = catchAsync(async (req, res, next) => {
     },
   });
 });
+
+exports.dashboardData = catchAsync(async (req, res, next) => {
+  const dailyOrders = await db.Order.findAll({ where: {} });
+});

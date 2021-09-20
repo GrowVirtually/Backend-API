@@ -374,3 +374,20 @@ exports.getTitles = catchAsync(async (req, res, next) => {
     },
   });
 });
+
+exports.deleteGig = catchAsync(async (req, res, next) => {
+  const gig = await db.Gig.findOne({
+    where: {
+      id: req.body.gigId,
+      userid: req.params.userId,
+    },
+  });
+  await gig.destroy();
+
+  res.status(202).json({
+    status: 'success',
+    data: {
+      gig,
+    },
+  });
+});
