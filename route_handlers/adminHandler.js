@@ -69,5 +69,20 @@ exports.searchUsers = catchAsync(async (req, res, next) => {
 });
 
 exports.dashboardData = catchAsync(async (req, res, next) => {
-  const dailyOrders = await db.Order.findAll({ where: {} });
+  const gigCount = await db.Gig.count({});
+  const userCount = await db.User.count({});
+  const fruitCount = await db.Gig.count({ where: { gigCategory: 'fruit' } });
+  const vegetableCount = await db.Gig.count({
+    where: { gigCategory: 'vegetable' },
+  });
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      gigCount,
+      userCount,
+      fruitCount,
+      vegetableCount,
+    },
+  });
 });
