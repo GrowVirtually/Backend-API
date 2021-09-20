@@ -29,7 +29,7 @@ exports.searchGigs = catchAsync(async (req, res, next) => {
     include: [options],
   });
 
-  res.status(201).json({
+  res.status(200).json({
     status: 'success',
     data: {
       gigs,
@@ -60,7 +60,7 @@ exports.searchUsers = catchAsync(async (req, res, next) => {
 
   const users = await db.User.findAll(options);
 
-  res.status(201).json({
+  res.status(200).json({
     status: 'success',
     data: {
       users,

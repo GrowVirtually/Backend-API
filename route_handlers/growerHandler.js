@@ -14,7 +14,7 @@ exports.myReviews = catchAsync(async (req, res, next) => {
     },
   });
 
-  res.status(201).json({
+  res.status(200).json({
     status: 'success',
     data: {
       reviews: reviews,
@@ -34,7 +34,7 @@ exports.getMyGigs = catchAsync(async (req, res, next) => {
     ],
   });
 
-  res.status(201).json({
+  res.status(200).json({
     status: 'success',
     data: {
       gigs: gigs,
