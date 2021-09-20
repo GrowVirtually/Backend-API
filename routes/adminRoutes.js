@@ -5,11 +5,13 @@ const {
   protect,
   restrictTo,
   adminLogin,
+  logout,
 } = require('../route_handlers/authHandler');
 
 const router = express.Router();
 
 router.post('/login', adminLogin);
+router.get('/logout', protect, restrictTo('admin'), logout);
 
 router.use(protect);
 router.use(restrictTo('user')); // to be changed to  admin
