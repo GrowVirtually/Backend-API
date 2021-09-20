@@ -104,7 +104,7 @@ module.exports = {
         unitPrice: '180.00',
         stock: '500.00',
         sold: '35.00',
-        expireDate: '2022-10-09T10:10:13-07:00',
+        expireDate: '2021-09-25T10:10:13-07:00',
         deliveryAbility: true,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
@@ -125,7 +125,7 @@ module.exports = {
         unitPrice: '170.00',
         stock: '40.00',
         sold: '2.00',
-        expireDate: '2022-10-09T10:10:13-07:00',
+        expireDate: '2021-09-25T10:10:13-07:00',
         deliveryAbility: false,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
@@ -146,7 +146,7 @@ module.exports = {
         unitPrice: '200.00',
         stock: '100.00',
         sold: '10.00',
-        expireDate: '2022-05-09T10:15:51-07:00',
+        expireDate: '2021-09-25T10:10:13-07:00',
         deliveryAbility: true,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
@@ -167,7 +167,7 @@ module.exports = {
         unitPrice: '562.00',
         stock: '8467.27',
         sold: '2294.72',
-        expireDate: '2022-09-07T18:59:47-07:00',
+        expireDate: '2021-09-25T10:10:13-07:00',
         deliveryAbility: true,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
@@ -188,7 +188,7 @@ module.exports = {
         unitPrice: '1256.76',
         stock: '2000.26',
         sold: '7431.90',
-        expireDate: '2022-05-12T04:33:42-07:00',
+        expireDate: '2021-09-25T10:10:13-07:00',
         deliveryAbility: false,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
@@ -209,7 +209,7 @@ module.exports = {
         unitPrice: '9628.78',
         stock: '9825.63',
         sold: '7483.35',
-        expireDate: '2022-03-01T15:41:17-08:00',
+        expireDate: '2021-09-25T10:10:13-07:00',
         deliveryAbility: true,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
@@ -230,7 +230,7 @@ module.exports = {
         unitPrice: '6227.25',
         stock: '4526.02',
         sold: '6481.41',
-        expireDate: '2022-09-13T02:34:13-07:00',
+        expireDate: '2021-09-25T10:10:13-07:00',
         deliveryAbility: true,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
