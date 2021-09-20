@@ -53,7 +53,7 @@ module.exports = {
         email: 'ahmdodampe@hotmail.com',
         gender: 'male',
         imgLink:
-          'http://res.cloudinary.com/dslxbdvnz/image/upload/v1632111483/bag3efmnufegaxo80ilu.jpg',
+          'http://res.cloudinary.com/dslxbdvnz/image/upload/v1632142596/vrunkdvkpapez8iclndk.jpg',
         role: 'user',
         password: await bcrypt.hash('test@123', 10),
         createdAt: new Date(),
