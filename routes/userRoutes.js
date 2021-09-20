@@ -15,7 +15,7 @@ const {
   updateUser,
   updateProfilePic,
 } = require('../route_handlers/userHandler');
-const { getSavedGigs } = require('../route_handlers/gigHandler');
+const { getSavedGigs, addToSaved } = require('../route_handlers/gigHandler');
 
 const router = express.Router();
 
@@ -29,7 +29,7 @@ router.post('/verifyOTP', verifyOTP);
 
 router.use(protect); // protect all the routes after this middleware
 router.route('/me').get(getMe, getUser).patch(getMe, updateUser);
-router.route('/me/saved').get(getMe, getSavedGigs);
+router.route('/me/saved').get(getMe, getSavedGigs).post(getMe, addToSaved);
 router.route('/me/picture').patch(getMe, updateProfilePic);
 
 router.patch('/updateMyPassword', updatePassword);

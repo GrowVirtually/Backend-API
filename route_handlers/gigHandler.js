@@ -42,34 +42,30 @@ exports.createGig = catchAsync(async (req, res, next) => {
     currentDate.setTime(currentDate.getTime() + gigDuration * 86400000)
   );
 
-  try {
-    // add gig details to the table
-    let newGig = await db.Gig.create({
-      gigType,
-      gigCategory,
-      gigTitle,
-      gigDescription,
-      minOrderAmount,
-      unit,
-      unitPrice,
-      stock,
-      sold,
-      expireDate,
-      coordinates: db.sequelize.fn('ST_MakePoint', location.lat, location.lng),
-      userid,
-    });
+  // add gig details to the table
+  let newGig = await db.Gig.create({
+    gigType,
+    gigCategory,
+    gigTitle,
+    gigDescription,
+    minOrderAmount,
+    unit,
+    unitPrice,
+    stock,
+    sold,
+    expireDate,
+    coordinates: db.sequelize.fn('ST_MakePoint', location.lat, location.lng),
+    userid,
+  });
 
-    newGig = await newGig.save();
+  newGig = await newGig.save();
 
-    res.status(201).json({
-      status: 'success',
-      data: {
-        user: newGig,
-      },
-    });
-  } catch (error) {
-    return next(new AppError('Transaction failed, data not inserted', 502));
-  }
+  res.status(201).json({
+    status: 'success',
+    data: {
+      user: newGig,
+    },
+  });
 });
 
 // to change the format of date object
@@ -95,7 +91,8 @@ exports.getAllGigs = catchAsync(async (req, res, next) => {
   const today = formatDate(new Date());
 
   // filters
-  const { gigType, gigCategory, unit, unitPrice, deliveryAbility } = req.query;
+  const { gigType, gigCategory, unit, unitPrice, deliveryAbility, searchTag } =
+    req.query;
   const distance = req.query.distance || 1000;
 
   // sorting
@@ -128,13 +125,18 @@ exports.getAllGigs = catchAsync(async (req, res, next) => {
           ),
           true
         ),
-        db.sequelize.where(
-          db.sequelize.fn('date', db.sequelize.col('expireDate')),
-          '>',
-          today
-        ),
+        // db.sequelize.where(    //TODO uncomment this function later
+        //   db.sequelize.fn('date', db.sequelize.col('expireDate')),
+        //   '>',
+        //   today
+        // ),
         // filters
         gigType && { gigType },
+        searchTag && {
+          gigTitle: {
+            [Op.iLike]: `%${searchTag}%`,
+          },
+        },
         gigCategory && { gigCategory },
         unit && { unit },
         unitPrice &&
@@ -295,44 +297,10 @@ exports.getSingleGig = catchAsync(async (req, res, next) => {
     attributes: { exclude: ['createdAt', 'updatedAt'] },
   });
 
-  res.status(201).json({
+  res.status(200).json({
     status: 'success',
     data: {
       gig: gig,
-    },
-  });
-});
-
-exports.searchGigs = catchAsync(async (req, res, next) => {
-  if (!req.params.title) {
-    return next(new AppError('Search key word not found', 400));
-  }
-  const gigs = await db.Gig.findAll({
-    where: {
-      [Op.or]: [
-        {
-          gigTitle: {
-            [Op.iLike]: `%${req.params.title}`,
-          },
-        },
-        {
-          gigTitle: {
-            [Op.iLike]: `%${req.params.title}%`,
-          },
-        },
-        {
-          gigTitle: {
-            [Op.iLike]: `${req.params.title}%`,
-          },
-        },
-      ],
-    },
-  });
-
-  res.status(201).json({
-    status: 'success',
-    data: {
-      gigs: gigs,
     },
   });
 });
@@ -380,21 +348,11 @@ exports.getSavedGigs = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.addToSaved = catchAsync(async (req, res, next) => {});
+
 exports.getTitles = catchAsync(async (req, res, next) => {
-  if (!req.params.title) {
-    return next(new AppError('Search key word not found', 400));
-  }
   const gigs = await db.Gig.findAll({
     attributes: ['gigTitle'],
-    where: {
-      [Op.or]: [
-        {
-          gigTitle: {
-            [Op.iLike]: `${req.params.title}%`,
-          },
-        },
-      ],
-    },
   });
 
   res.status(200).json({
