@@ -398,7 +398,7 @@ exports.getTitles = catchAsync(async (req, res, next) => {
 exports.deleteGig = catchAsync(async (req, res, next) => {
   const gig = await db.Gig.findOne({
     where: {
-      id: req.body.gigId,
+      id: req.params.gigId,
       userid: req.params.userId,
     },
   });

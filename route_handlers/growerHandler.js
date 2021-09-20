@@ -32,7 +32,7 @@ exports.getMyGigs = catchAsync(async (req, res, next) => {
         attributes: { exclude: ['createdAt', 'updatedAt'] },
       },
     ],
-    order: [['createdAt', 'ASC']],
+    order: [['id', 'DESC']],
   });
 
   res.status(200).json({
