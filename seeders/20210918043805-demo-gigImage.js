@@ -78,7 +78,7 @@ module.exports = {
       {
         gigId: 5,
         imgLink:
-          'http://res.cloudinary.com/dslxbdvnz/image/upload/v1632120014/woo1xycpu7x6opc5m4yw.jpg',
+          'http://res.cloudinary.com/dslxbdvnz/image/upload/v1632129902/lgdslezbyf61ezk7diyn.jpg',
         createdAt: new Date(),
         updatedAt: new Date(),
       },
