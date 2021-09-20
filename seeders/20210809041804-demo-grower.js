@@ -13,12 +13,6 @@ module.exports = {
      */
     queryInterface.bulkInsert('Growers', [
       {
-        userid: 1,
-        growerType: 'normal',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      {
         userid: 2,
         growerType: 'premium',
         createdAt: new Date(),

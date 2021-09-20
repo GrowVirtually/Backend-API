@@ -18,146 +18,144 @@ module.exports = {
         gigType: 'pre',
         gigCategory: 'vegetable',
         gigTitle: 'Carrot',
-        gigDescription: 'For sale',
-        minOrderAmount: '100.00',
+        gigDescription: 'For immediate sale',
+        minOrderAmount: '0.25',
         unit: 'kg',
-        unitPrice: '50.00',
+        unitPrice: '150.00',
         stock: '100.00',
-        sold: '2.34',
-        expireDate: new Date('2021-09-13'),
+        sold: '20.00',
+        expireDate: new Date('2021-12-13'),
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '5.951957986708315',
-          '80.54349562603379'
+          '6.899897732567201',
+          '79.85645491107998'
         ),
         createdAt: new Date(),
         updatedAt: new Date(),
-        userid: 1,
+        userid: 3,
       },
       {
         gigType: 'post',
         gigCategory: 'vegetable',
-        gigTitle: 'Raddish',
-        gigDescription: 'For sale',
-        minOrderAmount: '10.00',
-        unit: 'g',
-        unitPrice: '15.00',
+        gigTitle: 'Radish',
+        gigDescription: 'For immediate sale',
+        minOrderAmount: '0.25',
+        unit: 'kg',
+        unitPrice: '120.00',
         stock: '55.00',
-        sold: '2.34',
-        expireDate: new Date('2021-09-21'),
+        sold: '2.25',
+        expireDate: new Date('2021-12-21'),
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '5.951957986708315',
-          '80.54349562603379'
+          '6.8997536406026105',
+          '79.85953058228031'
         ),
         createdAt: new Date(),
         updatedAt: new Date(),
-        userid: 2,
+        userid: 3,
       },
       {
         gigType: 'pre',
         gigCategory: 'fruit',
-        gigTitle: 'Raddish',
-        gigDescription: 'For sale',
-        minOrderAmount: '110.00',
-        unit: 'pcs',
-        unitPrice: '1500.00',
-        stock: '50.00',
-        sold: '20.34',
-        expireDate: new Date(),
+        gigTitle: 'Mangoes (vilad)',
+        gigDescription: 'For immediate sale',
+        minOrderAmount: '1.0',
+        unit: 'kg',
+        unitPrice: '295.00',
+        stock: '200.00',
+        sold: '20.00',
+        expireDate: new Date('2022-10-09T10:10:13-07:00'),
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '6.933906500876093',
-          '79.8502538395318'
+          '6.902667373619862',
+          '79.8577971609536'
         ),
         createdAt: new Date(),
         updatedAt: new Date(),
-        userid: 1,
+        userid: 3,
       },
       {
         gigType: 'post',
         gigCategory: 'fruit',
-        gigTitle: 'Raddish',
-        gigDescription: 'For sale',
-        minOrderAmount: '100.00',
+        gigTitle: 'Mango (karthakolomban)',
+        gigDescription: 'For immediate sale',
+        minOrderAmount: '0.50',
         unit: 'kg',
-        unitPrice: '150.00',
-        stock: '50.00',
-        sold: '20.34',
-        expireDate: new Date(),
+        unitPrice: '415.00',
+        stock: '100.00',
+        sold: '10.00',
+        expireDate: new Date('2022-10-09T10:10:13-07:00'),
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '5.951957986708315',
-          '80.54349562603379'
+          '6.905024252495034',
+          '79.86680004898422'
         ),
         createdAt: new Date(),
         updatedAt: new Date(),
-        userid: 2,
+        userid: 3,
       },
       {
         gigType: 'pre',
-        gigCategory: 'fruit',
-        gigTitle: 'mi felis, adipiscing fringilla, porttitor',
-        gigDescription:
-          'id enim. Curabitur massa. Vestibulum accumsan neque et',
-        minOrderAmount: '92.02',
-        unit: 'g',
-        unitPrice: '4534.29',
-        stock: '9202.26',
-        sold: '4646.55',
-        expireDate: '2021-01-01T13:59:14-08:00',
+        gigCategory: 'vegetable',
+        gigTitle: 'Pumpkin',
+        gigDescription: 'For immediate sale',
+        minOrderAmount: '0.50',
+        unit: 'kg',
+        unitPrice: '180.00',
+        stock: '500.00',
+        sold: '35.00',
+        expireDate: '2022-10-09T10:10:13-07:00',
         deliveryAbility: true,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '5.951957986708315',
-          '80.54349562603379'
+          '6.8891098352679885',
+          '79.85831778533048'
         ),
         createdAt: '2021-08-17T05:31:29-07:00',
         updatedAt: '2021-08-17T14:12:17-07:00',
-        userid: 5,
+        userid: 3,
       },
       {
         gigType: 'pre',
-        gigCategory: 'fruit',
-        gigTitle: 'est ac facilisis facilisis,',
-        gigDescription:
-          'laoreet, libero et tristique pellentesque, tellus sem mollis dui,',
-        minOrderAmount: '89.07',
-        unit: 'pcs',
-        unitPrice: '3245.49',
-        stock: '248.31',
-        sold: '8038.39',
-        expireDate: '2020-10-09T10:10:13-07:00',
+        gigCategory: 'vegetable',
+        gigTitle: 'Brinjal',
+        gigDescription: 'For immediate sale',
+        minOrderAmount: '0.50',
+        unit: 'kg',
+        unitPrice: '170.00',
+        stock: '40.00',
+        sold: '2.00',
+        expireDate: '2022-10-09T10:10:13-07:00',
         deliveryAbility: false,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '5.951957986708315',
-          '80.54349562603379'
+          '6.883041094418944',
+          '79.88125580091216'
         ),
         createdAt: '2021-08-17T14:16:28-07:00',
         updatedAt: '2021-08-17T00:43:48-07:00',
-        userid: 1,
+        userid: 3,
       },
       {
         gigType: 'post',
-        gigCategory: 'fruit',
-        gigTitle: 'nec, diam. Duis',
-        gigDescription: 'sodales purus, in molestie tortor',
-        minOrderAmount: '45.18',
-        unit: 'pcs',
-        unitPrice: '9671.78',
-        stock: '7270.61',
-        sold: '9183.02',
-        expireDate: '2021-05-09T10:15:51-07:00',
+        gigCategory: 'vegetable',
+        gigTitle: 'Cabbage',
+        gigDescription: 'For immediate sale',
+        minOrderAmount: '0.50',
+        unit: 'kg',
+        unitPrice: '200.00',
+        stock: '100.00',
+        sold: '10.00',
+        expireDate: '2022-05-09T10:15:51-07:00',
         deliveryAbility: true,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '5.951957986708315',
-          '80.54349562603379'
+          '6.870117606870262',
+          '79.92151873242103'
         ),
         createdAt: '2021-08-17T06:50:11-07:00',
         updatedAt: '2021-08-17T18:20:52-07:00',
-        userid: 7,
+        userid: 3,
       },
       {
         gigType: 'pre',
@@ -169,12 +167,12 @@ module.exports = {
         unitPrice: '562.00',
         stock: '8467.27',
         sold: '2294.72',
-        expireDate: '2020-09-07T18:59:47-07:00',
+        expireDate: '2022-09-07T18:59:47-07:00',
         deliveryAbility: true,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '5.951957986708315',
-          '80.54349562603379'
+          '6.033490532691273',
+          '80.21427531531938'
         ),
         createdAt: '2021-08-17T11:43:28-07:00',
         updatedAt: '2021-08-17T08:56:53-07:00',
@@ -190,12 +188,12 @@ module.exports = {
         unitPrice: '1256.76',
         stock: '2000.26',
         sold: '7431.90',
-        expireDate: '2021-05-12T04:33:42-07:00',
+        expireDate: '2022-05-12T04:33:42-07:00',
         deliveryAbility: false,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '5.951957986708315',
-          '80.54349562603379'
+          '6.033276757011614',
+          '80.21427531531938'
         ),
         createdAt: '2021-08-17T10:10:58-07:00',
         updatedAt: '2021-08-17T23:07:07-07:00',
@@ -211,12 +209,12 @@ module.exports = {
         unitPrice: '9628.78',
         stock: '9825.63',
         sold: '7483.35',
-        expireDate: '2021-03-01T15:41:17-08:00',
+        expireDate: '2022-03-01T15:41:17-08:00',
         deliveryAbility: true,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '5.951957986708315',
-          '80.54349562603379'
+          '6.033704308286632',
+          '80.21800139997525'
         ),
         createdAt: '2021-08-17T23:10:45-07:00',
         updatedAt: '2021-08-17T09:57:37-07:00',
@@ -232,12 +230,12 @@ module.exports = {
         unitPrice: '6227.25',
         stock: '4526.02',
         sold: '6481.41',
-        expireDate: '2021-09-13T02:34:13-07:00',
+        expireDate: '2022-09-13T02:34:13-07:00',
         deliveryAbility: true,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '5.951957986708315',
-          '80.54349562603379'
+          '6.033882454551695',
+          '80.21864629924261'
         ),
         createdAt: '2021-08-17T13:30:13-07:00',
         updatedAt: '2021-08-17T14:47:20-07:00',
@@ -254,12 +252,12 @@ module.exports = {
         unitPrice: '2065.37',
         stock: '6652.82',
         sold: '7983.87',
-        expireDate: '2021-12-11T17:15:51-08:00',
+        expireDate: '2022-12-11T17:15:51-08:00',
         deliveryAbility: true,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '5.951957986708315',
-          '80.54349562603379'
+          '6.035343251716643',
+          '80.21982861456611'
         ),
         createdAt: '2021-08-17T08:31:19-07:00',
         updatedAt: '2021-08-17T13:29:43-07:00',
@@ -280,12 +278,12 @@ module.exports = {
         deliveryAbility: true,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '5.951957986708315',
-          '80.54349562603379'
+          '6.035343251716643',
+          '80.22076013573009'
         ),
         createdAt: '2021-08-17T04:18:49-07:00',
         updatedAt: '2021-08-17T17:47:51-07:00',
-        userid: 1,
+        userid: 3,
       },
       {
         gigType: 'pre',
@@ -302,8 +300,8 @@ module.exports = {
         deliveryAbility: true,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '5.951957986708315',
-          '80.54349562603379'
+          '6.037338480506372',
+          '80.22065265251885'
         ),
         createdAt: '2021-08-17T04:59:55-07:00',
         updatedAt: '2021-08-17T02:02:26-07:00',
@@ -323,12 +321,12 @@ module.exports = {
         deliveryAbility: true,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '5.951957986708315',
-          '80.54349562603379'
+          '6.03616272157297',
+          '80.20947439855124'
         ),
         createdAt: '2021-08-17T04:27:14-07:00',
         updatedAt: '2021-08-17T09:45:08-07:00',
-        userid: 1,
+        userid: 3,
       },
       {
         gigType: 'pre',
@@ -344,8 +342,8 @@ module.exports = {
         deliveryAbility: false,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '5.951957986708315',
-          '80.54349562603379'
+          '5.948114012283795',
+          '80.5354637612775'
         ),
         createdAt: '2021-08-17T10:46:03-07:00',
         updatedAt: '2021-08-17T07:46:11-07:00',
@@ -366,12 +364,12 @@ module.exports = {
         deliveryAbility: true,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '5.951957986708315',
-          '80.54349562603379'
+          '5.947893938088231',
+          '80.53420992390933'
         ),
         createdAt: '2021-08-17T16:24:27-07:00',
         updatedAt: '2021-08-17T13:09:03-07:00',
-        userid: 1,
+        userid: 2,
       },
       {
         gigType: 'pre',
@@ -384,16 +382,16 @@ module.exports = {
         unitPrice: '5985.80',
         stock: '6217.50',
         sold: '8763.37',
-        expireDate: '2020-09-16T11:46:07-07:00',
+        expireDate: '2022-09-16T11:46:07-07:00',
         deliveryAbility: true,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '5.951957986708315',
-          '80.54349562603379'
+          '5.946133341353477',
+          '80.52978461555108'
         ),
         createdAt: '2021-08-17T17:13:12-07:00',
         updatedAt: '2021-08-17T14:15:09-07:00',
-        userid: 1,
+        userid: 3,
       },
       {
         gigType: 'pre',
@@ -406,12 +404,12 @@ module.exports = {
         unitPrice: '7187.34',
         stock: '4882.56',
         sold: '5191.69',
-        expireDate: '2020-12-06T13:15:16-08:00',
+        expireDate: '2022-12-06T13:15:16-08:00',
         deliveryAbility: true,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '5.951957986708315',
-          '80.54349562603379'
+          '5.949214381940518',
+          '80.54424062285466'
         ),
         createdAt: '2021-08-17T19:32:16-07:00',
         updatedAt: '2021-08-17T21:29:14-07:00',
@@ -432,8 +430,8 @@ module.exports = {
         deliveryAbility: false,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '5.951957986708315',
-          '80.54349562603379'
+          '5.951928617677309',
+          '80.54320805090441'
         ),
         createdAt: '2021-08-17T07:32:46-07:00',
         updatedAt: '2021-08-17T09:52:46-07:00',
@@ -450,16 +448,16 @@ module.exports = {
         unitPrice: '4911.16',
         stock: '4539.86',
         sold: '6862.64',
-        expireDate: '2021-03-31T03:59:57-07:00',
+        expireDate: '2022-03-31T03:59:57-07:00',
         deliveryAbility: false,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '6.038773635825261',
-          '80.22490998891791'
+          '5.95310233708773',
+          '80.53487372016306'
         ),
         createdAt: '2021-08-17T01:08:14-07:00',
         updatedAt: '2021-08-17T11:27:11-07:00',
-        userid: 1,
+        userid: 3,
       },
       {
         gigType: 'post',
@@ -471,12 +469,12 @@ module.exports = {
         unitPrice: '8180.34',
         stock: '9769.84',
         sold: '8492.69',
-        expireDate: '2021-07-27T12:51:31-07:00',
+        expireDate: '2022-07-27T12:51:31-07:00',
         deliveryAbility: false,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '6.038397544142301',
-          '80.22840268633216'
+          '6.9494830994783525',
+          '80.7899090013915'
         ),
         createdAt: '2021-08-17T22:44:54-07:00',
         updatedAt: '2021-08-17T01:13:40-07:00',
@@ -493,12 +491,12 @@ module.exports = {
         unitPrice: '696.73',
         stock: '235.05',
         sold: '6808.19',
-        expireDate: '2021-01-08T02:30:29-08:00',
+        expireDate: '2022-01-08T02:30:29-08:00',
         deliveryAbility: true,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '6.037225021336941',
-          '80.22985983079478'
+          '6.946365873779008',
+          '80.79187937720472'
         ),
         createdAt: '2021-08-17T13:51:01-07:00',
         updatedAt: '2021-08-17T05:56:43-07:00',
@@ -519,8 +517,8 @@ module.exports = {
         deliveryAbility: true,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '6.039415203387574',
-          '80.22767967572094'
+          '6.955045156723626',
+          '80.77913350866314'
         ),
         createdAt: '2021-08-17T00:26:08-07:00',
         updatedAt: '2021-08-17T11:46:09-07:00',
@@ -546,7 +544,7 @@ module.exports = {
         ),
         createdAt: '2021-08-17T09:29:55-07:00',
         updatedAt: '2021-08-17T21:23:49-07:00',
-        userid: 10,
+        userid: 3,
       },
       {
         gigType: 'post',
@@ -559,16 +557,16 @@ module.exports = {
         unitPrice: '2111.40',
         stock: '8914.93',
         sold: '6979.91',
-        expireDate: '2021-03-01T14:28:44-08:00',
+        expireDate: '2022-03-01T14:28:44-08:00',
         deliveryAbility: false,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '6.035178206482587',
-          '80.21020164940684'
+          '6.948810758428621',
+          '80.78843121953163'
         ),
         createdAt: '2021-08-17T05:48:25-07:00',
         updatedAt: '2021-08-17T04:09:15-07:00',
-        userid: 1,
+        userid: 3,
       },
       {
         gigType: 'post',
@@ -585,8 +583,8 @@ module.exports = {
         deliveryAbility: false,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '5.942841300164974',
-          '80.55291561837097'
+          '6.947588317692914',
+          '80.78935483319407'
         ),
         createdAt: '2021-08-17T15:57:11-07:00',
         updatedAt: '2021-08-17T12:17:24-07:00',
@@ -607,8 +605,8 @@ module.exports = {
         deliveryAbility: false,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '5.944932290135793',
-          '80.54350535718483'
+          '6.951194508719875',
+          '80.79064789232147'
         ),
         createdAt: '2021-08-17T21:15:01-07:00',
         updatedAt: '2021-08-17T08:01:07-07:00',
@@ -629,8 +627,8 @@ module.exports = {
         deliveryAbility: false,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '5.942951934754017',
-          '80.55142510418781'
+          '6.953700489578469',
+          '80.78418259668443'
         ),
         createdAt: '2021-08-17T14:56:04-07:00',
         updatedAt: '2021-08-17T23:51:51-07:00',
@@ -650,8 +648,8 @@ module.exports = {
         deliveryAbility: true,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '5.944954416971299',
-          '80.55304909725305'
+          '6.947343829164362',
+          '80.79114048627477'
         ),
         createdAt: '2021-08-17T22:12:15-07:00',
         updatedAt: '2021-08-17T15:38:46-07:00',
@@ -672,12 +670,12 @@ module.exports = {
         deliveryAbility: true,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
-          '5.9474989971194425',
-          '80.54849969202239'
+          '6.948627392520895',
+          '80.7883080710433'
         ),
         createdAt: '2021-08-17T01:36:17-07:00',
         updatedAt: '2021-08-17T13:35:01-07:00',
-        userid: 1,
+        userid: 3,
       },
     ]),
   down: async (queryInterface, Sequelize) =>
