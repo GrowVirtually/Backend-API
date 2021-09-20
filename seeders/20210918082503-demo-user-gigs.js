@@ -24,6 +24,12 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      {
+        gigId: 27,
+        userId: 3,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
     ]),
   down: async (queryInterface, Sequelize) =>
     /**
