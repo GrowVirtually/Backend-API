@@ -348,7 +348,19 @@ exports.getSavedGigs = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.addToSaved = catchAsync(async (req, res, next) => {});
+exports.addToSaved = catchAsync(async (req, res, next) => {
+  const savedGigs = await db.User_Gigs.create({
+    gigId: req.body.gigId,
+    userId: req.params.userId,
+  });
+
+  res.status(201).json({
+    status: 'success',
+    data: {
+      savedGigs,
+    },
+  });
+});
 
 exports.getTitles = catchAsync(async (req, res, next) => {
   const gigs = await db.Gig.findAll({
