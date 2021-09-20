@@ -30,7 +30,7 @@ module.exports = {
           '6.03705329857342',
           '80.224814630647'
         ),
-        userid: 1,
+        userid: 3,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
