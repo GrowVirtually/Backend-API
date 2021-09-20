@@ -14,15 +14,15 @@ module.exports = {
     queryInterface.bulkInsert('Reviews', [
       {
         content: 'Fresh organic foods',
-        consumerId: 1,
-        growerId: 2,
+        consumerId: 2,
+        growerId: 3,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
       {
         content: 'Delivered on time',
-        consumerId: 2,
-        growerId: 1,
+        consumerId: 3,
+        growerId: 2,
         createdAt: new Date(),
         updatedAt: new Date(),
       },

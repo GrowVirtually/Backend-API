@@ -13,11 +13,6 @@ module.exports = {
      */
     queryInterface.bulkInsert('Customers', [
       {
-        userid: 1,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      {
         userid: 2,
         createdAt: new Date(),
         updatedAt: new Date(),
