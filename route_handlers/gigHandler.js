@@ -306,59 +306,71 @@ exports.getSingleGig = catchAsync(async (req, res, next) => {
 });
 
 exports.getSavedGigs = catchAsync(async (req, res, next) => {
-  // const savedGigs = await db.User.findAll({
-  //   attributes: {
-  //     exclude: [
-  //       'fname',
-  //       'lname',
-  //       'phone',
-  //       'dob',
-  //       'nic',
-  //       'email',
-  //       'gender',
-  //       'imgLink',
-  //       'role',
-  //       'password',
-  //       'passwordChangedAt',
-  //       'passwordResetToken',
-  //       'passwordResetExpires',
-  //       'createdAt',
-  //       'updatedAt',
-  //     ],
-  //   },
-  //   include: [
-  //     {
-  //       model: db.Gig,
-  //       as: 'savedGigs',
-  //       through: {
-  //         attributes: [],
-  //       },
-  //     },
-  //   ],
-  //   where: {
-  //     id: req.params.userId,
-  //   },
-  // });
-
-  const savedGigs = await db.Gig.findAll({
+  const savedGigs = await db.User.findAll({
+    attributes: {
+      exclude: [
+        'fname',
+        'lname',
+        'phone',
+        'dob',
+        'nic',
+        'email',
+        'gender',
+        'imgLink',
+        'role',
+        'password',
+        'passwordChangedAt',
+        'passwordResetToken',
+        'passwordResetExpires',
+        'createdAt',
+        'updatedAt',
+      ],
+    },
     include: [
       {
-        model: db.User,
-        as: 'users',
+        model: db.Gig,
+        as: 'savedGigs',
         through: {
           attributes: [],
         },
-        where: {
-          id: req.params.userId,
-        },
-      },
-      {
-        model: db.GigImage,
-        as: 'images',
-        attributes: { exclude: ['createdAt', 'updatedAt'] },
+        include: [
+          {
+            model: db.GigImage,
+            as: 'images',
+            attributes: { exclude: ['createdAt', 'updatedAt'] },
+          },
+          {
+            model: db.User,
+            as: 'user',
+            attributes: { exclude: ['createdAt', 'updatedAt'] },
+          },
+        ],
       },
     ],
+    where: {
+      id: req.params.userId,
+    },
   });
+
+  // const savedGigs = await db.Gig.findAll({
+  //   include: [
+  //     {
+  //       model: db.User,
+  //       as: 'users',
+  //       through: {
+  //         attributes: [],
+  //       },
+  //       where: {
+  //         id: req.params.userId,
+  //       },
+  //     },
+  //     {
+  //       model: db.GigImage,
+  //       as: 'images',
+  //       attributes: { exclude: ['createdAt', 'updatedAt'] },
+  //     },
+  //   ],
+  // });
 
   res.status(200).json({
     status: 'success',

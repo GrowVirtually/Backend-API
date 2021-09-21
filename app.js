@@ -55,7 +55,6 @@ app.post(
 // reading data from body into req.body
 app.use(express.json({ limit: '10kb' })); // body parser
 
-app.use(cookieParser());
 // data sanitization against XSS
 app.use(xss());
 
@@ -87,11 +86,12 @@ cloudinary.config({
 
 // ROUTES
 // route mounting
+app.use(cors());
 app.use('/api/v1/gigs', gigRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/consumers', consumerRouter);
 app.use('/api/v1/growers', growerRouter);
-app.use('/api/v1/admins', cors(), adminRouter);
+app.use('/api/v1/admins', adminRouter);
 app.use('/api/v1/bookings', bookingRouter);
 
 app.all('*', (req, res, next) => {
