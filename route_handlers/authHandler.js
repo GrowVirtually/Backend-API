@@ -116,11 +116,12 @@ const checkPWAndSendToken = async (user, req, res, next) => {
     const token = signToken(user.phone);
 
     if (user.role === 'admin') {
+      console.log('user role ======== ', user.role);
       res.cookie('jwt', token, {
         expires: new Date(
           Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
         ),
-        httpOnly: true,
+        // httpOnly: true,
         // secure: req.secure || req.headers['x-forwarded-proto'] === 'https',
       });
     }
