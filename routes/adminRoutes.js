@@ -5,6 +5,8 @@ const {
   searchUsers,
   dashboardData,
   addNew,
+  updateAdmin,
+  removeAdmin,
 } = require('../route_handlers/adminHandler');
 const {
   protect,
@@ -26,5 +28,6 @@ router.route('/search/gigs/:param/:value').get(searchGigs);
 router.route('/search/users/:param/:value').get(searchUsers);
 router.route('/dashboard').get(dashboardData);
 router.route('/addNew').post(addNew);
+router.route('/edit').patch(updateAdmin).delete(removeAdmin);
 
 module.exports = router;
