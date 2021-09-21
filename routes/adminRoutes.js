@@ -4,6 +4,7 @@ const {
   searchGigs,
   searchUsers,
   dashboardData,
+  addNew,
 } = require('../route_handlers/adminHandler');
 const {
   protect,
@@ -24,5 +25,6 @@ router.use(restrictTo('admin')); // to be changed to  admin
 router.route('/search/gigs/:param/:value').get(searchGigs);
 router.route('/search/users/:param/:value').get(searchUsers);
 router.route('/dashboard').get(dashboardData);
+router.route('/addNew').post(addNew);
 
 module.exports = router;

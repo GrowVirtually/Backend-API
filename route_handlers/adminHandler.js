@@ -1,6 +1,8 @@
 const { Op } = require('sequelize');
+const bcrypt = require('bcrypt');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
+const Email = require('../utils/email');
 
 const db = require('../models');
 
@@ -83,6 +85,26 @@ exports.dashboardData = catchAsync(async (req, res, next) => {
       userCount,
       fruitCount,
       vegetableCount,
+    },
+  });
+});
+
+exports.addNew = catchAsync(async (req, res, next) => {
+  const hashed = await bcrypt.hash(req.body.password, 10);
+  const newUser = await db.User.create({
+    fname: req.body.fname,
+    lname: req.body.lname,
+    phone: req.body.phone,
+    email: req.body.email,
+    password: hashed,
+  });
+
+  await newUser.save();
+
+  res.status(201).json({
+    status: 'success',
+    data: {
+      newUser,
     },
   });
 });
