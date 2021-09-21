@@ -88,3 +88,14 @@ exports.completed = catchAsync(async (req, res, next) => {
     },
   });
 });
+
+exports.getConsumer = catchAsync(async (req, res, next) => {
+  const consumer = await db.User.findByPk(req.params.consumerId, {});
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      consumer,
+    },
+  });
+});
