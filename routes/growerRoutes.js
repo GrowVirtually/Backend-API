@@ -12,7 +12,7 @@ const { protect, restrictTo } = require('../route_handlers/authHandler');
 
 const router = express.Router();
 router.use(protect);
-router.use(restrictTo('user'));
+router.use(restrictTo('user', 'admin'));
 
 // routes
 router.route('/:id/reviews').get(myReviews);
