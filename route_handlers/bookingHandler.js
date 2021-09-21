@@ -89,7 +89,8 @@ const createOrderCheckout = async (session) => {
 
   const QRObject = {
     orderId: newOrder.id,
-    paymentAmount: newOrder.paymentAmount,
+    consumerId,
+    growerId: gigDetails.userid,
   };
 
   const QRObjText = JSON.stringify(QRObject);
