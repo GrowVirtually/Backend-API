@@ -159,3 +159,19 @@ exports.removeAdmin = catchAsync(async (req, res, next) => {
     },
   });
 });
+
+exports.admins = catchAsync(async (req, res, next) => {
+  const admins = await db.User.findAll({
+    where: {
+      role: 'admin',
+      [Op.not]: [{ id: [req.params.userId] }],
+    },
+  });
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      admins,
+    },
+  });
+});
