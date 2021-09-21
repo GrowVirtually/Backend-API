@@ -125,11 +125,12 @@ exports.getAllGigs = catchAsync(async (req, res, next) => {
           ),
           true
         ),
-        // db.sequelize.where(    //TODO uncomment this function later
-        //   db.sequelize.fn('date', db.sequelize.col('expireDate')),
-        //   '>',
-        //   today
-        // ),
+        db.sequelize.where(
+          //TODO uncomment this function later
+          db.sequelize.fn('date', db.sequelize.col('expireDate')),
+          '>',
+          today
+        ),
         // filters
         gigType && { gigType },
         searchTag && {
