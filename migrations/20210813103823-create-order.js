@@ -67,6 +67,15 @@ module.exports = {
       qrLink: {
         type: Sequelize.TEXT,
       },
+      growerFname: {
+        type: Sequelize.TEXT,
+      },
+      growerLname: {
+        type: Sequelize.TEXT,
+      },
+      gigTitle: {
+        type: Sequelize.TEXT,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
