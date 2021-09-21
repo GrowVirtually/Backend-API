@@ -58,7 +58,7 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
 const createOrderCheckout = async (session) => {
   const gigId = session.client_reference_id;
   const gigDetails = await db.Gig.findOne({
-    attributes: ['userid', 'deliveryAbility'],
+    attributes: ['userid', 'deliveryAbility', 'gigTitle'],
     where: {
       id: gigId,
     },
@@ -75,6 +75,10 @@ const createOrderCheckout = async (session) => {
 
   const paymentAmount = session.amount_total / 100;
   const quantity = 1;
+
+  const grower = await db.User.findByPk(gigDetails.userid, {
+    attributes: ['fname', 'lname'],
+  });
 
   let newOrder = await db.Order.create({
     quantity,
