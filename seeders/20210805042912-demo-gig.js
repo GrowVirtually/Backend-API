@@ -24,7 +24,7 @@ module.exports = {
         unitPrice: '150.00',
         stock: '100.00',
         sold: '20.00',
-        expireDate: new Date('2021-12-13'),
+        expireDate: new Date('2021-09-25T10:10:13-07:00'),
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
           '6.899897732567201',
@@ -44,7 +44,7 @@ module.exports = {
         unitPrice: '120.00',
         stock: '55.00',
         sold: '2.25',
-        expireDate: new Date('2021-12-21'),
+        expireDate: new Date('2021-09-25T10:10:13-07:00'),
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
           '6.8997536406026105',
@@ -64,7 +64,7 @@ module.exports = {
         unitPrice: '295.00',
         stock: '200.00',
         sold: '20.00',
-        expireDate: new Date('2022-10-09T10:10:13-07:00'),
+        expireDate: new Date('2021-09-25T10:10:13-07:00'),
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
           '6.902667373619862',
@@ -84,7 +84,7 @@ module.exports = {
         unitPrice: '415.00',
         stock: '100.00',
         sold: '10.00',
-        expireDate: new Date('2022-10-09T10:10:13-07:00'),
+        expireDate: new Date('2021-09-25T10:10:13-07:00'),
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
           '6.905024252495034',
@@ -252,7 +252,7 @@ module.exports = {
         unitPrice: '2065.37',
         stock: '6652.82',
         sold: '7983.87',
-        expireDate: '2022-12-11T17:15:51-08:00',
+        expireDate: '2021-09-25T10:10:13-07:00',
         deliveryAbility: true,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
@@ -274,7 +274,7 @@ module.exports = {
         unitPrice: '6801.68',
         stock: '3214.89',
         sold: '254.80',
-        expireDate: '2022-07-10T20:08:56-07:00',
+        expireDate: '2021-09-25T10:10:13-07:00',
         deliveryAbility: true,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
@@ -296,7 +296,7 @@ module.exports = {
         unitPrice: '2892.28',
         stock: '8762.79',
         sold: '9260.34',
-        expireDate: '2022-06-13T03:23:30-07:00',
+        expireDate: '2021-09-25T10:10:13-07:00',
         deliveryAbility: true,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
@@ -317,7 +317,7 @@ module.exports = {
         unitPrice: '594.72',
         stock: '3457.02',
         sold: '3409.70',
-        expireDate: '2022-05-18T04:18:17-07:00',
+        expireDate: '2021-09-25T10:10:13-07:00',
         deliveryAbility: true,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
@@ -338,7 +338,7 @@ module.exports = {
         unitPrice: '3030.64',
         stock: '6905.11',
         sold: '6490.06',
-        expireDate: '2022-01-04T05:10:52-08:00',
+        expireDate: '2021-09-25T10:10:13-07:00',
         deliveryAbility: false,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
@@ -360,7 +360,7 @@ module.exports = {
         unitPrice: '553.36',
         stock: '8964.39',
         sold: '6749.94',
-        expireDate: '2022-05-07T03:19:13-07:00',
+        expireDate: '2021-09-25T10:10:13-07:00',
         deliveryAbility: true,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
@@ -382,7 +382,7 @@ module.exports = {
         unitPrice: '5985.80',
         stock: '6217.50',
         sold: '8763.37',
-        expireDate: '2022-09-16T11:46:07-07:00',
+        expireDate: '2021-09-25T10:10:13-07:00',
         deliveryAbility: true,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
@@ -404,7 +404,7 @@ module.exports = {
         unitPrice: '7187.34',
         stock: '4882.56',
         sold: '5191.69',
-        expireDate: '2022-12-06T13:15:16-08:00',
+        expireDate: '2021-09-25T10:10:13-07:00',
         deliveryAbility: true,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
@@ -426,7 +426,7 @@ module.exports = {
         unitPrice: '2729.14',
         stock: '2300.63',
         sold: '1280.50',
-        expireDate: '2022-05-12T03:53:41-07:00',
+        expireDate: '2021-09-25T10:10:13-07:00',
         deliveryAbility: false,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
@@ -448,7 +448,7 @@ module.exports = {
         unitPrice: '4911.16',
         stock: '4539.86',
         sold: '6862.64',
-        expireDate: '2022-03-31T03:59:57-07:00',
+        expireDate: '2021-09-25T10:10:13-07:00',
         deliveryAbility: false,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
@@ -469,7 +469,7 @@ module.exports = {
         unitPrice: '8180.34',
         stock: '9769.84',
         sold: '8492.69',
-        expireDate: '2022-07-27T12:51:31-07:00',
+        expireDate: '2021-09-25T10:10:13-07:00',
         deliveryAbility: false,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
@@ -491,7 +491,7 @@ module.exports = {
         unitPrice: '696.73',
         stock: '235.05',
         sold: '6808.19',
-        expireDate: '2022-01-08T02:30:29-08:00',
+        expireDate: '2021-09-25T10:10:13-07:00',
         deliveryAbility: true,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
@@ -513,7 +513,7 @@ module.exports = {
         unitPrice: '6343.88',
         stock: '5104.74',
         sold: '9713.23',
-        expireDate: '2022-04-26T01:27:34-07:00',
+        expireDate: '2021-09-25T10:10:13-07:00',
         deliveryAbility: true,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
@@ -535,7 +535,7 @@ module.exports = {
         unitPrice: '736.40',
         stock: '99.10',
         sold: '9014.46',
-        expireDate: '2022-04-20T16:01:01-07:00',
+        expireDate: '2021-09-25T10:10:13-07:00',
         deliveryAbility: false,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
@@ -557,7 +557,7 @@ module.exports = {
         unitPrice: '2111.40',
         stock: '8914.93',
         sold: '6979.91',
-        expireDate: '2022-03-01T14:28:44-08:00',
+        expireDate: '2021-09-25T10:10:13-07:00',
         deliveryAbility: false,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
@@ -579,7 +579,7 @@ module.exports = {
         unitPrice: '6757.25',
         stock: '311.01',
         sold: '7032.62',
-        expireDate: '2022-03-19T19:42:43-07:00',
+        expireDate: '2021-09-25T10:10:13-07:00',
         deliveryAbility: false,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
@@ -601,7 +601,7 @@ module.exports = {
         unitPrice: '8624.63',
         stock: '5758.00',
         sold: '3849.90',
-        expireDate: '2022-08-08T10:49:32-07:00',
+        expireDate: '2021-09-25T10:10:13-07:00',
         deliveryAbility: false,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
@@ -623,7 +623,7 @@ module.exports = {
         unitPrice: '4343.79',
         stock: '6303.77',
         sold: '5382.14',
-        expireDate: '2022-04-15T22:35:27-07:00',
+        expireDate: '2021-09-25T10:10:13-07:00',
         deliveryAbility: false,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
@@ -644,7 +644,7 @@ module.exports = {
         unitPrice: '4675.90',
         stock: '3964.55',
         sold: '9217.25',
-        expireDate: '2020-08-22T06:19:56-07:00',
+        expireDate: '2021-09-25T10:10:13-07:00',
         deliveryAbility: true,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
@@ -666,7 +666,7 @@ module.exports = {
         unitPrice: '596.39',
         stock: '4836.88',
         sold: '9935.03',
-        expireDate: '2022-02-10T10:59:22-08:00',
+        expireDate: '2021-09-25T10:10:13-07:00',
         deliveryAbility: true,
         coordinates: db.sequelize.fn(
           'ST_MakePoint',
