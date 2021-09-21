@@ -7,6 +7,7 @@ const {
   addNew,
   updateAdmin,
   removeAdmin,
+  admins,
 } = require('../route_handlers/adminHandler');
 const {
   protect,
@@ -14,6 +15,7 @@ const {
   adminLogin,
   logout,
 } = require('../route_handlers/authHandler');
+const { getMe } = require('../route_handlers/userHandler');
 
 const router = express.Router();
 
@@ -24,6 +26,7 @@ router.use(protect);
 // router.use(restrictTo('admin', 'user')); // to be changed to  admin
 
 // routes
+router.route('/all').get(getMe, admins);
 router.route('/search/gigs/:param/:value').get(searchGigs);
 router.route('/search/users/:param/:value').get(searchUsers);
 router.route('/dashboard').get(dashboardData);
