@@ -55,6 +55,7 @@ app.post(
 // reading data from body into req.body
 app.use(express.json({ limit: '10kb' })); // body parser
 
+app.use(cookieParser());
 // data sanitization against XSS
 app.use(xss());
 
