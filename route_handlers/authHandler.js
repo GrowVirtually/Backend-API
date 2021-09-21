@@ -254,7 +254,10 @@ exports.protect = catchAsync(async (req, res, next) => {
     token = req.cookies.jwt;
   }
 
+  console.log('protect function - ', token);
+
   if (!token) {
+    console.log('hi');
     return next(
       new AppError('You are not logged in! Please log in to get access', 401)
     );
@@ -283,6 +286,7 @@ exports.protect = catchAsync(async (req, res, next) => {
   });
 
   if (!freshUser) {
+    console.log('bye');
     return next(
       new AppError('The user belongs to this token does no longer exists', 401)
     );
