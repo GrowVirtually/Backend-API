@@ -13,19 +13,19 @@ module.exports = {
      */
     queryInterface.bulkInsert('User_Gigs', [
       {
-        gigId: 20,
+        gigId: 1,
         userId: 2,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
       {
-        gigId: 27,
+        gigId: 2,
         userId: 2,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
       {
-        gigId: 27,
+        gigId: 7,
         userId: 3,
         createdAt: new Date(),
         updatedAt: new Date(),
