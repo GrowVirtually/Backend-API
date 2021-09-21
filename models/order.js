@@ -46,6 +46,9 @@ module.exports = (sequelize, DataTypes) => {
       consumerId: DataTypes.INTEGER,
       gigId: DataTypes.INTEGER,
       qrLink: DataTypes.TEXT,
+      growerFname: DataTypes.TEXT,
+      growerLname: DataTypes.TEXT,
+      gigTitle: DataTypes.TEXT,
     },
     {
       sequelize,
