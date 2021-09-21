@@ -78,6 +78,9 @@ exports.dashboardData = catchAsync(async (req, res, next) => {
     where: { gigCategory: 'vegetable' },
   });
 
+  const orderCount = await db.Order.count({});
+  const reviews = await db.Review.findAndCountAll();
+
   res.status(200).json({
     status: 'success',
     data: {
@@ -85,6 +88,8 @@ exports.dashboardData = catchAsync(async (req, res, next) => {
       userCount,
       fruitCount,
       vegetableCount,
+      orderCount,
+      reviews,
     },
   });
 });
