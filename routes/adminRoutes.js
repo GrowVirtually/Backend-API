@@ -21,7 +21,7 @@ router.post('/login', adminLogin);
 router.get('/logout', protect, restrictTo('admin'), logout);
 
 router.use(protect);
-router.use(restrictTo('admin')); // to be changed to  admin
+router.use(restrictTo('admin', 'user')); // to be changed to  admin
 
 // routes
 router.route('/search/gigs/:param/:value').get(searchGigs);
