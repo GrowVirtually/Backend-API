@@ -101,6 +101,7 @@ exports.addNew = catchAsync(async (req, res, next) => {
     lname: req.body.lname,
     phone: req.body.phone,
     email: req.body.email,
+    role: 'admin',
     password: hashed,
   });
 
@@ -110,6 +111,51 @@ exports.addNew = catchAsync(async (req, res, next) => {
     status: 'success',
     data: {
       newUser,
+    },
+  });
+});
+
+exports.updateAdmin = catchAsync(async (req, res, next) => {
+  const result = await db.User.update(
+    {
+      fname: req.body.fname,
+      lname: req.body.lname,
+      phone: req.body.phone,
+      dob: req.body.dob,
+      nic: req.body.nic,
+      email: req.body.email,
+      gender: req.body.gender,
+    },
+    {
+      where: {
+        id: req.body.userId,
+      },
+      returning: true,
+    }
+  );
+
+  const user = result[1][0];
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      user,
+    },
+  });
+});
+
+exports.removeAdmin = catchAsync(async (req, res, next) => {
+  const admin = await db.User.findOne({
+    where: {
+      id: req.body.userId,
+    },
+  });
+  await admin.destroy();
+
+  res.status(202).json({
+    status: 'success',
+    data: {
+      admin,
     },
   });
 });
