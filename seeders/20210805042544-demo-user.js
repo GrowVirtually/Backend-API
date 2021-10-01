@@ -490,6 +490,21 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      {
+        fname: 'Upul',
+        lname: 'Tharanga',
+        phone: '080-2047633',
+        dob: '2022-05-22T14:30:20-07:00',
+        nic: '872166215A',
+        email: 'upul@ante.com',
+        gender: 'male',
+        imgLink:
+          'sit amet, consectetuer adipiscing elit. Aliquam auctor, velit eget laoreet',
+        role: 'user',
+        password: await bcrypt.hash('test@123', 10),
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
     ]),
   down: async (queryInterface, Sequelize) =>
     /**
