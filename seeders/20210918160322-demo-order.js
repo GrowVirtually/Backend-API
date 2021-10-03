@@ -13,7 +13,7 @@ module.exports = {
      */
     queryInterface.bulkInsert('Orders', [
       {
-        quantity: 200.03,
+        quantity: 200.23,
         paymentAmount: 513.22,
         deliveryMethod: 'self',
         growerId: 3,
