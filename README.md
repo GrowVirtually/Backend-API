@@ -157,7 +157,6 @@ heroku run sequelize-cli db:seed:all
 
 MIT
 
-**Free Software, Hell Yeah!**
 
 [PostgreSQL]: <https://www.postgresql.org/>
 [Material UI]: <https://material-ui.com/>
@@ -170,6 +169,7 @@ MIT
 
 Group No: 15
 Member               | Index No | Github username
+-------------------- | ---------| ---------------
 J.P.A. Shanaka       | 18001582 | ashanaka
 D.D. Liyanaarachch i | 18000932 | DDhanushka
 A. H. Dodampe        | 18000462 | anjana-dodampe
