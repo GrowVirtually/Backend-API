@@ -92,6 +92,8 @@ npm run start:prod
 For database environments...
 
 #### Execute the functions in the extra/db/functions.sql file in your database
+#### Execute the functions in the extra/db/functions.sql file in your database
+#### Execute the functions in the extra/db/functions.sql file in your database
 
 Migrate tables into postgres database
 ```sh
